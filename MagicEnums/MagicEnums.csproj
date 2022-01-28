@@ -1,0 +1,54 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<Title>CodeChops.MagicEnums</Title>
+		<Version>0.9.1</Version>
+		<AssemblyName>CodeChops.MagicEnums</AssemblyName>
+		<RootNamespace>CodeChops.MagicEnums</RootNamespace>
+		<PackageId>CodeChops.MagicEnums</PackageId>
+		<Authors>Max Bergman (@CodeChops)</Authors>
+		<Company>CodeChops</Company>
+		<PackageProjectUrl>https://github.com/code-chops/MagicEnums</PackageProjectUrl>
+		<PackageTags>enum</PackageTags>
+		<RepositoryUrl>https://github.com/code-chops/MagicEnums</RepositoryUrl>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<PackageIcon>icon.png</PackageIcon>
+		<Summary>Flexible, and extendable enums for .NET that support other member values than integral types</Summary>
+		<Description>Flexible, and extendable enums for .NET that support other member values than integral types</Description>
+		<LangVersion>10</LangVersion>	
+		<AnalysisLevel>latest</AnalysisLevel>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	</PropertyGroup>
+	
+	<ItemGroup>
+		<None Include="Properties\icon.png" Pack="true" Visible="true" PackagePath="" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<InternalsVisibleTo Include="$(AssemblyName).UnitTests" />
+	</ItemGroup>
+
+	<PropertyGroup>
+		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+	</PropertyGroup>
+
+	<Target Name="AddNugetPackage" AfterTargets="Pack" Condition="'$(Configuration)' == 'Debug'">
+		<Exec Command="D:\Source\_packages\nuget.exe add $(OutputPath)..\$(PackageId).$(PackageVersion).nupkg -source D:\source\_packages" />
+	</Target>
+
+	<ItemGroup>
+		<ProjectReference Include="..\MagicEnums.SourceGeneration\MagicEnums.SourceGeneration.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+	</ItemGroup>
+
+	<PropertyGroup>
+		<!-- CA1822: Instance member does not access instance data and can be marked as static -->
+		<!-- CS1573: Undocumented public symbol while -doc compiler option is used -->
+		<!-- CS1591: Missing XML comment for publicly visible type -->
+		<!-- CA1816: Dispose() should call GC.SuppressFinalize()-->
+		<NoWarn>CA1822,CS1573,CS1591,CA1816</NoWarn>
+		<DebugType>none</DebugType>
+	</PropertyGroup>
+</Project>
