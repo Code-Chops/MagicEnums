@@ -7,15 +7,15 @@
 		<AssemblyName>CodeChops.MagicEnums</AssemblyName>
 		<RootNamespace>CodeChops.MagicEnums</RootNamespace>
 		<PackageId>CodeChops.MagicEnums</PackageId>
-		<Authors>Max Bergman (@CodeChops)</Authors>
+		<Authors>Max Bergman (@Code-Chops)</Authors>
 		<Company>CodeChops</Company>
 		<PackageProjectUrl>https://github.com/code-chops/MagicEnums</PackageProjectUrl>
 		<PackageTags>enum</PackageTags>
 		<RepositoryUrl>https://github.com/code-chops/MagicEnums</RepositoryUrl>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<PackageIcon>icon.png</PackageIcon>
-		<Summary>Flexible, and extendable enums for .NET that support other member values than integral types</Summary>
-		<Description>Flexible, and extendable enums for .NET that support other member values than integral types</Description>
+		<Summary>Flexible and extendable enums for .NET that support other member values than integral types</Summary>
+		<Description>Flexible and extendable enums for .NET that support other member values than integral types</Description>
 		<LangVersion>10</LangVersion>	
 		<AnalysisLevel>latest</AnalysisLevel>
 		<Nullable>enable</Nullable>
