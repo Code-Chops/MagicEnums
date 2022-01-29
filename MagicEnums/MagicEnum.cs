@@ -50,19 +50,22 @@ public abstract record MagicEnum<TEnum, TValue> : MagicEnumCore<TEnum, TValue>
 	/// <exception cref="ArgumentException">When a member already exists with the same name.</exception>
 	public static TEnum Create([CallerMemberName] string? enforcedName = null)
 	{
-		if (ConcurrencyMode == Configuration.ConcurrencyMode.AdaptiveConcurrency)
-		{
-			lock (LockLastInsertedNumber)
-			{
-				if (LastInsertedNumber is null) 
-					LastInsertedNumber = new();
-				else 
-					LastInsertedNumber!++;
-			}
-		}
+		if (IsInConcurrentState)
+			lock (LockLastInsertedNumber) IncrementLastInsertedNumber();
+		else
+			IncrementLastInsertedNumber();
 
 		var id = MagicEnumCore<TEnum, TValue>.Create(LastInsertedNumber ?? GetLastInsertedValue(), enforcedName!);
 		return id;
+
+
+		static void IncrementLastInsertedNumber()
+		{
+			if (LastInsertedNumber is null)
+				LastInsertedNumber = new();
+			else
+				LastInsertedNumber!++;
+		}
 	}
 
 	/// <summary>
@@ -77,13 +80,10 @@ public abstract record MagicEnum<TEnum, TValue> : MagicEnumCore<TEnum, TValue>
 	/// <exception cref="ArgumentException">When a member already exists with the same name.</exception>
 	public static new TEnum Create(TValue value, [CallerMemberName] string? enforcedName = null)
 	{
-		if (ConcurrencyMode == Configuration.ConcurrencyMode.AdaptiveConcurrency)
-		{
-			lock (LockLastInsertedNumber)
-			{
-				LastInsertedNumber = value;
-			}
-		}
+		if (IsInConcurrentState)
+			lock (LockLastInsertedNumber) LastInsertedNumber = value;
+		else
+			LastInsertedNumber = value;
 
 		return MagicEnumCore<TEnum, TValue>.Create(value, enforcedName);
 	}

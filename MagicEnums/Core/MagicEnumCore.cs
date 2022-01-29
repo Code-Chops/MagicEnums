@@ -60,12 +60,12 @@ public abstract record MagicEnumCore<TEnum, TValue> : IMagicEnum<TValue>
 	/// <summary>
 	/// The concurrency mode of the enum. <see cref="ConcurrencyMode"/>
 	/// </summary>
-	internal static ConcurrencyMode ConcurrencyMode { get; set; }
+	private static ConcurrencyMode ConcurrencyMode { get; set; }
 
 	/// <summary>
 	/// Is true if the dictionary is in a concurrent state.
 	/// </summary>
-	private static bool IsInConcurrentState => MemberByNames is ConcurrentDictionary<string, TEnum>;
+	protected static bool IsInConcurrentState => MemberByNames is ConcurrentDictionary<string, TEnum>;
 
 	/// <summary>
 	/// A mapping of a member name to a single member.
@@ -145,7 +145,6 @@ public abstract record MagicEnumCore<TEnum, TValue> : IMagicEnum<TValue>
 		}
 
 		SwitchToConcurrent();
-		AddMemberToDictionary(newMember, memberByNames);
 
 		return newMember;
 		
@@ -157,13 +156,14 @@ public abstract record MagicEnumCore<TEnum, TValue> : IMagicEnum<TValue>
 				// Check if we won the race.
 				if (MemberByNames != memberByNames)
 				{
-					memberByNames = MemberByNames;
+					AddMemberToDictionary(newMember, MemberByNames);
 					return;
 				}
 
 				// Convert to a concurrent dictionary.
-				var temp = new ConcurrentDictionary<string, TEnum>(memberByNames);
-				MemberByNames = temp;
+				var concurrentMemberByNames = new ConcurrentDictionary<string, TEnum>(memberByNames);
+				AddMemberToDictionary(newMember, concurrentMemberByNames);
+				MemberByNames = concurrentMemberByNames;
 			}
 		}
 
