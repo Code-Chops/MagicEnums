@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 
 namespace CodeChops.MagicEnums.SourceGeneration.Extensions;
 
@@ -11,7 +8,6 @@ internal static class Diagnostics
 	{
 		context.ReportDiagnostic(
 			Diagnostic.Create(
-				new DiagnosticDescriptor(id, title, description, "CodeChops", severity, isEnabledByDefault: true),
-				symbol?.Locations.FirstOrDefault()));
+				new DiagnosticDescriptor(id, title, description, "CodeChops", severity, isEnabledByDefault: true), symbol?.Locations.FirstOrDefault()));
 	}
 }

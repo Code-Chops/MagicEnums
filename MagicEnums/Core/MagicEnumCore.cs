@@ -1,10 +1,8 @@
 ﻿using System.Collections.Concurrent;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using CodeChops.MagicEnums.Attributes;
-using CodeChops.MagicEnums.Configuration;
 
 namespace CodeChops.MagicEnums.Core;
 
@@ -58,28 +56,36 @@ public abstract record MagicEnumCore<TEnum, TValue> : IMagicEnum<TValue>
 	public static IEnumerable<TEnum> GetEnumerable() => MemberByNames.Values;
 
 	/// <summary>
-	/// The concurrency mode of the enum. <see cref="ConcurrencyMode"/>
-	/// </summary>
-	private static ConcurrencyMode ConcurrencyMode { get; set; }
-
-	/// <summary>
 	/// Is true if the dictionary is in a concurrent state.
 	/// </summary>
 	protected static bool IsInConcurrentState => MemberByNames is ConcurrentDictionary<string, TEnum>;
 
 	/// <summary>
+	/// Is true of the enum is in a static creation. The enum does not have to be concurrent during this period.
+	/// </summary>
+	private static bool IsInStaticBuildup { get; set; } = true;
+
+	/// <summary>
+	/// The concurrency mode of the enum. <see cref="Core.ConcurrencyMode"/>
+	/// </summary>
+	private static ConcurrencyMode ConcurrencyMode { get; set; }
+
+	/// <summary>
 	/// A mapping of a member name to a single member.
 	/// </summary>
-	private static IDictionary<string, TEnum> MemberByNames { get; set; } = new Dictionary<string, TEnum>();
+	private static IDictionary<string, TEnum> MemberByNames { get; set; } = new Dictionary<string, TEnum>(StringComparer.OrdinalIgnoreCase);
 
 	/// <summary>
 	/// A mapping of a member value to one or more members.
 	/// </summary>
-	private static IDictionary<TValue, IEnumerable<TEnum>> MembersByValues => _membersByValues 
-		??= MemberByNames
+	private static IDictionary<TValue, IEnumerable<TEnum>> MembersByValues 
+		=> _membersByValues ??= MemberByNames
 			.GroupBy(memberByName => memberByName.Value, memberByName => memberByName.Value)
 			.ToDictionary(member => member.Key.Value!, member => member.AsEnumerable());
-	
+
+	/// <summary>
+	/// A mapping of a member value to one or more members. Don't change this value. Only reset it (to null).
+	/// </summary>
 	private static IDictionary<TValue, IEnumerable<TEnum>> _membersByValues = null!;
 
 	/// <summary>
@@ -88,10 +94,10 @@ public abstract record MagicEnumCore<TEnum, TValue> : IMagicEnum<TValue>
 	private static readonly TEnum CachedUnitializedMember = (TEnum)FormatterServices.GetUninitializedObject(typeof(TEnum));
 
 	/// <summary>
-	/// A lock for the dictionaries. 
+	/// A lock for the dictionary. 
 	/// This lock is used for switching between a concurrent and not-concurrent state (when using <see cref="ConcurrencyMode.AdaptiveConcurrency"/>).
 	/// </summary>
-	private static readonly object LockDictionaries = new();
+	private static readonly object DictionaryLock = new();
 
 	static MagicEnumCore()
 	{
@@ -101,6 +107,8 @@ public abstract record MagicEnumCore<TEnum, TValue> : IMagicEnum<TValue>
 
 		// Forces to run the static constructor of the user-defined enum, so the Create method is called for every member (in code line order).
 		RuntimeHelpers.RunClassConstructor(typeof(TEnum).TypeHandle);
+
+		IsInStaticBuildup = false;
 	}
 
 	/// <summary>
@@ -136,22 +144,21 @@ public abstract record MagicEnumCore<TEnum, TValue> : IMagicEnum<TValue>
 		};
 
 		var memberByNames = MemberByNames;
-		
-		// Add the member to the dictionaries if the concurrency state does not have to be changed.
-		if (ConcurrencyMode == ConcurrencyMode.NeverConcurrent || IsInConcurrentState)
+
+		// Switch to a concurrent mode if necessary.
+		if (ConcurrencyMode == ConcurrencyMode.AdaptiveConcurrency && !IsInConcurrentState && !IsInStaticBuildup)
 		{
-			AddMemberToDictionary(newMember, memberByNames);
+			SwitchToConcurrentAndAddMember();
 			return newMember;
 		}
 
-		SwitchToConcurrent();
-
+		AddMemberToDictionary(newMember, memberByNames);
 		return newMember;
 		
 
-		void SwitchToConcurrent()
+		void SwitchToConcurrentAndAddMember()
 		{
-			lock (LockDictionaries)
+			lock (DictionaryLock)
 			{
 				// Check if we won the race.
 				if (MemberByNames != memberByNames)
@@ -166,6 +173,7 @@ public abstract record MagicEnumCore<TEnum, TValue> : IMagicEnum<TValue>
 				MemberByNames = concurrentMemberByNames;
 			}
 		}
+
 
 		static void AddMemberToDictionary(TEnum newMember, IDictionary<string, TEnum> memberByNames)
 		{

@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace CodeChops.MagicEnums.Numbers;
+namespace CodeChops.MagicEnums.NativeIntegrals;
 
 /// <summary>
 /// Class to allow operations (like Add, Multiply, etc.) for generic types. This type should allow these operations themselves.
@@ -101,8 +101,8 @@ internal sealed class Calculator<T>
 			var convertToTypeB = ConvertTo(typeof(T2));
 			var parameterA = Expression.Parameter(typeof(T), "a");
 			var parameterB = Expression.Parameter(typeof(T2), "b");
-			var valueA = (convertToTypeA != null) ? Expression.Convert(parameterA, convertToTypeA) : (Expression)parameterA;
-			var valueB = (convertToTypeB != null) ? Expression.Convert(parameterB, convertToTypeB) : (Expression)parameterB;
+			var valueA = convertToTypeA != null ? Expression.Convert(parameterA, convertToTypeA) : (Expression)parameterA;
+			var valueB = convertToTypeB != null ? Expression.Convert(parameterB, convertToTypeB) : (Expression)parameterB;
 			var body = @operator(valueA, valueB);
 
 			if (convertToTypeA != null)
@@ -127,7 +127,7 @@ internal sealed class Calculator<T>
 		{
 			var convertToType = ConvertTo(typeof(T));
 			var parameter = Expression.Parameter(typeof(T), "a");
-			var value = (convertToType != null) ? Expression.Convert(parameter, convertToType) : (Expression)parameter;
+			var value = convertToType != null ? Expression.Convert(parameter, convertToType) : (Expression)parameter;
 			var body = @operator(value);
 
 			if (convertToType != null)

@@ -5,7 +5,7 @@
 		<Version>0.9.1</Version>
 		<AssemblyName>CodeChops.MagicEnums.UnitTests</AssemblyName>
 		<RootNamespace>CodeChops.MagicEnums.UnitTests</RootNamespace>
-		<Authors>Max Bergman (@CodeChops)</Authors>
+		<Authors>Max Bergman (@Code-Chops)</Authors>
 		<Company>CodeChops</Company>
 		<Summary>Unit tests for magic enums</Summary>
 		<Description>Unit tests for magic enums</Description>
@@ -28,6 +28,10 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\MagicEnums\MagicEnums.csproj" />
 	</ItemGroup>	
+
+	<ItemGroup>
+		<ProjectReference Include="..\MagicEnums.SourceGeneration\MagicEnums.SourceGeneration.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+	</ItemGroup>
 	
 	<PropertyGroup>
 		<!-- CA1822: Instance member does not access instance data and can be marked as static -->

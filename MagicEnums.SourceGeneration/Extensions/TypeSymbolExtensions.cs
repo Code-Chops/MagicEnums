@@ -387,7 +387,7 @@ internal static class TypeSymbolExtensions
 	public static string CreateStringExpression(this ITypeSymbol typeSymbol, string memberName, string stringVariant = "this.{0}")
 	{
 		if (typeSymbol.IsValueType && !typeSymbol.IsNullable()) return $"this.{memberName}.ToString()";
-		if (typeSymbol.IsType<string>()) return string.Format(stringVariant, memberName);
+		if (typeSymbol.IsType<string>()) return String.Format(stringVariant, memberName);
 		return $"this.{memberName}?.ToString()";
 	}
 
@@ -399,7 +399,7 @@ internal static class TypeSymbolExtensions
 	{
 		if (typeSymbol.IsNullable()) return $"(this.{memberName} is null || other.{memberName} is null ? -(this.{memberName} is null).CompareTo(other.{memberName} is null) : this.{memberName}.Value.CompareTo(other.{memberName}.Value))";
 		else if (typeSymbol.IsValueType) return $"this.{memberName}.CompareTo(other.{memberName})";
-		else if (typeSymbol.IsType<string>()) return string.Format(stringVariant, memberName);
+		else if (typeSymbol.IsType<string>()) return String.Format(stringVariant, memberName);
 		else return $"(this.{memberName} is null || other.{memberName} is null ? -(this.{memberName} is null).CompareTo(other.{memberName} is null) : this.{memberName}.CompareTo(other.{memberName}))";
 	}
 }

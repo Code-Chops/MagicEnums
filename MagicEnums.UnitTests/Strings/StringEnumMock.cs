@@ -1,6 +1,6 @@
 ﻿namespace CodeChops.MagicEnums.UnitTests.Strings;
 
-public partial record StringEnum : MagicStringEnum<StringEnum>
+internal partial record StringEnum : MagicStringEnum<StringEnum>
 {
 	public static StringEnum ValueA { get; } = CreateMember();
 	public static StringEnum ValueB { get; } = CreateMember();

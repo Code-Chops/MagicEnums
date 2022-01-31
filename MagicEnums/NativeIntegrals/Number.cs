@@ -1,10 +1,10 @@
-﻿namespace CodeChops.MagicEnums.Numbers;
+﻿namespace CodeChops.MagicEnums.NativeIntegrals;
 
 /// <summary>
 /// From: https://codereview.stackexchange.com/questions/26022/generic-calculator-and-generic-number
 /// </summary>
 /// <typeparam name="T">Integral type</typeparam>
-public readonly record struct Number<T>
+internal readonly record struct Number<T>
 	where T : struct, IComparable<T>, IEquatable<T>, IConvertible
 {
 	public static Number<T> Empty { get; } = new();
@@ -106,7 +106,7 @@ public readonly record struct Number<T>
 	}
 }
 
-public static class NumberExtensions
+internal static class NumberExtensions
 {
 	public static Number<TNumber> Cast<TSourceNumber, TNumber>(this Number<TSourceNumber> number)
 		where TNumber : struct, IComparable<TNumber>, IEquatable<TNumber>, IConvertible

@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using CodeChops.MagicEnums.Core;
-using CodeChops.MagicEnums.Numbers;
+using CodeChops.MagicEnums.NativeIntegrals;
 
 namespace CodeChops.MagicEnums;
 
@@ -48,7 +48,7 @@ public abstract record MagicEnum<TEnum, TValue> : MagicEnumCore<TEnum, TValue>
 	/// </param>
 	/// <returns>The newly created member.</returns>
 	/// <exception cref="ArgumentException">When a member already exists with the same name.</exception>
-	protected static TEnum CreateMember([CallerMemberName] string? enforcedName = null)
+	public static TEnum CreateMember([CallerMemberName] string? enforcedName = null)
 	{
 		if (IsInConcurrentState)
 			lock (LockLastInsertedNumber) IncrementLastInsertedNumber();

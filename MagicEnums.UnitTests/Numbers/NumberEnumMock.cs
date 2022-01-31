@@ -1,6 +1,6 @@
 ﻿namespace CodeChops.MagicEnums.UnitTests.Numbers;
 
-public partial record NumberEnumMock : MagicEnum<NumberEnumMock, ulong>
+internal partial record NumberEnumMock : MagicEnum<NumberEnumMock, ulong>
 {
 	/// <summary>
 	/// An initial implicit value. Should be 0.

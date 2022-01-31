@@ -1,10 +1,9 @@
 ﻿using CodeChops.MagicEnums.Attributes;
 
-namespace CodeChops.MagicEnums.Configuration;
+namespace CodeChops.MagicEnums.Core;
 
-[DiscoverableEnumMembers(true)]
 [DisableConcurrency]
-public sealed partial record ConcurrencyMode : MagicEnum<ConcurrencyMode>
+internal sealed partial record ConcurrencyMode : MagicEnum<ConcurrencyMode>
 {
 	/// <summary>
 	/// Default:
@@ -13,30 +12,11 @@ public sealed partial record ConcurrencyMode : MagicEnum<ConcurrencyMode>
 	/// - When the enum instance has been constructed, it will fall back to a non-current state (to optimize speed and memory usage).
 	/// - If a new member is added to the enum after construction, it will switch back to a concurrent state and stays in this state.
 	/// </summary>
-	//public static ConcurrencyMode AdaptiveConcurrency { get; } = CreateMember();
+	public static ConcurrencyMode AdaptiveConcurrency { get; } = CreateMember();
 
 	/// <summary>
 	/// The enum is not concurrent througout its lifetime.
 	/// Warning! Only use this label when the members are created from a static context.
 	/// </summary>
-	//public static ConcurrencyMode NeverConcurrent { get; } = CreateMember();
-
-
-	static ConcurrencyMode()
-	{
-		//GenerateMember("Een");
-		//GenerateMember("Twee");
-	}
+	public static ConcurrencyMode NeverConcurrent { get; } = CreateMember();
 }
-
-public record Hoi
-{
-	public void Start()
-	{
-		var a = ConcurrencyMode.GenerateMember("Hondje", 3);
-		var c = ConcurrencyMode.GenerateMember("Poesje");
-	}
-}
-
-
-
