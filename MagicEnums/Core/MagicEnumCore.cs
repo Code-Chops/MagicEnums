@@ -123,7 +123,7 @@ public abstract record MagicEnumCore<TEnum, TValue> : IMagicEnum<TValue>
 	/// <returns>The newly created member.</returns>
 	/// <exception cref="ArgumentNullException">When no name or value has been provided.</exception>
 	/// <exception cref="ArgumentException">When a member already exists with the same name.</exception>
-	protected static TEnum Create(TValue newValue, [CallerMemberName] string? enforcedName = null)
+	protected static TEnum CreateMember(TValue newValue, [CallerMemberName] string? enforcedName = null)
 	{
 		if (String.IsNullOrWhiteSpace(enforcedName)) throw new ArgumentNullException(nameof(enforcedName));
 		if (newValue is null) throw new ArgumentNullException(nameof(newValue));

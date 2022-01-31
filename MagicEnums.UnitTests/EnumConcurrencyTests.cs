@@ -14,8 +14,8 @@ public record EnumConcurrencyTests : MagicEnum<EnumConcurrencyTests, int>
 		var index = 0;
 		for (index = 0; index < 100; index += 2)
 		{
-			var taskA = Task.Run(() => Create(index, enforcedName: index.ToString()));
-			var taskB = Task.Run(() => Create(index + 1, enforcedName: (index + 1).ToString()));
+			var taskA = Task.Run(() => CreateMember(index, enforcedName: index.ToString()));
+			var taskB = Task.Run(() => CreateMember(index + 1, enforcedName: (index + 1).ToString()));
 			var taskC = Task.Run(() => GetEnumerable().Select(member => member));
 			await Task.WhenAll(taskA, taskB, taskC);
 		}

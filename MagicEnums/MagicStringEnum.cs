@@ -20,5 +20,5 @@ public abstract record MagicStringEnum<TEnum> : MagicEnumCore<TEnum, string>
 	/// </param>
 	/// <returns>The newly created member.</returns>
 	/// <exception cref="ArgumentException">When a member already exists with the same name.</exception>
-	public static TEnum Create([CallerMemberName] string? enforcedName = null) => Create(enforcedName!, enforcedName);
+	protected static TEnum CreateMember([CallerMemberName] string? enforcedName = null) => CreateMember(enforcedName!, enforcedName);
 }

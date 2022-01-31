@@ -12,15 +12,15 @@ public record EnumTests : MagicEnumCore<EnumTests, bool>
 
 		static void CreateOptionsWithSameName()
 		{
-			Create(false, nameof(Enum));
-			Create(true, nameof(Enum));
+			CreateMember(false, nameof(Enum));
+			CreateMember(true, nameof(Enum));
 		}
 	}
 
 	[Fact]
 	public void Enum_WithSameValues_ShouldNotThrow()
 	{
-		Create(false, "Name1");
-		Create(false, "Name2");
+		CreateMember(false, "Name1");
+		CreateMember(false, "Name2");
 	}
 }

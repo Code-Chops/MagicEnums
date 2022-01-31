@@ -48,14 +48,14 @@ public abstract record MagicEnum<TEnum, TValue> : MagicEnumCore<TEnum, TValue>
 	/// </param>
 	/// <returns>The newly created member.</returns>
 	/// <exception cref="ArgumentException">When a member already exists with the same name.</exception>
-	public static TEnum Create([CallerMemberName] string? enforcedName = null)
+	protected static TEnum CreateMember([CallerMemberName] string? enforcedName = null)
 	{
 		if (IsInConcurrentState)
 			lock (LockLastInsertedNumber) IncrementLastInsertedNumber();
 		else
 			IncrementLastInsertedNumber();
 
-		var id = MagicEnumCore<TEnum, TValue>.Create(LastInsertedNumber ?? GetLastInsertedValue(), enforcedName!);
+		var id = MagicEnumCore<TEnum, TValue>.CreateMember(LastInsertedNumber ?? GetLastInsertedValue(), enforcedName!);
 		return id;
 
 
@@ -78,13 +78,13 @@ public abstract record MagicEnum<TEnum, TValue> : MagicEnumCore<TEnum, TValue>
 	/// </param>
 	/// <returns>The newly created member.</returns>
 	/// <exception cref="ArgumentException">When a member already exists with the same name.</exception>
-	public static new TEnum Create(TValue value, [CallerMemberName] string? enforcedName = null)
+	protected static new TEnum CreateMember(TValue value, [CallerMemberName] string? enforcedName = null)
 	{
 		if (IsInConcurrentState)
 			lock (LockLastInsertedNumber) LastInsertedNumber = value;
 		else
 			LastInsertedNumber = value;
 
-		return MagicEnumCore<TEnum, TValue>.Create(value, enforcedName);
+		return MagicEnumCore<TEnum, TValue>.CreateMember(value, enforcedName);
 	}
 }

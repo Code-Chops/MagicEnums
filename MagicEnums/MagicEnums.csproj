@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<Title>CodeChops.MagicEnums</Title>
-		<Version>0.9.2</Version>
+		<Version>0.9.3</Version>
 		<AssemblyName>CodeChops.MagicEnums</AssemblyName>
 		<RootNamespace>CodeChops.MagicEnums</RootNamespace>
 		<PackageId>CodeChops.MagicEnums</PackageId>
