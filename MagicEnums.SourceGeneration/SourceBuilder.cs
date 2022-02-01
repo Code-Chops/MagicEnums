@@ -2,24 +2,58 @@
 using Microsoft.CodeAnalysis;
 using System.Collections.Concurrent;
 using CodeChops.MagicEnums.SourceGeneration.Entities;
+using Microsoft.CodeAnalysis.Text;
+using CodeChops.MagicEnums.SourceGeneration.Extensions;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.Collections.Immutable;
+using System.Diagnostics;
 
 namespace CodeChops.MagicEnums.SourceGeneration;
 
 internal class SourceBuilder
 {
-	public string CreateEnum(EnumDeclaration declaration, ConcurrentDictionary<string, Entities.Enum> enumDataByNames)
+	public const string GenerateMethodName	= "GenerateMember";
+	public const string InterfaceName		= "IMagicEnum";
+	public const string InterfaceNamespace	= "CodeChops.MagicEnums.Core";
+
+	public static void CreateCode(SourceProductionContext context, ImmutableArray<EnumMember> members, Dictionary<string, EnumDefinition> enumDefinitionsByName)
+	{
+		//Debugger.Launch();
+		if (members.IsDefaultOrEmpty) return;
+
+		try
+		{
+			var membersByDefinitions = members
+				.GroupBy(member => enumDefinitionsByName.TryGetValue(member.EnumName, out var definition) ? definition : null)
+				.Where(grouping => grouping.Key is not null);
+			
+			foreach (var membersByDefinition in membersByDefinitions)
+			{
+				var declaration = membersByDefinition.Key!;
+				var enumCode = CreateEnumCode(declaration, membersByDefinition); //TODO
+
+				context.AddSource($"{declaration.Name}.g.cs", SourceText.From(enumCode, Encoding.UTF8));
+			}
+		}
+		catch (Exception e)
+		{
+			context.ReportDiagnostic(
+				id: "ESG1",
+				title: "Unknown error",
+				description: e.Message.ToString(),
+				severity: DiagnosticSeverity.Error);
+		}
+	}
+
+	private static string CreateEnumCode(EnumDefinition definition, IEnumerable<EnumMember> members)
 	{
 		var code = new StringBuilder();
 
-		enumDataByNames.TryGetValue(declaration.EnumName, out var memberData);
-
-		var members = memberData?.MemberByKeys
-			.OrderByDescending(memberByKey => memberByKey.Key.FilePath == declaration.FilePath)
-			.ThenBy(memberByKey => memberByKey.Key)
-			.Select(memberByKey => memberByKey.Value)
+		members = members
+			.OrderByDescending(member => member.FilePath == definition.FilePath)
+			.ThenBy(member => member.LinePosition)
 			.GroupBy(member => member.Name)
-			.Select(membersByName => membersByName.First())
-			.ToArray() ?? Array.Empty<EnumMember>();
+			.Select(membersByName => membersByName.First());
 
 		var longestMemberNameLength = members
 			.Select(member => member.Name)
@@ -34,9 +68,9 @@ using CodeChops.MagicEnums;
 {GetValueTypeUsing()}
 {GetNamespaceDeclaration()}
 {GetEnumRecord()}
-{declaration.AccessModifier}static class {declaration.EnumName}Extensions
+{definition.AccessModifier}static class {definition.Name}Extensions
 {{
-	public static {declaration.EnumName} GenerateMember(this {declaration.EnumName} member, {declaration.ValueType.Name}? value = null, string? comment = null) => member;
+	public static {definition.Name} {GenerateMethodName}(this {definition.Name} member, {definition.ValueTypeName}? value = null, string? comment = null) => member;
 }}
 
 #nullable restore");
@@ -46,7 +80,7 @@ using CodeChops.MagicEnums;
 
 		string? GetValueTypeUsing()
 		{
-			var ns = declaration.ValueType.ContainingNamespace.ToDisplayString();
+			var ns = definition.ValueTypeNamespace;
 			if (ns == "System") return null;
 
 			ns = $"using {ns};";
@@ -56,9 +90,9 @@ using CodeChops.MagicEnums;
 
 		string? GetNamespaceDeclaration()
 		{
-			if (declaration.Namespace is null) return null;
+			if (definition.Namespace is null) return null;
 
-			var code = $@"namespace {declaration.Namespace};";
+			var code = $@"namespace {definition.Namespace};";
 			return code;
 		}
 
@@ -67,7 +101,7 @@ using CodeChops.MagicEnums;
 		{
 			var code = new StringBuilder();
 
-			if (members.Length == 0) return code;
+			if (!members.Any()) return code;
 
 			code.Append($@"
 /// <summary>
@@ -86,7 +120,7 @@ using CodeChops.MagicEnums;
 /// </summary>");
 
 			code.Append($@"
-{declaration.AccessModifier}partial record {declaration.EnumName}
+{definition.AccessModifier}partial record {definition.Name}
 {{	
 ");
 
@@ -109,7 +143,7 @@ using CodeChops.MagicEnums;
 
 				var outlineSpaces = new string(' ', longestMemberNameLength - member.Name.Length);
 				code.Append(@$"
-	public static {declaration.EnumName} {member.Name} {{ get; }} {outlineSpaces}= CreateMember({member.Value});
+	public static {definition.Name} {member.Name} {{ get; }} {outlineSpaces}= CreateMember({member.Value});
 ");
 			}
 

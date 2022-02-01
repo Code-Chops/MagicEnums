@@ -3,6 +3,6 @@
 namespace CodeChops.MagicEnums.UnitTests.SourceGeneration.Implicit;
 
 [DiscoverableEnumMembers(implicitDiscoverability: true)]
-internal partial record ImplicitDiscoverableEnumMock : MagicEnum<ImplicitDiscoverableEnumMock>
+public partial record ImplicitDiscoverableEnumMock : MagicEnum<ImplicitDiscoverableEnumMock>
 {
 }
