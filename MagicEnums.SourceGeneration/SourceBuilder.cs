@@ -1,12 +1,8 @@
 ﻿using System.Text;
 using Microsoft.CodeAnalysis;
-using System.Collections.Concurrent;
 using CodeChops.MagicEnums.SourceGeneration.Entities;
 using Microsoft.CodeAnalysis.Text;
-using CodeChops.MagicEnums.SourceGeneration.Extensions;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Collections.Immutable;
-using System.Diagnostics;
 
 namespace CodeChops.MagicEnums.SourceGeneration;
 
@@ -20,28 +16,17 @@ internal class SourceBuilder
 	{
 		//Debugger.Launch();
 		if (members.IsDefaultOrEmpty) return;
-
-		try
-		{
-			var membersByDefinitions = members
-				.GroupBy(member => enumDefinitionsByName.TryGetValue(member.EnumName, out var definition) ? definition : null)
-				.Where(grouping => grouping.Key is not null);
+		
+		var definitionsAndMembers = members
+			.GroupBy(member => enumDefinitionsByName.TryGetValue(member.EnumName, out var definition) ? definition : null)
+			.Where(grouping => grouping.Key is not null)
+			.Select(grouping => (Definition: grouping.Key, Members: grouping.Where(member => grouping.Key!.ImplicitDiscoverabilityIsEnabled || !member.IsImplicitlyDiscovered)));
 			
-			foreach (var membersByDefinition in membersByDefinitions)
-			{
-				var declaration = membersByDefinition.Key!;
-				var enumCode = CreateEnumCode(declaration, membersByDefinition); //TODO
-
-				context.AddSource($"{declaration.Name}.g.cs", SourceText.From(enumCode, Encoding.UTF8));
-			}
-		}
-		catch (Exception e)
+		foreach (var (Definition, Members) in definitionsAndMembers)
 		{
-			context.ReportDiagnostic(
-				id: "ESG1",
-				title: "Unknown error",
-				description: e.Message.ToString(),
-				severity: DiagnosticSeverity.Error);
+			var enumCode = CreateEnumCode(Definition!, Members); //TODO
+
+			context.AddSource($"{Definition!.Name}.g.cs", SourceText.From(enumCode, Encoding.UTF8));
 		}
 	}
 
