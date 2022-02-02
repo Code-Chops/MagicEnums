@@ -1,19 +1,18 @@
 ﻿using Microsoft.CodeAnalysis;
 using System.Runtime.InteropServices.ComTypes;
-using System.Text.Json;
 
 namespace CodeChops.MagicEnums.SourceGeneration.Entities;
 
 internal record EnumDefinition
 {
-	public string Name { get; set; }
-	public string? Namespace { get; set; }
-	public string ValueTypeName { get; set; }
-	public string ValueTypeNamespace { get; set; }
-	public bool IsStringEnum { get; set; }
-	public bool ImplicitDiscoverabilityIsEnabled { get; set; }
-	public string FilePath { get; set; }
-	public string AccessModifier { get; set; }
+	public string Name { get; }
+	public string? Namespace { get; }
+	public string ValueTypeName { get; }
+	public string ValueTypeNamespace { get; }
+	public bool IsStringEnum { get; }
+	public bool ImplicitDiscoverabilityIsEnabled { get; }
+	public string FilePath { get; }
+	public string AccessModifier { get; }
 
 	public EnumDefinition(INamedTypeSymbol type, ITypeSymbol valueType, bool implicitDiscoverability, string filePath, string accessModifier)
 	{
@@ -29,9 +28,5 @@ internal record EnumDefinition
 		this.ImplicitDiscoverabilityIsEnabled = implicitDiscoverability;
 		this.FilePath = filePath;
 		this.AccessModifier = accessModifier.Replace("partial ", "").Replace("static ", "");
-	}
-	public EnumDefinition()
-	{
-
 	}
 }

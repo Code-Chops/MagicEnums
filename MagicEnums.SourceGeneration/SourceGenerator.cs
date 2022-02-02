@@ -5,7 +5,6 @@ using CodeChops.MagicEnums.SourceGeneration.Entities;
 using CodeChops.MagicEnums.SourceGeneration.Extensions;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Diagnostics;
-using System.Text.Json;
 
 namespace CodeChops.MagicEnums.SourceGeneration;
 
@@ -19,31 +18,21 @@ public class SourceGenerator : IIncrementalGenerator
 
 	public void Initialize(IncrementalGeneratorInitializationContext context)
 	{
-		//Debugger.Launch();
-
-		Dictionary<string, EnumDefinition> enumDefinitionsByName = null;
-		try
+		while (EnumDefinitionDiscoverer.IsRunning)
 		{
-			var json = File.ReadAllText("D:\\EnumDefinitionsByName.txt");
-			enumDefinitionsByName = JsonSerializer.Deserialize<Dictionary<string, EnumDefinition>>(json);
-			if ((enumDefinitionsByName?.Count ?? 0) == 0) return;
+			Thread.Sleep(100);
 		}
-		catch
-		{
-			return;
-		}
-		
 
 		var memberInvokations = context.SyntaxProvider
 			.CreateSyntaxProvider(
 				predicate: static (syntaxNode, ct)	=> CheckIfIsProbablyMemberInvokation(syntaxNode),
-				transform: (context, ct)		=> TryGetMember(context, enumDefinitionsByName!, ct))
+				transform: (context, ct)		=> TryGetMember(context, EnumDefinitionDiscoverer.EnumDefinitionsByName!, ct))
 			.Where(static declaration => declaration is not null)
 			.Collect();
 
 		context.RegisterSourceOutput(
 			source: memberInvokations, 
-			action: (context, members) => SourceBuilder.CreateCode(context, members!, enumDefinitionsByName!));
+			action: (context, members) => SourceBuilder.CreateCode(context, members!, EnumDefinitionDiscoverer.EnumDefinitionsByName!));
 	}
 
 	internal static bool CheckIfIsProbablyEnum(SyntaxNode syntaxNode, CancellationToken cancellationToken)

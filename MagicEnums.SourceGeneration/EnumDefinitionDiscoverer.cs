@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Text;
-using System.Text.Json;
 using CodeChops.MagicEnums.SourceGeneration.Entities;
 using Microsoft.CodeAnalysis;
 
@@ -14,6 +13,8 @@ public class EnumDefinitionDiscoverer : IIncrementalGenerator
 {
 	public const string InterfaceName = "IMagicEnum";
 	public const string InterfaceNamespace = "CodeChops.MagicEnums.Core";
+	public static bool IsRunning { get; set; } = true;
+	internal static Dictionary<string, EnumDefinition> EnumDefinitionsByName { get; set; } = new();
 
 	public void Initialize(IncrementalGeneratorInitializationContext context)
 	{
@@ -32,8 +33,7 @@ public class EnumDefinitionDiscoverer : IIncrementalGenerator
 
 	private static void GenerateFile(ImmutableArray<EnumDefinition> enumDefinitions)
 	{
-		var enumDefinitionsByName = enumDefinitions.ToDictionary(definition => definition!.Name)!;
-		var jsonString = JsonSerializer.Serialize(enumDefinitionsByName);
-		File.WriteAllText("D:\\EnumDefinitionsByName.txt", jsonString);
+		EnumDefinitionsByName = enumDefinitions.ToDictionary(definition => definition!.Name)!;
+		IsRunning = false;
 	}
 }
