@@ -1,0 +1,2 @@
+-Multiple enums with the same in one project will cause problems. Fix this.
+-Fix inefficient member invocation registration.
