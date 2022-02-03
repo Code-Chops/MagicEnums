@@ -2,6 +2,7 @@
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis;
 using CodeChops.MagicEnums.SourceGeneration.Extensions;
+using Microsoft.CodeAnalysis.Text;
 
 namespace CodeChops.MagicEnums.SourceGeneration;
 
@@ -95,7 +96,7 @@ internal static class SyntaxReceiver
 	/// Gets the probably enum member based on the enum member invocation at the node.
 	/// </summary>
 	/// <returns>The probably new enum member. Or null if not applicable for this node.</returns>
-	internal static EnumMember? GetProbablyNewEnumMember(GeneratorSyntaxContext context, CancellationToken cancellationToken)
+	internal static EnumMember? GetProbablyNewEnumMember(GeneratorSyntaxContext context, Dictionary<string, EnumDefinition>? enumDefinitionsByName, CancellationToken cancellationToken)
 	{
 		// Explicit enum member invocation.
 		if (context.Node is InvocationExpressionSyntax invocation)
@@ -126,7 +127,7 @@ internal static class SyntaxReceiver
 			var filePath = invocation.SyntaxTree.FilePath;
 			var startLinePosition = invocation.SyntaxTree.GetLineSpan(memberAccess.Span, cancellationToken).StartLinePosition;
 
-			var member = new EnumMember(enumName, memberName.Trim('"'), memberValue, memberComment?.Trim('"'), isImplicitlyDiscovered: false, filePath, startLinePosition);
+			var member = GetMember(enumName, memberName.Trim('"'), memberValue, memberComment?.Trim('"'), isImplicitlyDiscovered: false, filePath, startLinePosition, enumDefinitionsByName);
 			return member;
 		}
 		// Implicit enum member invocation.
@@ -138,10 +139,23 @@ internal static class SyntaxReceiver
 			var filePath = memberAccess.SyntaxTree.FilePath;
 			var startLinePosition = memberAccess.SyntaxTree.GetLineSpan(memberAccess.Span, cancellationToken).StartLinePosition;
 
-			var member = new EnumMember(enumName, memberName.Trim('"'), value: null, comment: null, isImplicitlyDiscovered: true, filePath, startLinePosition);
+			var member = GetMember(enumName, memberName.Trim('"'), value: null, comment: null, isImplicitlyDiscovered: true, filePath, startLinePosition, enumDefinitionsByName);
 			return member;
 		}
 
 		return null;
+
+
+		static EnumMember? GetMember(string enumName, string name, string? value, string? comment, bool isImplicitlyDiscovered, string filePath, LinePosition startLinePosition, Dictionary<string, EnumDefinition>? enumDefinitionsByName)
+		{
+			if (enumDefinitionsByName is not null && enumDefinitionsByName.Count > 0)
+			{				
+				if (!enumDefinitionsByName.TryGetValue(enumName, out var definition)) return null;
+				if (!definition.ImplicitDiscoverabilityIsEnabled && isImplicitlyDiscovered) return null;
+			}
+
+			var member = new EnumMember(enumName, name.Trim('"'), value, comment?.Trim('"'), isImplicitlyDiscovered, filePath, startLinePosition);
+			return member;
+		}
 	}
 }

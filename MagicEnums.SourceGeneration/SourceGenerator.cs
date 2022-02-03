@@ -18,7 +18,7 @@ public class SourceGenerator : IIncrementalGenerator
 	internal const string AttributeName			= "DiscoverableEnumMembers";
 	internal const string GenerateMethodName	= "GenerateMember";
 
-	private Dictionary<string, EnumDefinition> EnumDefinitionsByName { get; set; } = new();
+	private Dictionary<string, EnumDefinition>? EnumDefinitionsByName { get; set; }
 
 	public void Initialize(IncrementalGeneratorInitializationContext context)
 	{
@@ -39,7 +39,7 @@ public class SourceGenerator : IIncrementalGenerator
 		var memberInvokations = context.SyntaxProvider
 			.CreateSyntaxProvider(
 				predicate: static (syntaxNode, ct)	=> SyntaxReceiver.CheckIfIsProbablyEnumMemberInvocation(syntaxNode),
-				transform: static (context, ct)		=> SyntaxReceiver.GetProbablyNewEnumMember(context, ct))
+				transform: (context, ct)			=> SyntaxReceiver.GetProbablyNewEnumMember(context, EnumDefinitionsByName, ct))
 			.Where(static member => member is not null)
 			.Collect();
 
@@ -51,7 +51,7 @@ public class SourceGenerator : IIncrementalGenerator
 
 		void AddEnumDefinitions(ImmutableArray<EnumDefinition> enumDefinitions)
 		{
-			EnumDefinitionsByName = enumDefinitions.ToDictionary(definition => definition!.Name)!;
+			EnumDefinitionsByName = enumDefinitions.ToDictionary(definition => definition!.Name);
 		}
 	}
 }
