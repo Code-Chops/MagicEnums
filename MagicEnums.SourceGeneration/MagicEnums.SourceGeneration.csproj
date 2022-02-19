@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<Version>0.2.2</Version>
+		<Version>0.2.3</Version>
 		<PackageReleaseNotes>Added license and created package</PackageReleaseNotes>
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<LangVersion>10</LangVersion>
@@ -29,8 +29,14 @@ Source generation for magic enums: Flexible and extendable enums for .NET that s
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<IncludeBuildOutput>false</IncludeBuildOutput>
 	</PropertyGroup>
 
+	<ItemGroup>
+		<!-- Package the generator in the analyzer directory of the nuget package -->
+		<None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+	</ItemGroup>
+	
 	<ItemGroup>
 		<None Include="Properties\LICENSE" Pack="true" PackagePath=""/>
 		<None Include="Properties\icon.png" Pack="true" Visible="true" PackagePath="" />
