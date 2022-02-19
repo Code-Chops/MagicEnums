@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
+using CodeChops.GenericMath;
 using CodeChops.MagicEnums.Core;
-using CodeChops.MagicEnums.NativeIntegrals;
 
 namespace CodeChops.MagicEnums;
 
@@ -26,16 +26,22 @@ public abstract record MagicEnum<TEnum, TValue> : MagicEnumCore<TEnum, TValue>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public virtual int CompareTo(MagicEnum<TEnum, TValue> other) => Value.CompareTo(other.Value);
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static bool operator <(MagicEnum<TEnum, TValue> left, MagicEnum<TEnum, TValue> right) => left.CompareTo(right) < 0;
+	public static bool operator <(MagicEnum<TEnum, TValue> left, MagicEnum<TEnum, TValue> right)	=> left.CompareTo(right) < 0;
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static bool operator <=(MagicEnum<TEnum, TValue> left, MagicEnum<TEnum, TValue> right) => left.CompareTo(right) <= 0;
+	public static bool operator <=(MagicEnum<TEnum, TValue> left, MagicEnum<TEnum, TValue> right)	=> left.CompareTo(right) <= 0;
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static bool operator >(MagicEnum<TEnum, TValue> left, MagicEnum<TEnum, TValue> right) => left.CompareTo(right) > 0;
+	public static bool operator >(MagicEnum<TEnum, TValue> left, MagicEnum<TEnum, TValue> right)	=> left.CompareTo(right) > 0;
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static bool operator >=(MagicEnum<TEnum, TValue> left, MagicEnum<TEnum, TValue> right) => left.CompareTo(right) >= 0;
+	public static bool operator >=(MagicEnum<TEnum, TValue> left, MagicEnum<TEnum, TValue> right)	=> left.CompareTo(right) >= 0;
 	#endregion
 
+	/// <summary>
+	/// Used for auto-incrementing when nu member value has been provided.
+	/// </summary>
 	private static Number<TValue>? LastInsertedNumber { get; set; }
+	/// <summary>
+	/// Locks the last inserted number which is being used for auto-incrementing the enum value.
+	/// </summary>
 	private static readonly object LockLastInsertedNumber = new();
 
 	/// <summary>
