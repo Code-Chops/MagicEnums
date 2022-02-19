@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>0.9.4</VersionPrefix>
-		<PackageReleaseNotes>Added Generic Math package, added licens, and removed NativeIntegrals folder</PackageReleaseNotes>
+		<VersionPrefix>0.9.5</VersionPrefix>
+		<PackageReleaseNotes>Added source generation as package</PackageReleaseNotes>
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<LangVersion>10</LangVersion>
 	</PropertyGroup>
@@ -46,10 +46,7 @@ Flexible and extendable enums for .NET that support other member values than int
 
 	<ItemGroup>
 		<PackageReference Include="CodeChops.GenericMath" Version="1.2.7" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\MagicEnums.SourceGeneration\MagicEnums.SourceGeneration.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+		<PackageReference Include="CodeChops.MagicEnums.SourceGeneration" Version="0.2.2" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 	</ItemGroup>
 
 	<PropertyGroup>
