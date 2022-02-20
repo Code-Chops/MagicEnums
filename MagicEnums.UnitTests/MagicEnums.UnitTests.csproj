@@ -24,7 +24,7 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="CodeChops.MagicEnums.SourceGeneration" Version="0.2.4" />
+		<PackageReference Include="CodeChops.MagicEnums.SourceGeneration" Version="0.2.6" />
 	</ItemGroup>
 
 	<ItemGroup>

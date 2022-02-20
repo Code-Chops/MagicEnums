@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>0.9.5</VersionPrefix>
+		<VersionPrefix>0.9.6</VersionPrefix>
 		<PackageReleaseNotes>Added source generation as package</PackageReleaseNotes>
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<LangVersion>10</LangVersion>
@@ -46,7 +46,7 @@ Flexible and extendable enums for .NET that support other member values than int
 
 	<ItemGroup>
 		<PackageReference Include="CodeChops.GenericMath" Version="1.2.7" />
-		<PackageReference Include="CodeChops.MagicEnums.SourceGeneration" Version="0.2.4" />
+		<PackageReference Include="CodeChops.MagicEnums.SourceGeneration" Version="0.2.6" />
 	</ItemGroup>
 
 	<PropertyGroup>
