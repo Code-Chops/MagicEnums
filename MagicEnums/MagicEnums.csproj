@@ -46,7 +46,7 @@ Flexible and extendable enums for .NET that support other member values than int
 
 	<ItemGroup>
 		<PackageReference Include="CodeChops.GenericMath" Version="1.2.7" />
-		<PackageReference Include="CodeChops.MagicEnums.SourceGeneration" Version="0.2.2" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+		<PackageReference Include="CodeChops.MagicEnums.SourceGeneration" Version="0.2.4" />
 	</ItemGroup>
 
 	<PropertyGroup>
