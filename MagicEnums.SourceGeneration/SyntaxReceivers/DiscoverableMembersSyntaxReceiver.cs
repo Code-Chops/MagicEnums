@@ -3,7 +3,6 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis;
 using CodeChops.MagicEnums.SourceGeneration.Extensions;
 using Microsoft.CodeAnalysis.Text;
-using System.Diagnostics;
 
 namespace CodeChops.MagicEnums.SourceGeneration.SyntaxReceivers;
 
