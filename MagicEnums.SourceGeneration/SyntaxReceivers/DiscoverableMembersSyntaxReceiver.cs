@@ -3,10 +3,11 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis;
 using CodeChops.MagicEnums.SourceGeneration.Extensions;
 using Microsoft.CodeAnalysis.Text;
+using System.Diagnostics;
 
-namespace CodeChops.MagicEnums.SourceGeneration;
+namespace CodeChops.MagicEnums.SourceGeneration.SyntaxReceivers;
 
-internal static class SyntaxReceiver
+internal static class DiscoverableMembersSyntaxReceiver
 {
 	/// <summary>
 	/// The predicate for every node that is probably an enum definition.
@@ -15,31 +16,9 @@ internal static class SyntaxReceiver
 	{
 		if (syntaxNode is not AttributeSyntax attribute || attribute.ArgumentList is null || attribute.ArgumentList?.Arguments.Count > 1) return false;
 		if (attribute.Parent?.Parent is not RecordDeclarationSyntax) return false;
-		if (ExtractAttributeName(attribute.Name, cancellationToken) is not SourceGenerator.AttributeName and not $"{SourceGenerator.AttributeName}Attribute") return false;
 
-		return true;
-
-
-		static string? ExtractAttributeName(NameSyntax? name, CancellationToken cancellationToken)
-		{
-			while (name != null && !cancellationToken.IsCancellationRequested)
-			{
-				switch (name)
-				{
-					case IdentifierNameSyntax identifierName:
-						return identifierName.Identifier.Text;
-
-					case QualifiedNameSyntax qualifiedName:
-						name = qualifiedName.Right;
-						break;
-
-					default:
-						return null;
-				}
-			}
-
-			return null;
-		}
+		var hasAttributeName = attribute.Name.HasAttributeName(SourceGenerator.DiscoverableAttributeName, cancellationToken);
+		return hasAttributeName;
 	}
 
 	/// <summary>
@@ -53,7 +32,7 @@ internal static class SyntaxReceiver
 		if (context.SemanticModel.GetDeclaredSymbol(typeDeclaration, cancellationToken) is not INamedTypeSymbol type) return null;
 
 		if (type is null || type.IsStatic || !type.IsRecord || !typeDeclaration.Modifiers.Any(m => m.ValueText == "partial")) return null;
-		if (!type.HasAttribute(SourceGenerator.AttributeName, SourceGenerator.AttributeNamespace, out var attribute)) return null;
+		if (!type.HasAttribute(SourceGenerator.DiscoverableAttributeName, SourceGenerator.AttributeNamespace, out var attribute)) return null;
 		if (!type.IsOrImplementsInterface(type => type.IsType(SourceGenerator.InterfaceName, SourceGenerator.InterfaceNamespace, isGenericType: true), out var interf)) return null;
 		if (!interf.IsGeneric(typeParameterCount: 1, out var genericTypeArgument)) return null;
 
@@ -96,7 +75,7 @@ internal static class SyntaxReceiver
 	/// Gets the probably enum member based on the enum member invocation at the node.
 	/// </summary>
 	/// <returns>The probably new enum member. Or null if not applicable for this node.</returns>
-	internal static EnumMember? GetProbablyNewEnumMember(GeneratorSyntaxContext context, Dictionary<string, EnumDefinition>? enumDefinitionsByName, CancellationToken cancellationToken)
+	internal static DiscoveredEnumMember? GetProbablyNewEnumMember(GeneratorSyntaxContext context, Dictionary<string, EnumDefinition>? enumDefinitionsByName, CancellationToken cancellationToken)
 	{
 		// Explicit enum member invocation.
 		if (context.Node is InvocationExpressionSyntax invocation)
@@ -146,15 +125,15 @@ internal static class SyntaxReceiver
 		return null;
 
 
-		static EnumMember? GetMember(string enumName, string name, string? value, string? comment, bool isImplicitlyDiscovered, string filePath, LinePosition startLinePosition, Dictionary<string, EnumDefinition>? enumDefinitionsByName)
+		static DiscoveredEnumMember? GetMember(string enumName, string name, string? value, string? comment, bool isImplicitlyDiscovered, string filePath, LinePosition startLinePosition, Dictionary<string, EnumDefinition>? enumDefinitionsByName)
 		{
 			if (enumDefinitionsByName is not null && enumDefinitionsByName.Count > 0)
-			{				
+			{
 				if (!enumDefinitionsByName.TryGetValue(enumName, out var definition)) return null;
 				if (!definition.ImplicitDiscoverabilityIsEnabled && isImplicitlyDiscovered) return null;
 			}
 
-			var member = new EnumMember(enumName, name.Trim('"'), value, comment?.Trim('"'), isImplicitlyDiscovered, filePath, startLinePosition);
+			var member = new DiscoveredEnumMember(enumName, name.Trim('"'), value, comment?.Trim('"'), isImplicitlyDiscovered, filePath, startLinePosition);
 			return member;
 		}
 	}

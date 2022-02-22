@@ -2,7 +2,7 @@
 
 namespace CodeChops.MagicEnums.SourceGeneration.Entities;
 
-internal record EnumMember
+internal record DiscoveredEnumMember
 {
 	public string EnumName { get; }
 	public string Name { get; }
@@ -12,7 +12,7 @@ internal record EnumMember
 	public string FilePath { get; } 
 	public LinePosition LinePosition { get; }
 
-	public EnumMember(string enumName, string name, string? value, string? comment, bool isImplicitlyDiscovered, string filePath, LinePosition linePosition)
+	public DiscoveredEnumMember(string enumName, string name, string? value, string? comment, bool isImplicitlyDiscovered, string filePath, LinePosition linePosition)
 	{
 		this.EnumName = enumName;
 		this.Name = String.IsNullOrWhiteSpace(name) ? "_IncorrectName_" : name;

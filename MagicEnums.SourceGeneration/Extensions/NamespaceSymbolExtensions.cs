@@ -2,8 +2,6 @@
 
 namespace CodeChops.MagicEnums.SourceGeneration.Extensions;
 
-#pragma warning disable IDE0057 // Use range operator
-
 /// <summary>
 /// Provides extensions on <see cref="INamespaceSymbol"/>.
 /// </summary>
@@ -55,5 +53,3 @@ internal static class NamespaceSymbolExtensions
 		return true;
 	}
 }
-
-#pragma warning restore IDE0057 // Use range operator

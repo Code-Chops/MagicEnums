@@ -23,16 +23,53 @@
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<Copyright>Copyright (c) CodeChops 2022</Copyright>
 		<Description>
-Flexible and extendable enums for .NET that support other member values than integral types
+Flexible and extendable enums for C#:
+* It is possible to use other member values than integral types. For example: 
+	- Strings that automatically represent their member name:
+		* This prohibits incorrect usage of integral values when they are not needed;
+		* It removes the need to keep track of (incremental) integral values;
+	- Custom defined types, for example see StrictDirection: https://github.com/Code-Chops/Geometry/;
+
+* Optional clean definition by using attributes (source generated):
+	- Use the MagicEnum-attribute (and set IsInternal to true if needed);
+	- Use the Member-attribute to create a member and optionally provide their value;
+
+* Inheritance and/or partial records can be used to extend your enums: 
+	- Enums can now be extended in multiple projects;
+	- Custom methods can be added to enums, if necessary;
+
+* Enum-members can be auto-discovered. This removes the need to keep track of used/unused enum-members:
+	- Explicitly:
+		* Is enabled by adding the DiscoverableEnumMembers-attribute;
+		* Use {Enum}.{Member}.GenerateMember(...) to create a source generated enum-member on the fly;
+		* A member value (and comment) can be provided;
+	- Implicitly:
+		* Is enabled by adding the DiscoverableEnumMembers-attribute with implicitDiscoverability = true;
+		* Use {Enum}.{Member} to create a source generated enum-member on the fly;
+			
+* Enum members can be added at runtime, if necessary;
+
+* The accessibility of the enum can be set to internal;
+
+* Has the same functionality as the default .NET enum:
+	- Members can be found by using their name or value;
+	- Multiple members with the same value can even be looked up: This is not supported in default C# enums;
+
+* Optimized, and therefore fast member registration / lookup;
 		</Description>
 		<AnalysisLevel>latest</AnalysisLevel>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	</PropertyGroup>
-	
+
 	<ItemGroup>
-		<None Include="Properties\LICENSE" Pack="true" PackagePath=""/>
+		<None Include="$(OutputPath)\$(AssemblyName).SourceGeneration.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+		<ProjectReference Include="..\MagicEnums.SourceGeneration\MagicEnums.SourceGeneration.csproj" OutputItemType="Analyzer" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="Properties\LICENSE" Pack="true" PackagePath="" />
 		<None Include="Properties\icon.png" Pack="true" Visible="true" PackagePath="" />
 	</ItemGroup>
 	
@@ -46,7 +83,6 @@ Flexible and extendable enums for .NET that support other member values than int
 
 	<ItemGroup>
 		<PackageReference Include="CodeChops.GenericMath" Version="1.2.7" />
-		<PackageReference Include="CodeChops.MagicEnums.SourceGeneration" Version="0.2.6" />
 	</ItemGroup>
 
 	<PropertyGroup>

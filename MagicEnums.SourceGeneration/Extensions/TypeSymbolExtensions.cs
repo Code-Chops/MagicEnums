@@ -3,8 +3,6 @@ using System.Collections.Immutable;
 
 namespace CodeChops.MagicEnums.SourceGeneration.Extensions;
 
-#pragma warning disable IDE0057 // Use range operator
-
 /// <summary>
 /// Provides extensions on <see cref="ITypeSymbol"/>.
 /// </summary>
@@ -403,5 +401,3 @@ internal static class TypeSymbolExtensions
 		else return $"(this.{memberName} is null || other.{memberName} is null ? -(this.{memberName} is null).CompareTo(other.{memberName} is null) : this.{memberName}.CompareTo(other.{memberName}))";
 	}
 }
-
-#pragma warning restore IDE0057 // Use range operator

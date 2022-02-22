@@ -4,14 +4,14 @@ using CodeChops.MagicEnums.SourceGeneration.Entities;
 using Microsoft.CodeAnalysis.Text;
 using System.Collections.Immutable;
 
-namespace CodeChops.MagicEnums.SourceGeneration;
+namespace CodeChops.MagicEnums.SourceGeneration.SourceBuilders;
 
-internal class SourceBuilder
+internal static class EnumSourceBuilder
 {
 	/// <summary>
 	/// Creates a partial record of the enum definition which includes the discovered enum members. It also generates an extension class for the explicit enum definitions.
 	/// </summary>
-	public static void CreateSource(SourceProductionContext context, ImmutableArray<EnumMember> enumMembers, Dictionary<string, EnumDefinition> enumDefinitionsByName)
+	public static void CreateSource(SourceProductionContext context, ImmutableArray<DiscoveredEnumMember> enumMembers, Dictionary<string, EnumDefinition> enumDefinitionsByName)
 	{
 		if (enumMembers.IsDefaultOrEmpty) return;
 		if (enumDefinitionsByName.Count == 0) return;
@@ -32,7 +32,7 @@ internal class SourceBuilder
 		}
 	}
 
-	private static string CreateEnumSource(EnumDefinition definition, IEnumerable<EnumMember> members)
+	private static string CreateEnumSource(EnumDefinition definition, IEnumerable<DiscoveredEnumMember> members)
 	{
 		var code = new StringBuilder();
 

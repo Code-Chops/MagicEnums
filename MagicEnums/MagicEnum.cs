@@ -26,17 +26,17 @@ public abstract record MagicEnum<TEnum, TValue> : MagicEnumCore<TEnum, TValue>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public virtual int CompareTo(MagicEnum<TEnum, TValue> other) => Value.CompareTo(other.Value);
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static bool operator <(MagicEnum<TEnum, TValue> left, MagicEnum<TEnum, TValue> right)	=> left.CompareTo(right) < 0;
+	public static bool operator <(MagicEnum<TEnum, TValue> left, MagicEnum<TEnum, TValue> right)	=> left.CompareTo(right) <	0;
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static bool operator <=(MagicEnum<TEnum, TValue> left, MagicEnum<TEnum, TValue> right)	=> left.CompareTo(right) <= 0;
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static bool operator >(MagicEnum<TEnum, TValue> left, MagicEnum<TEnum, TValue> right)	=> left.CompareTo(right) > 0;
+	public static bool operator >(MagicEnum<TEnum, TValue> left, MagicEnum<TEnum, TValue> right)	=> left.CompareTo(right) >	0;
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static bool operator >=(MagicEnum<TEnum, TValue> left, MagicEnum<TEnum, TValue> right)	=> left.CompareTo(right) >= 0;
 	#endregion
 
 	/// <summary>
-	/// Used for auto-incrementing when nu member value has been provided.
+	/// Used for auto-incrementing when no member value has been provided.
 	/// </summary>
 	private static Number<TValue>? LastInsertedNumber { get; set; }
 	/// <summary>
