@@ -1,24 +1,30 @@
 ﻿using System.Runtime.CompilerServices;
 using CodeChops.GenericMath;
-using CodeChops.MagicEnums.Core;
+using CodeChops.MagicEnums.Attributes;
 
 namespace CodeChops.MagicEnums;
 
 /// <summary>
-/// An enum with an integer value.
+/// An enum with an integer value. 
+/// Use <see cref="MagicEnum{TEnum, TValue}.CreateMember(string?)"/> 
+/// or <see cref="MagicEnum{TEnum, TValue}.CreateMember(TValue, string?)"/> to create a member.
 /// </summary>
 /// <typeparam name="TEnum">The type of the number enum itself. Is also equal to the type of each member.</typeparam>
-public abstract record MagicEnum<TEnum> : MagicEnum<TEnum, int>
+[CloneAsInternal]
+public abstract partial record MagicEnum<TEnum> : MagicEnum<TEnum, int>
 	where TEnum : MagicEnum<TEnum>
 {
 }
 
 /// <summary>
 /// An enum with an integral value.
+/// Use <see cref="MagicEnum{TEnum, TValue}.CreateMember(string?)"/> 
+/// or <see cref="MagicEnum{TEnum, TValue}.CreateMember(TValue, string?)"/> to create a member.
 /// </summary>
 /// <typeparam name="TEnum">The type of the number enum itself. Is also equal to the type of each member.</typeparam>
 /// <typeparam name="TValue">The integral type.</typeparam>
-public abstract record MagicEnum<TEnum, TValue> : MagicEnumCore<TEnum, TValue>
+[CloneAsInternal]
+public abstract record MagicEnum<TEnum, TValue> : Core.MagicEnumCore<TEnum, TValue>
 	where TEnum : MagicEnum<TEnum, TValue>
 	where TValue : struct, IComparable<TValue>, IEquatable<TValue>, IConvertible
 {
@@ -61,7 +67,7 @@ public abstract record MagicEnum<TEnum, TValue> : MagicEnumCore<TEnum, TValue>
 		else
 			IncrementLastInsertedNumber();
 
-		var id = MagicEnumCore<TEnum, TValue>.CreateMember(LastInsertedNumber ?? GetLastInsertedValue(), enforcedName!);
+		var id = Core.MagicEnumCore<TEnum, TValue>.CreateMember(LastInsertedNumber ?? GetLastInsertedValue(), enforcedName!);
 		return id;
 
 
@@ -91,6 +97,6 @@ public abstract record MagicEnum<TEnum, TValue> : MagicEnumCore<TEnum, TValue>
 		else
 			LastInsertedNumber = value;
 
-		return MagicEnumCore<TEnum, TValue>.CreateMember(value, enforcedName);
+		return Core.MagicEnumCore<TEnum, TValue>.CreateMember(value, enforcedName);
 	}
 }

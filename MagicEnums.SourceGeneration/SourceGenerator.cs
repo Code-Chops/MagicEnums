@@ -14,7 +14,7 @@ namespace CodeChops.MagicEnums.SourceGeneration;
 [Generator]
 public class SourceGenerator : IIncrementalGenerator
 {
-	internal const string InterfaceName						= "IMagicEnum";
+	internal const string InterfaceName						= "IMagicEnumCore";
 	internal const string InterfaceNamespace				= "CodeChops.MagicEnums.Core";
 	internal const string AttributeNamespace				= "CodeChops.MagicEnums.Attributes";
 	internal const string DiscoverableAttributeName			= "DiscoverableEnumMembers";
@@ -27,6 +27,18 @@ public class SourceGenerator : IIncrementalGenerator
 	{
 		this.FindAndRegisterEnumDefinitions(context);
 		this.RegisterEnumSourceCode(context);
+
+		// Get records that have to be copied so their accessibility can be changed to 'internal'.
+		var recordsToCopy = context.SyntaxProvider
+			.CreateSyntaxProvider(
+				predicate: static (syntaxNode, ct)	=> CloneAsInternalSyntaxReceiver.HasCloneAsInternalAttribute(syntaxNode, ct),
+				transform: static (context, ct)		=> CloneAsInternalSyntaxReceiver.GetCloneAsInternalDefinition(context, ct))
+			.Where(static definition => definition is not null)
+			.Collect();
+
+		context.RegisterSourceOutput(
+			source: recordsToCopy,
+			action: (context, members) => CloneAsInternalSourceBuilder.CreateSource(context, members!));
 	}
 
 	/// <summary>

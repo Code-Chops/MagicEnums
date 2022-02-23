@@ -1,13 +1,15 @@
-﻿using CodeChops.MagicEnums.Core;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
+using CodeChops.MagicEnums.Attributes;
 
 namespace CodeChops.MagicEnums;
 
 /// <summary>
 /// An enum with a string as underlying value.
+/// Use <see cref="MagicStringEnum{TEnum}.CreateMember(string?)"/> to create a member.
 /// </summary>
 /// <typeparam name="TEnum">The type of the number enum itself. Is also equal to the type of each member.</typeparam>
-public abstract record MagicStringEnum<TEnum> : MagicEnumCore<TEnum, string>
+[CloneAsInternal]
+public abstract partial record MagicStringEnum<TEnum> : Core.MagicEnumCore<TEnum, string>
 	where TEnum : MagicStringEnum<TEnum>
 {
 	/// <summary>

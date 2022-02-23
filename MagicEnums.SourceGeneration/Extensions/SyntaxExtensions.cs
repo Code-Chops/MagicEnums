@@ -4,11 +4,13 @@ namespace CodeChops.MagicEnums.SourceGeneration.Extensions;
 
 internal static class SyntaxExtensions
 {
+	/// <summary>
+	/// Checks if a name syntax has a specific attribute.
+	/// </summary>
 	public static bool HasAttributeName(this NameSyntax? name, string expectedName, CancellationToken cancellationToken)
 	{
 		var attributeName = name.ExtractAttributeName(cancellationToken);
 
-		if (attributeName != "DiscoverableEnumMembers" && expectedName == SourceGenerator.CreateInternalCopyAttributeName) throw new ArgumentException(attributeName);
 		if (attributeName is null) return false;
 		if (attributeName == expectedName) return true;
 		
