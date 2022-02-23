@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>0.9.7</VersionPrefix>
+		<VersionPrefix>0.9.8</VersionPrefix>
 		<PackageReleaseNotes>Added source generation as package</PackageReleaseNotes>
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<LangVersion>10</LangVersion>
