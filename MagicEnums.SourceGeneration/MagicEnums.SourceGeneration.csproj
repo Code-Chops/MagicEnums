@@ -2,7 +2,6 @@
 
 	<PropertyGroup>
 		<Version>0.2.6</Version>
-		<PackageReleaseNotes>Added license and created package</PackageReleaseNotes>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<LangVersion>10</LangVersion>
 	</PropertyGroup>

@@ -1,10 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>0.9.8</VersionPrefix>
+		<VersionPrefix>0.9.9</VersionPrefix>
 		<PackageReleaseNotes>Added source generation as package</PackageReleaseNotes>
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<LangVersion>10</LangVersion>
+		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
 	</PropertyGroup>
 	
 	<PropertyGroup>
@@ -41,7 +42,7 @@ Flexible and extendable enums for C#:
 * Enum-members can be auto-discovered. This removes the need to keep track of used/unused enum-members:
 	- Explicitly:
 		* Is enabled by adding the DiscoverableEnumMembers-attribute;
-		* Use {Enum}.{Member}.GenerateMember(...) to create a source generated enum-member on the fly;
+		* Use {Enum}.{Member}.CreateMember(...) to create a source generated enum-member on the fly;
 		* A member value (and comment) can be provided;
 	- Implicitly:
 		* Is enabled by adding the DiscoverableEnumMembers-attribute with implicitDiscoverability = true;

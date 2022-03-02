@@ -12,17 +12,26 @@ internal static class CloneAsInternalSourceBuilder
 	/// <summary>
 	/// Creates a copy of the record and only changes its access modifier from 'public' to 'internal'.
 	/// It also changed changes the namespace to the provided target namespace. 
-	/// If the target namespace is not provided, it will fall back to the {CurrentNamespace}.Internal.
+	/// If the target namespace is not provided, it will fall back to {CurrentNamespace}.Internal.
 	/// </summary>
 	public static void CreateSource(SourceProductionContext context, ImmutableArray<CloneAsInternalClass> definitions)
 	{
 		if (definitions.IsDefaultOrEmpty) return;
 
+		var definitionsByNames = definitions
+			.GroupBy(definition => definition!.Declaration.Identifier.ValueText)
+			.ToDictionary(definitionByName => definitionByName.Key, definitionByName => definitionByName.ToList());
+
 		foreach (var definition in definitions)
 		{
 			var code = CreateCodeFromDefinition(definition);
 
-			context.AddSource($"{definition!.Declaration.Identifier.ValueText}Internal.g.cs", SourceText.From(code, Encoding.UTF8));
+			var definitionsWithSameName = definitionsByNames[definition!.Declaration.Identifier.ValueText];
+			var numberString = definitionsWithSameName.Count > 1 
+				? definitionsWithSameName.IndexOf(definition).ToString() 
+				: "";
+
+			context.AddSource($"{definition!.Declaration.Identifier.ValueText}Internal{numberString}.g.cs", SourceText.From(code, Encoding.UTF8));
 		}
 
 

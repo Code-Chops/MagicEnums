@@ -24,7 +24,7 @@ public abstract partial record MagicEnum<TEnum> : MagicEnum<TEnum, int>
 /// <typeparam name="TEnum">The type of the number enum itself. Is also equal to the type of each member.</typeparam>
 /// <typeparam name="TValue">The integral type.</typeparam>
 [CloneAsInternal]
-public abstract record MagicEnum<TEnum, TValue> : Core.MagicEnumCore<TEnum, TValue>
+public abstract partial record MagicEnum<TEnum, TValue> : Core.MagicEnumCore<TEnum, TValue>
 	where TEnum : MagicEnum<TEnum, TValue>
 	where TValue : struct, IComparable<TValue>, IEquatable<TValue>, IConvertible
 {

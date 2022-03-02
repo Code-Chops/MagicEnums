@@ -11,7 +11,7 @@ namespace CodeChops.MagicEnums.Core;
 /// </summary>
 /// <typeparam name="TEnum">The type of the enum itself. Is also the type of each member.</typeparam>
 /// <typeparam name="TValue">The type of the value of the enum.</typeparam>
-[CloneAsInternal]
+[CloneAsInternal("CodeChops.MagicEnums.Core.Internal")]
 public abstract partial record MagicEnumCore<TEnum, TValue> : IMagicEnumCore<TValue>
 	where TEnum : MagicEnumCore<TEnum, TValue>
 {

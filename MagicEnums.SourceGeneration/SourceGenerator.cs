@@ -17,9 +17,10 @@ public class SourceGenerator : IIncrementalGenerator
 	internal const string InterfaceName						= "IMagicEnumCore";
 	internal const string InterfaceNamespace				= "CodeChops.MagicEnums.Core";
 	internal const string AttributeNamespace				= "CodeChops.MagicEnums.Attributes";
+	internal const string MemberAttributeName				= "EnumMember";
 	internal const string DiscoverableAttributeName			= "DiscoverableEnumMembers";
 	internal const string CreateInternalCopyAttributeName	= "CloneAsInternal";
-	internal const string GenerateMethodName				= "GenerateMember";
+	internal const string GenerateMethodName				= "CreateMember";
 
 	private Dictionary<string, EnumDefinition>? EnumDefinitionsByName { get; set; }
 
@@ -49,8 +50,8 @@ public class SourceGenerator : IIncrementalGenerator
 		// Get the enum definitions.
 		var enumDefinitions = context.SyntaxProvider
 			.CreateSyntaxProvider(
-				predicate: static (syntaxNode, ct)	=> DiscoverableMembersSyntaxReceiver.CheckIfIsProbablyEnumDefinition(syntaxNode, ct),
-				transform: static (context, ct)		=> DiscoverableMembersSyntaxReceiver.GetEnumDefinition(context, ct))
+				predicate: static (syntaxNode, ct)	=> EnumDefinitionSyntaxReceiver.CheckIfIsProbablyEnumDefinition(syntaxNode, ct),
+				transform: static (context, ct)		=> EnumDefinitionSyntaxReceiver.GetEnumDefinition(context, ct))
 			.Where(static definition => definition is not null)
 			.Collect();
 
@@ -61,19 +62,21 @@ public class SourceGenerator : IIncrementalGenerator
 		
 		void AddEnumDefinitions(ImmutableArray<EnumDefinition> enumDefinitions)
 		{
-			this.EnumDefinitionsByName = enumDefinitions.ToDictionary(definition => definition!.Name);
+			this.EnumDefinitionsByName = enumDefinitions
+				.GroupBy(definition => definition.Name)
+				.ToDictionary(grouping => grouping.Key, grouping => grouping.First());
 		}
 	}
 
 	/// <summary>
-	/// Retrieves the probable enum member invocations.
+	/// Retrieves the probable discovered enum members.
 	/// </summary>
-	private IncrementalValueProvider<ImmutableArray<DiscoveredEnumMember?>> GetProbableEnumMemberInvocations(IncrementalGeneratorInitializationContext context)
+	private IncrementalValueProvider<ImmutableArray<DiscoveredEnumMember?>> GetProbableDiscoveredEnumMembers(IncrementalGeneratorInitializationContext context)
 	{
 		var memberInvokations = context.SyntaxProvider
 			.CreateSyntaxProvider(
 				predicate: static (syntaxNode, ct)	=> DiscoverableMembersSyntaxReceiver.CheckIfIsProbablyEnumMemberInvocation(syntaxNode),
-				transform: (context, ct)			=> DiscoverableMembersSyntaxReceiver.GetProbablyNewEnumMember(context, EnumDefinitionsByName, ct))
+				transform: (context, ct)			=> DiscoverableMembersSyntaxReceiver.GetProbablyDiscoveredEnumMember(context, EnumDefinitionsByName, ct))
 			.Where(static member => member is not null)
 			.Collect();
 
@@ -86,7 +89,7 @@ public class SourceGenerator : IIncrementalGenerator
 	private void RegisterEnumSourceCode(IncrementalGeneratorInitializationContext context)
 	{
 		context.RegisterSourceOutput(
-			source: this.GetProbableEnumMemberInvocations(context),
+			source: this.GetProbableDiscoveredEnumMembers(context),
 			action: (context, members) => EnumSourceBuilder.CreateSource(context, members!, EnumDefinitionsByName!));
 	}
 }

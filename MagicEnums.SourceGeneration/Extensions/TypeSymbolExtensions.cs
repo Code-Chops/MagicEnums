@@ -338,6 +338,39 @@ internal static class TypeSymbolExtensions
 	}
 
 	/// <summary>
+	/// Returns whether the <see cref="ITypeSymbol"/> is annotated with the specified attribute.
+	/// </summary>
+	public static bool HasAttributes<TAttribute>(this ITypeSymbol typeSymbol, out IEnumerable<AttributeData> attributes)
+	{
+		var result = typeSymbol.HasAttributes(attribute => attribute.IsType<TAttribute>(), out attributes);
+		return result;
+	}
+
+	/// <summary>
+	/// Returns whether the <see cref="ITypeSymbol"/> is annotated with the specified attribute.
+	/// </summary>
+	public static bool HasAttributes(this ITypeSymbol typeSymbol, string typeName, string containingNamespace, out IEnumerable<AttributeData> attributes)
+	{
+		var alternativeTypeName = typeName.EndsWith("Attribute")
+			? typeName.Substring(0, typeName.Length - "Attribute".Length)
+			: $"{typeName}Attribute";
+
+		var result = typeSymbol.HasAttributes(attribute => attribute.IsType(typeName, containingNamespace), out attributes)
+			|| typeSymbol.HasAttributes(attribute => attribute.IsType(alternativeTypeName, containingNamespace), out attributes);
+
+		return result;
+	}
+
+	/// <summary>
+	/// Returns whether the <see cref="ITypeSymbol"/> is annotated with the specified attribute.
+	/// </summary>
+	public static bool HasAttributes(this ITypeSymbol typeSymbol, Func<INamedTypeSymbol, bool> predicate, out IEnumerable<AttributeData> attributes)
+	{
+		attributes = typeSymbol.GetAttributes().Where(attribute => attribute.AttributeClass is not null && predicate(attribute.AttributeClass));
+		return attributes.Any();
+	}
+
+	/// <summary>
 	/// Returns whether the <see cref="ITypeSymbol"/> defines a conversion to the specified type.
 	/// </summary>
 	public static bool HasConversionTo(this ITypeSymbol typeSymbol, string typeName, string containingNamespace)
@@ -400,4 +433,12 @@ internal static class TypeSymbolExtensions
 		else if (typeSymbol.IsType<string>()) return String.Format(stringVariant, memberName);
 		else return $"(this.{memberName} is null || other.{memberName} is null ? -(this.{memberName} is null).CompareTo(other.{memberName} is null) : this.{memberName}.CompareTo(other.{memberName}))";
 	}
+
+	/// <summary>
+	/// Converts names like 'string' to 'System.String'
+	/// </summary>
+	public static string GetTypeFullName(this ITypeSymbol typeSymbol) =>
+		typeSymbol.SpecialType == SpecialType.None
+			? typeSymbol.ToDisplayString()
+			: typeSymbol.SpecialType.ToString().Replace("_", ".");
 }

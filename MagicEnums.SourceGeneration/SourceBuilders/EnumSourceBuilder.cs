@@ -11,40 +11,46 @@ internal static class EnumSourceBuilder
 	/// <summary>
 	/// Creates a partial record of the enum definition which includes the discovered enum members. It also generates an extension class for the explicit enum definitions.
 	/// </summary>
-	public static void CreateSource(SourceProductionContext context, ImmutableArray<DiscoveredEnumMember> enumMembers, Dictionary<string, EnumDefinition> enumDefinitionsByName)
+	public static void CreateSource(SourceProductionContext context, ImmutableArray<DiscoveredEnumMember> allDiscoveredMembers, Dictionary<string, EnumDefinition> enumDefinitionsByName)
 	{
-		if (enumMembers.IsDefaultOrEmpty) return;
 		if (enumDefinitionsByName.Count == 0) return;
-		
-		// Get the members and their definition.
-		// Exclude the members that have no definition, or the members that are implicitly defined while their definition doesn't allow it.
-		var definitionsAndMembers = enumMembers
+
+		// Get the discovered members and their definition.
+		// Exclude the members that have no definition, or the members that are discovered while their definition doesn't allow it.
+		var relevantDiscoveredMembersByDefinition = allDiscoveredMembers
 			.GroupBy(member => enumDefinitionsByName.TryGetValue(member.EnumName, out var definition) ? definition : null)
 			.Where(grouping => grouping.Key is not null)
-			.Select(grouping => (Definition: grouping.Key, Members: grouping.Where(member => grouping.Key!.ImplicitDiscoverabilityIsEnabled || !member.IsImplicitlyDiscovered)));
-			
-		foreach (var (definition, members) in definitionsAndMembers)
-		{
-			if (!members.Any()) continue;
+			.ToDictionary(grouping => grouping.Key, grouping => grouping.Where(member => grouping.Key!.DiscoverabilityMode == member.DiscoverabilityMode));
 
-			var enumCode = CreateEnumSource(definition!, members);
+		foreach (var definition in enumDefinitionsByName.Values)
+		{
+			var relevantDiscoveredMembers = relevantDiscoveredMembersByDefinition.TryGetValue(definition, out var members) 
+				? members.ToList() 
+				: new List<DiscoveredEnumMember>();
+			
+			var enumCode = CreateEnumSource(definition!, relevantDiscoveredMembers);
+			if (enumCode is null) continue;
+
 			context.AddSource($"{definition!.Name}.g.cs", SourceText.From(enumCode, Encoding.UTF8));
 		}
 	}
 
-	private static string CreateEnumSource(EnumDefinition definition, IEnumerable<DiscoveredEnumMember> members)
+	private static string? CreateEnumSource(EnumDefinition definition, List<DiscoveredEnumMember> relevantDiscoveredMembers)
 	{
 		var code = new StringBuilder();
-
+		
 		// Place the members that are discovered in the enum definition file itself first. The order can be relevant because the value of enum members can be implicitily incremental.
 		// Do a distinct on the file path and line position so the members will be deduplicated while typing their invocation.
-		// Also do a distinct on the member name.
-		members = members
+		// Also do a distinct on the member name.		
+		relevantDiscoveredMembers = relevantDiscoveredMembers
 			.OrderByDescending(member => member.FilePath == definition.FilePath)
 			.GroupBy(member => (member.FilePath, member.LinePosition))
 			.Select(group => group.First())
 			.GroupBy(member => member.Name)
-			.Select(membersByName => membersByName.First());
+			.Select(membersByName => membersByName.First())
+			.ToList();
+		
+		var members = definition.AttributeMembers.Concat(relevantDiscoveredMembers);
 
 		// Is used for correct enum member outlining.
 		var longestMemberNameLength = members
@@ -117,7 +123,7 @@ using CodeChops.MagicEnums;
 
 			// Define the enum record.
 			code.Append($@"
-{definition.AccessModifier}partial record {definition.Name}
+{definition.AccessModifier}partial record {(definition.IsStruct ? "struct " : "class")} {definition.Name}
 {{	
 ");
 

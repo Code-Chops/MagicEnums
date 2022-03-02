@@ -2,23 +2,23 @@
 
 namespace CodeChops.MagicEnums.SourceGeneration.Entities;
 
-internal record DiscoveredEnumMember
+internal record DiscoveredEnumMember : EnumMember
 {
 	public string EnumName { get; }
-	public string Name { get; }
-	public string? Value { get; }
-	public string? Comment { get; }
-	public bool IsImplicitlyDiscovered { get; }
+	public DiscoverabilityMode DiscoverabilityMode { get; }
 	public string FilePath { get; } 
 	public LinePosition LinePosition { get; }
 
-	public DiscoveredEnumMember(string enumName, string name, string? value, string? comment, bool isImplicitlyDiscovered, string filePath, LinePosition linePosition)
+	public DiscoveredEnumMember(string enumName, string name, string? value, string? comment, DiscoverabilityMode discoverabilityMode, string filePath, LinePosition linePosition)
+		: base(name, value, comment)
 	{
+		if (discoverabilityMode == DiscoverabilityMode.None)
+		{
+			throw new ArgumentException($"Member {name} of enum {enumName} should be implicity or explicitly discovered. File path: {filePath}. Line position: {linePosition}.");
+		}
+
 		this.EnumName = enumName;
-		this.Name = String.IsNullOrWhiteSpace(name) ? "_IncorrectName_" : name;
-		this.Value = String.IsNullOrWhiteSpace(value) ? null : value;
-		this.Comment = String.IsNullOrWhiteSpace(comment) ? null : comment;
-		this.IsImplicitlyDiscovered = isImplicitlyDiscovered;
+		this.DiscoverabilityMode = discoverabilityMode;
 		this.FilePath = filePath;
 		this.LinePosition = linePosition;
 	}

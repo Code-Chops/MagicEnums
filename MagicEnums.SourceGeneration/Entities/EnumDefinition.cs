@@ -9,11 +9,13 @@ internal record EnumDefinition
 	public string ValueTypeName { get; }
 	public string ValueTypeNamespace { get; }
 	public bool IsStringEnum { get; }
-	public bool ImplicitDiscoverabilityIsEnabled { get; }
+	public DiscoverabilityMode DiscoverabilityMode { get; }
 	public string FilePath { get; }
 	public string AccessModifier { get; }
+	public List<EnumMember> AttributeMembers { get; }
+	public bool IsStruct { get; }
 
-	public EnumDefinition(INamedTypeSymbol type, ITypeSymbol valueType, bool implicitDiscoverability, string filePath, string accessModifier)
+	public EnumDefinition(INamedTypeSymbol type, ITypeSymbol valueType, DiscoverabilityMode discoverabilityMode, string filePath, string accessModifier, List<EnumMember> attributeMembers)
 	{
 		this.Name = type.Name;
 
@@ -24,8 +26,11 @@ internal record EnumDefinition
 		this.ValueTypeNamespace = valueType.ContainingNamespace.ToDisplayString();
 
 		this.IsStringEnum = valueType.Name.Equals(nameof(String), StringComparison.OrdinalIgnoreCase);
-		this.ImplicitDiscoverabilityIsEnabled = implicitDiscoverability;
+		this.DiscoverabilityMode = discoverabilityMode;
 		this.FilePath = filePath;
 		this.AccessModifier = accessModifier.Replace("partial ", "").Replace("static ", "");
+
+		this.AttributeMembers = attributeMembers;
+		this.IsStruct = type.TypeKind == TypeKind.Struct;
 	}
 }

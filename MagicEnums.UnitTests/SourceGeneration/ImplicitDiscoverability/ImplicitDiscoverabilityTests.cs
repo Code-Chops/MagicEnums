@@ -8,7 +8,7 @@ public class ImplicitDiscoverabilityTests
 	public void ImplicitDiscoverability_Members_ShouldBeCreated()
 	{
 		var a = ImplicitDiscoverableEnumMock.NewMemberA;
-		var b = ImplicitDiscoverableEnumMock.NewMemberB.GenerateMember();
+		var b = ImplicitDiscoverableEnumMock.NewMemberB.CreateMember();
 
 		Assert.True(a is not null);
 		Assert.True(b is not null);

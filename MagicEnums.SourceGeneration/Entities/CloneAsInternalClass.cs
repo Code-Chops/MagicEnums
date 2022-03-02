@@ -2,7 +2,7 @@
 
 namespace CodeChops.MagicEnums.SourceGeneration.Entities;
 
-internal class CloneAsInternalClass
+internal record CloneAsInternalClass
 {
 	public RecordDeclarationSyntax Declaration { get; }
 	public string? TargetNamespace { get; }
