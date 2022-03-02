@@ -9,7 +9,7 @@
 /// <para>Disabled by default. Usage: <code>Invoking {Enum}.{NewMember}</code></para></item>
 /// </list>
 /// </summary>
-[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = false)]
 public sealed class DiscoverableEnumMembers : Attribute
 {
 	public bool ImplicitDiscoverability { get; }

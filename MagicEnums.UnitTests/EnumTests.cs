@@ -1,10 +1,11 @@
-﻿using CodeChops.MagicEnums.Core;
-using Xunit;
+﻿using Xunit;
 
 namespace CodeChops.MagicEnums.UnitTests;
 
-public record EnumTests : MagicEnumCore<EnumTests, bool>
+public record EnumTests : MagicCustomEnum<EnumTests, bool>
 {
+	public static EnumTests Member { get; } = CreateMember(false);
+
 	[Fact]
 	public void Enum_WithSameNames_ShouldThrow()
 	{
@@ -22,5 +23,11 @@ public record EnumTests : MagicEnumCore<EnumTests, bool>
 	{
 		CreateMember(false, "Name1");
 		CreateMember(false, "Name2");
+	}
+
+	[Fact]
+	public void Enum_ToString_ShouldReturnName()
+	{
+		Assert.Equal(nameof(Member), Member.ToString());
 	}
 }

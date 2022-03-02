@@ -1,8 +1,9 @@
-﻿using Xunit;
+﻿using CodeChops.MagicEnums.Core;
+using Xunit;
 
 namespace CodeChops.MagicEnums.UnitTests.Concurrency;
 
-public record EnumConcurrencyTests : MagicEnum<EnumConcurrencyTests, int>
+public record EnumConcurrencyTests : MagicEnum<EnumConcurrencyTests>
 {
 	/// <summary>
 	/// Multiple threads should create enum options with implicit incremental values. The order is not guaranteed. 
@@ -31,7 +32,7 @@ public record EnumConcurrencyTests : MagicEnum<EnumConcurrencyTests, int>
 	[Fact]
 	public void EnumConcurrency_ConcurrencyDisabled_AfterStaticBuildup_ShouldNotBeInConcurrentState()
 	{
-		Assert.False(StaticNotConcurrentEnumMock.IsInConcurrentState);
+		Assert.False(IMagicEnumCore<StaticNotConcurrentEnumMock, int>.IsInConcurrentState);
 	}
 
 	[Fact]
@@ -39,13 +40,13 @@ public record EnumConcurrencyTests : MagicEnum<EnumConcurrencyTests, int>
 	{
 		DynamicNotConcurrentEnumMock.CreateDynamicTestMember();
 
-		Assert.False(DynamicNotConcurrentEnumMock.IsInConcurrentState);
+		Assert.False(IMagicEnumCore<DynamicConcurrentEnumMock, int>.IsInConcurrentState);
 	}
 
 	[Fact]
 	public void EnumConcurrency_ConcurrencyEnabled_AfterStaticBuildup_ShouldBeInNotConcurrentState()
 	{
-		Assert.False(StaticConcurrentEnumMock.IsInConcurrentState);
+		Assert.False(IMagicEnumCore<StaticNotConcurrentEnumMock, int>.IsInConcurrentState);
 	}
 
 	[Fact]
@@ -53,6 +54,6 @@ public record EnumConcurrencyTests : MagicEnum<EnumConcurrencyTests, int>
 	{
 		DynamicConcurrentEnumMock.CreateDynamicTestMember();
 
-		Assert.True(DynamicConcurrentEnumMock.IsInConcurrentState);
+		Assert.True(IMagicEnumCore<DynamicConcurrentEnumMock, int>.IsInConcurrentState);
 	}
 }

@@ -2,7 +2,7 @@
 
 namespace CodeChops.MagicEnums.UnitTests.Numbers;
 
-public record NumberEnumConcurrencyTests : MagicEnum<NumberEnumConcurrencyTests, int>
+public record NumberEnumConcurrencyTests : MagicEnum<NumberEnumConcurrencyTests>
 {
 	/// <summary>
 	/// Multiple threads should create enum options with implicit incremental values. The order is not guaranteed. 

@@ -64,6 +64,7 @@ internal static class EnumSourceBuilder
 using System;
 using CodeChops.MagicEnums;
 {GetValueTypeUsing()}
+
 {GetNamespaceDeclaration()}
 {GetEnumRecord()}
 /// <summary>

@@ -34,7 +34,7 @@ internal class EnumDefinitionSyntaxReceiver
 		if (type is null || type.IsStatic || !type.IsRecord || !typeDeclaration.Modifiers.Any(m => m.ValueText == "partial")) return null;
 
 		if (!type.IsOrImplementsInterface(type => type.IsType(SourceGenerator.InterfaceName, SourceGenerator.InterfaceNamespace, isGenericType: true), out var interf)) return null;
-		if (!interf.IsGeneric(typeParameterCount: 1, out var genericTypeArgument)) return null;
+		if (!interf.IsGeneric(typeParameterCount: 2, out var genericTypeArgument)) return null;
 
 		var hasDiscoverableAttribute = type.HasAttribute(SourceGenerator.DiscoverableAttributeName, SourceGenerator.AttributeNamespace, out var discoverableAttribute);
 		var hasAttributeMembers = type.HasAttributes(SourceGenerator.MemberAttributeName, SourceGenerator.AttributeNamespace, out var attributeMemberDataList);
@@ -51,9 +51,12 @@ internal class EnumDefinitionSyntaxReceiver
 
 		var filePath = typeDeclaration.SyntaxTree.FilePath;
 
+		var valueType = genericTypeArgument.Skip(1).FirstOrDefault();
+
 		var definition = new EnumDefinition(
 			type: type, 
-			valueType: genericTypeArgument.Single(),
+			valueTypeName: valueType?.Name ?? "Int32",
+			valueTypeNamespace: valueType?.ContainingNamespace.ToDisplayString() ?? "System",
 			discoverabilityMode: discoverabilityMode, 
 			filePath: filePath, 
 			accessModifier: typeDeclaration.Modifiers.ToFullString(),

@@ -15,17 +15,17 @@ internal record EnumDefinition
 	public List<EnumMember> AttributeMembers { get; }
 	public bool IsStruct { get; }
 
-	public EnumDefinition(INamedTypeSymbol type, ITypeSymbol valueType, DiscoverabilityMode discoverabilityMode, string filePath, string accessModifier, List<EnumMember> attributeMembers)
+	public EnumDefinition(INamedTypeSymbol type, string valueTypeName, string valueTypeNamespace, DiscoverabilityMode discoverabilityMode, string filePath, string accessModifier, List<EnumMember> attributeMembers)
 	{
 		this.Name = type.Name;
 
 		var ns = type.ContainingNamespace?.ToDisplayString();
 		this.Namespace = String.IsNullOrWhiteSpace(ns) ? null : ns;
 
-		this.ValueTypeName = valueType.Name;
-		this.ValueTypeNamespace = valueType.ContainingNamespace.ToDisplayString();
+		this.ValueTypeName = valueTypeName;
+		this.ValueTypeNamespace = valueTypeNamespace;
 
-		this.IsStringEnum = valueType.Name.Equals(nameof(String), StringComparison.OrdinalIgnoreCase);
+		this.IsStringEnum = valueTypeName.Equals(nameof(String), StringComparison.OrdinalIgnoreCase);
 		this.DiscoverabilityMode = discoverabilityMode;
 		this.FilePath = filePath;
 		this.AccessModifier = accessModifier.Replace("partial ", "").Replace("static ", "");
