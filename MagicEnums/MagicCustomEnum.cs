@@ -11,6 +11,7 @@ namespace CodeChops.MagicEnums;
 /// <typeparam name="TValue">The type of the value of the enum.</typeparam>
 public abstract partial record MagicCustomEnum<TEnum, TValue> : MagicEnumCore<TEnum, TValue>
 	where TEnum : MagicCustomEnum<TEnum, TValue>
+	where TValue : notnull
 {
 	/// <summary>
 	/// Creates a new enum member with value TValue.

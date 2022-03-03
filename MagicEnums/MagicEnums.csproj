@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>1.0.1</VersionPrefix>
-		<PackageReleaseNotes>Removed clone as internal</PackageReleaseNotes>
+		<VersionPrefix>1.0.2</VersionPrefix>
+		<PackageReleaseNotes>Updated generic math. Removed source generation dependency.</PackageReleaseNotes>
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<LangVersion>10</LangVersion>
 	</PropertyGroup>
@@ -58,8 +58,7 @@ Flexible and extendable enums for C#:
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Include="$(OutputPath)\$(AssemblyName).SourceGeneration.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-		<ProjectReference Include="..\MagicEnums.SourceGeneration\MagicEnums.SourceGeneration.csproj" OutputItemType="Analyzer" />
+		<None Include="..\MagicEnums.SourceGeneration\bin\$(Configuration)\netstandard2.0\$(AssemblyName).SourceGeneration.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -76,7 +75,7 @@ Flexible and extendable enums for C#:
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CodeChops.GenericMath" Version="1.2.7" />
+		<PackageReference Include="CodeChops.GenericMath" Version="1.3.0" />
 	</ItemGroup>
 
 	<PropertyGroup>

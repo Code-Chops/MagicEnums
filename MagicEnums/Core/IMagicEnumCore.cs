@@ -12,6 +12,7 @@ namespace CodeChops.MagicEnums.Core;
 /// <typeparam name="TValue">The type of the enum member value.</typeparam>
 internal interface IMagicEnumCore<TEnum, TValue>
 	where TEnum : IMagicEnumCore<TEnum, TValue>
+	where TValue : notnull
 {
 	string Name { get; }
 	TValue? Value { get; }
@@ -233,7 +234,7 @@ internal interface IMagicEnumCore<TEnum, TValue>
 	public static bool TryGetMembers(TValue memberValue, [NotNullWhen(true)] out IEnumerable<TEnum> members)
 		=> memberValue is null
 			 ? throw new ArgumentNullException(nameof(memberValue))
-			 : MembersByValues.TryGetValue(memberValue, out members);
+			 : MembersByValues.TryGetValue(memberValue, out members!);
 
 	/// <summary>
 	/// Returns the member(s) that have the provided value. Throws when no member has been found.

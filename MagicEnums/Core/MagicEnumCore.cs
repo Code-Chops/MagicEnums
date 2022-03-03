@@ -11,6 +11,7 @@ namespace CodeChops.MagicEnums.Core;
 /// <typeparam name="TValue">The type of the value of the enum.</typeparam>
 public abstract partial record MagicEnumCore<TEnum, TValue> : IMagicEnumCore<TEnum, TValue>
 	where TEnum : MagicEnumCore<TEnum, TValue>
+	where TValue : notnull
 {
 	/// <summary>
 	/// Returns the name of the enum member.
@@ -30,7 +31,7 @@ public abstract partial record MagicEnumCore<TEnum, TValue> : IMagicEnumCore<TEn
 	public string Name { get; internal init; } = default!;
 
 	/// <inheritdoc cref="IMagicEnumCore{TEnum, TValue}.Value"/>
-	public TValue? Value { get; internal init; }
+	public TValue Value { get; internal init; } = default!;
 
 	/// <inheritdoc cref="IMagicEnumCore{TEnum, TValue}.GetDefaultValue"/>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
