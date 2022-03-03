@@ -19,8 +19,8 @@ public abstract partial record MagicEnumCore<TEnum, TValue> : IMagicEnumCore<TEn
 	/// </summary>
 	public sealed override string? ToString() => this.Name;
 
-	public virtual bool Equals(MagicEnumCore<TEnum, TValue>? other)
-		=> ReferenceEquals(this, other) || other is not null && (this.Value is null ? other.Value is null : this.Value.Equals(other.Value));
+	public virtual bool Equals(MagicEnumCore<TEnum, TValue>? other) 
+		=> other is not null && (this.Value is null ? other.Value is null : this.Value.Equals(other.Value));
 	public override int GetHashCode() => this.Value?.GetHashCode() ?? 0;
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -49,21 +49,13 @@ public abstract partial record MagicEnumCore<TEnum, TValue> : IMagicEnumCore<TEn
 	/// <inheritdoc cref="IMagicEnumCore{TEnum, TValue}.GetEnumerable"/>
 	public static IEnumerable<TEnum> GetEnumerable() => IMagicEnumCore<TEnum, TValue>.GetEnumerable();
 
-	protected static TEnum CreateMember(TValue value, string name) => IMagicEnumCore<TEnum, TValue>.CreateMember(value, name, MemberCreator);
+	protected static TEnum CreateMember(TValue value, string name) 
+		=> IMagicEnumCore<TEnum, TValue>.CreateMember(value, name, (name, value) => CachedUnitializedMember with { Name = name, Value = value });
 
 	/// <summary>
 	/// Used to create new members.
 	/// </summary>
 	private static readonly TEnum CachedUnitializedMember = (TEnum)FormatterServices.GetUninitializedObject(typeof(TEnum));
-
-	private static TEnum MemberCreator(string name, TValue value)
-	{
-		return CachedUnitializedMember with
-		{
-			Name = name,
-			Value = value,
-		};
-	}
 
 	/// <inheritdoc cref="IMagicEnumCore{TEnum, TValue}.TryGetSingleMember(string, out TEnum)"/>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]

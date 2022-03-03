@@ -230,7 +230,7 @@ internal interface IMagicEnumCore<TEnum, TValue>
 	/// <param name="members">The queried member(s).</param>
 	/// <returns>True if one or more members have been found.</returns>
 	/// <exception cref="ArgumentNullException">When value is null.</exception>
-	public static bool TryGetMembers(TValue memberValue, [NotNullWhen(true)] out IEnumerable<TEnum>? members)
+	public static bool TryGetMembers(TValue memberValue, [NotNullWhen(true)] out IEnumerable<TEnum> members)
 		=> memberValue is null
 			 ? throw new ArgumentNullException(nameof(memberValue))
 			 : MembersByValues.TryGetValue(memberValue, out members);
