@@ -1,6 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
 using CodeChops.GenericMath;
-using CodeChops.MagicEnums.Attributes;
 using CodeChops.MagicEnums.Core;
 
 namespace CodeChops.MagicEnums;
@@ -11,7 +10,6 @@ namespace CodeChops.MagicEnums;
 /// or <see cref="MagicEnum{TEnum, TValue}.CreateMember(TValue, string?)"/> to create a member.
 /// </summary>
 /// <typeparam name="TEnum">The type of the number enum itself. Is also equal to the type of each member.</typeparam>
-[CloneAsInternal]
 public abstract partial record MagicEnum<TEnum> : MagicEnum<TEnum, int>
 	where TEnum : MagicEnum<TEnum>
 {
@@ -24,7 +22,6 @@ public abstract partial record MagicEnum<TEnum> : MagicEnum<TEnum, int>
 /// </summary>
 /// <typeparam name="TEnum">The type of the number enum itself. Is also equal to the type of each member.</typeparam>
 /// <typeparam name="TValue">The integral type.</typeparam>
-[CloneAsInternal]
 public abstract partial record MagicEnum<TEnum, TValue> : MagicEnumCore<TEnum, TValue>
 	where TEnum : MagicEnum<TEnum, TValue>
 	where TValue : struct, IComparable<TValue>, IEquatable<TValue>, IConvertible

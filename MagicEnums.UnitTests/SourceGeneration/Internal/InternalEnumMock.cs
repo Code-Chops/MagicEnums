@@ -1,5 +1,5 @@
 ﻿namespace CodeChops.MagicEnums.UnitTests.SourceGeneration.Implicit;
 
-internal partial record InternalEnumMock : Internal.MagicEnum<InternalEnumMock>
+internal partial record InternalEnumMock : MagicEnum<InternalEnumMock>
 {
 }

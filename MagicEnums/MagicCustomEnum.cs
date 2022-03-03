@@ -1,5 +1,4 @@
 ﻿using System.Runtime.CompilerServices;
-using CodeChops.MagicEnums.Attributes;
 using CodeChops.MagicEnums.Core;
 
 namespace CodeChops.MagicEnums;
@@ -10,7 +9,6 @@ namespace CodeChops.MagicEnums;
 /// </summary>
 /// <typeparam name="TEnum">The type of the number enum itself. Is also equal to the type of each member.</typeparam>
 /// <typeparam name="TValue">The type of the value of the enum.</typeparam>
-[CloneAsInternal]
 public abstract partial record MagicCustomEnum<TEnum, TValue> : MagicEnumCore<TEnum, TValue>
 	where TEnum : MagicCustomEnum<TEnum, TValue>
 {

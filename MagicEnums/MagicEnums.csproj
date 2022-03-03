@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>1.0.0</VersionPrefix>
-		<PackageReleaseNotes>Moved enum core code to static interface</PackageReleaseNotes>
+		<VersionPrefix>1.0.1</VersionPrefix>
+		<PackageReleaseNotes>Removed clone as internal</PackageReleaseNotes>
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<LangVersion>10</LangVersion>
 	</PropertyGroup>
@@ -30,10 +30,6 @@ Flexible and extendable enums for C#:
 		* It removes the need to keep track of (incremental) integral values;
 	- Custom defined types, for example see StrictDirection: https://github.com/Code-Chops/Geometry/;
 
-* Optional clean definition by using attributes (source generated):
-	- Use the MagicEnum-attribute (and set IsInternal to true if needed);
-	- Use the Member-attribute to create a member and optionally provide their value;
-
 * Inheritance and/or partial records can be used to extend your enums: 
 	- Enums can now be extended in multiple projects;
 	- Custom methods can be added to enums, if necessary;
@@ -48,8 +44,6 @@ Flexible and extendable enums for C#:
 		* Use {Enum}.{Member} to create a source generated enum-member on the fly;
 			
 * Enum members can be added at runtime, if necessary;
-
-* The accessibility of the enum can be set to internal;
 
 * Has the same functionality as the default .NET enum:
 	- Members can be found by using their name or value;

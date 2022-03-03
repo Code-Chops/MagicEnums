@@ -1,5 +1,4 @@
 ﻿using System.Runtime.CompilerServices;
-using CodeChops.MagicEnums.Attributes;
 using CodeChops.MagicEnums.Core;
 
 namespace CodeChops.MagicEnums;
@@ -9,7 +8,6 @@ namespace CodeChops.MagicEnums;
 /// Use <see cref="MagicStringEnum{TEnum}.CreateMember(string?)"/> to create a member.
 /// </summary>
 /// <typeparam name="TEnum">The type of the number enum itself. Is also equal to the type of each member.</typeparam>
-[CloneAsInternal]
 public abstract partial record MagicStringEnum<TEnum> : MagicEnumCore<TEnum, string>
 	where TEnum : MagicStringEnum<TEnum>
 {
