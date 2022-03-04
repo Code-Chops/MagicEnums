@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
+using CodeChops.MagicEnums.Core.Members;
 
 namespace CodeChops.MagicEnums.Core;
 
@@ -27,10 +28,10 @@ public abstract partial record MagicEnumCore<TEnum, TValue> : IMagicEnumCore<TEn
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static explicit operator MagicEnumCore<TEnum, TValue>(TValue value) => GetSingleMember(value);
 
-	/// <inheritdoc cref="IMagicEnumCore{TEnum, TValue}.Name"/>
+	/// <inheritdoc cref="IMember{TValue}.Name"/>
 	public string Name { get; internal init; } = default!;
 
-	/// <inheritdoc cref="IMagicEnumCore{TEnum, TValue}.Value"/>
+	/// <inheritdoc cref="IMember{TValue}.Value"/>
 	public TValue Value { get; internal init; } = default!;
 
 	/// <inheritdoc cref="IMagicEnumCore{TEnum, TValue}.GetDefaultValue"/>
@@ -48,8 +49,8 @@ public abstract partial record MagicEnumCore<TEnum, TValue> : IMagicEnumCore<TEn
 	/// <inheritdoc cref="IMagicEnumCore{TEnum, TValue}.GetEnumerable"/>
 	public static IEnumerable<TEnum> GetEnumerable() => IMagicEnumCore<TEnum, TValue>.GetEnumerable();
 
-	protected static TEnum CreateMember(TValue value, string name) 
-		=> IMagicEnumCore<TEnum, TValue>.CreateMember(value, name, (name, value) => CachedUnitializedMember with { Name = name, Value = value });
+	protected static TEnum CreateMember(TValue value, string name)
+		=> IMagicEnumCore<TEnum, TValue>.CreateMember(value, name, () => CachedUnitializedMember with { Name = name, Value = value });
 
 	/// <summary>
 	/// Used to create new members.

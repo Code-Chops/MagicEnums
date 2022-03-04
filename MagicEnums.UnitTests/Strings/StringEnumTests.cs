@@ -7,15 +7,15 @@ public class StringEnumTests
 	[Fact]
 	public void StringEnum_WithProvidedValue_HasCorrectValues()
 	{
-		Assert.Equal("ValueA", StringEnum.ValueA.Value);
-		Assert.Equal("ValueB", StringEnum.ValueB.Value);
-		Assert.Equal("ValueC", StringEnum.ValueC.Value);
-		Assert.Equal("ValueD", StringEnum.ValueD.Value);
+		Assert.Equal(nameof(StringEnum.ValueA), StringEnum.ValueA.Value);
+		Assert.Equal(nameof(StringEnum.ValueB), StringEnum.ValueB.Value);
+		Assert.Equal(nameof(StringEnum.ValueC), StringEnum.ValueC.Value);
+		Assert.Equal(nameof(StringEnum.ValueD), StringEnum.ValueD.Value);
 
-		Assert.Equal("ValueA", StringEnum.GetSingleMember(nameof(StringEnum.ValueA)).Value);
-		Assert.Equal("ValueB", StringEnum.GetSingleMember(nameof(StringEnum.ValueB)).Value);
-		Assert.Equal("ValueC", StringEnum.GetSingleMember(nameof(StringEnum.ValueC)).Value);
-		Assert.Equal("ValueD", StringEnum.GetSingleMember(nameof(StringEnum.ValueD)).Value);
+		Assert.Equal(nameof(StringEnum.ValueA), StringEnum.GetSingleMember(nameof(StringEnum.ValueA)).Value);
+		Assert.Equal(nameof(StringEnum.ValueB), StringEnum.GetSingleMember(nameof(StringEnum.ValueB)).Value);
+		Assert.Equal(nameof(StringEnum.ValueC), StringEnum.GetSingleMember(nameof(StringEnum.ValueC)).Value);
+		Assert.Equal(nameof(StringEnum.ValueD), StringEnum.GetSingleMember(nameof(StringEnum.ValueD)).Value);
 	}
 
 	[Fact]

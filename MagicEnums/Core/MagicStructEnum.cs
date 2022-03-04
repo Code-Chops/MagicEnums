@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
+using CodeChops.MagicEnums.Core.Members;
 
 namespace CodeChops.MagicEnums.Core;
 
@@ -22,16 +23,20 @@ internal record struct MagicStructEnum : IMagicEnumCore<MagicStructEnum, int>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static explicit operator MagicStructEnum(int value) => GetSingleMember(value);
 
-	/// <inheritdoc cref="IMagicEnumCore{Test, TEnum}.Name"/>
-	public string Name { get; internal init; } = null!;
+	/// <inheritdoc cref="IMember{TValue}.Name"/>
+	public string Name { get; internal init; } = default!;
 
-	/// <inheritdoc cref="IMagicEnumCore{Test, TEnum}.Value"/>
-	public int Value { get; internal init; }
+	/// <inheritdoc cref="IMember{TValue}.Value"/>
+	public int Value { get; internal init; } = default!;
 
-	public MagicStructEnum(string name, int value)
+	/// <inheritdoc cref="IMember{TValue}.Index"/>
+	public int Index { get; internal init; }
+
+	public MagicStructEnum(string name, int value, int index)
 	{
 		this.Name = name ?? throw new ArgumentNullException(nameof(name));
 		this.Value = value;
+		this.Index = index;
 	}
 
 	/// <inheritdoc cref="IMagicEnumCore{TEnum, TValue}.GetDefaultValue"/>
@@ -51,7 +56,7 @@ internal record struct MagicStructEnum : IMagicEnumCore<MagicStructEnum, int>
 
 	/// <inheritdoc cref="IMagicEnumCore{TEnum, TValue}.GetEnumerable()"/>
 	public static MagicStructEnum CreateMember(int value, string name) 
-		=> IMagicEnumCore<MagicStructEnum, int>.CreateMember(value, name, static (name, value) => CachedUnitializedMember with { Name = name, Value = value });
+		=> IMagicEnumCore<MagicStructEnum, int>.CreateMember(value, name, () => CachedUnitializedMember with { Name = name, Value = value });
 
 	/// <summary>
 	/// Used to create new members.

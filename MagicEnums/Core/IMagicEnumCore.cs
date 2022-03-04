@@ -1,7 +1,8 @@
 ﻿using System.Collections.Concurrent;
 using System.Runtime.CompilerServices;
-using CodeChops.MagicEnums.Attributes;
 using System.Diagnostics.CodeAnalysis;
+using CodeChops.MagicEnums.Attributes;
+using CodeChops.MagicEnums.Core.Members;
 
 namespace CodeChops.MagicEnums.Core;
 
@@ -10,13 +11,10 @@ namespace CodeChops.MagicEnums.Core;
 /// </summary>
 /// <typeparam name="TEnum">The type of the enum itself. Is also the type of each member.</typeparam>
 /// <typeparam name="TValue">The type of the enum member value.</typeparam>
-internal interface IMagicEnumCore<TEnum, TValue>
+public interface IMagicEnumCore<TEnum, TValue> : IMember<TValue>
 	where TEnum : IMagicEnumCore<TEnum, TValue>
 	where TValue : notnull
 {
-	string Name { get; }
-	TValue? Value { get; }
-
 	/// <summary>
 	/// The default value of the enum.
 	/// </summary>
@@ -110,51 +108,51 @@ internal interface IMagicEnumCore<TEnum, TValue>
 	/// <returns>The newly created member.</returns>
 	/// <exception cref="ArgumentNullException">When no name or value has been provided.</exception>
 	/// <exception cref="ArgumentException">When a member already exists with the same name.</exception>
-	protected static TEnum CreateMember(TValue value, string name, Func<string, TValue, TEnum> memberCreator)
+	protected static TEnum CreateMember(TValue value, string name, Func<TEnum> memberCreator)
 	{
 		if (String.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
 		if (value is null) throw new ArgumentNullException(nameof(value));
-
-		// Create the new member.
-		var newMember = memberCreator(name, value);
 
 		var memberByNames = MemberByNames;
 
 		// Switch to a concurrent mode if necessary.
 		if (ConcurrencyMode == ConcurrencyMode.AdaptiveConcurrency && !IsInConcurrentState && !IsInStaticBuildup)
 		{
-			SwitchToConcurrentAndAddMember();
-			return newMember;
+			return SwitchToConcurrentModeAndAddMember();
 		}
 
-		AddMemberToDictionary(newMember, memberByNames);
-		return newMember;
+		// Create the new member.
+		return CreateAndAddMemberToDictionary(memberCreator, memberByNames);
 
 
-		void SwitchToConcurrentAndAddMember()
+		TEnum SwitchToConcurrentModeAndAddMember()
 		{
 			lock (DictionaryLock)
 			{
 				// Check if we won the race.
 				if (MemberByNames != memberByNames)
 				{
-					AddMemberToDictionary(newMember, MemberByNames);
-					return;
+					return CreateAndAddMemberToDictionary(memberCreator, MemberByNames);
 				}
 
 				// Convert to a concurrent dictionary.
 				var concurrentMemberByNames = new ConcurrentDictionary<string, TEnum>(memberByNames);
-				AddMemberToDictionary(newMember, concurrentMemberByNames);
+				var newMember = CreateAndAddMemberToDictionary(memberCreator, concurrentMemberByNames);
 				MemberByNames = concurrentMemberByNames;
+				return newMember;
 			}
 		}
 
 
-		static void AddMemberToDictionary(TEnum newMember, IDictionary<string, TEnum> memberByNames)
+		static TEnum CreateAndAddMemberToDictionary(Func<TEnum> memberCreator, IDictionary<string, TEnum> memberByNames)
 		{
+			var member = memberCreator();
+			
 			// Adds a new member by name.
-			if (!memberByNames.TryAdd(newMember.Name, newMember)) throw new ArgumentException($"Name '{newMember.Name}' already defined in enum {typeof(TEnum).Name} (value: '{newMember.Value}').");
+			if (!memberByNames.TryAdd(member.Name, member)) throw new ArgumentException($"Name '{member.Name}' already defined in enum {typeof(TEnum).Name} (value: '{member.Value}').");
 			_membersByValues = null!;
+
+			return member;
 		}
 	}
 

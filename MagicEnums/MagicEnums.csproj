@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>1.0.2</VersionPrefix>
-		<PackageReleaseNotes>Updated generic math. Removed source generation dependency.</PackageReleaseNotes>
+		<VersionPrefix>1.0.3</VersionPrefix>
+		<PackageReleaseNotes>Added unit tests. Added member interface. Made interfaces public.</PackageReleaseNotes>
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<LangVersion>10</LangVersion>
 	</PropertyGroup>
