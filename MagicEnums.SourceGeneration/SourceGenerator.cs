@@ -28,18 +28,6 @@ public class SourceGenerator : IIncrementalGenerator
 	{
 		this.FindAndRegisterEnumDefinitions(context);
 		this.RegisterEnumSourceCode(context);
-
-		// Get records that have to be copied so their accessibility can be changed to 'internal'.
-		var recordsToCopy = context.SyntaxProvider
-			.CreateSyntaxProvider(
-				predicate: static (syntaxNode, ct)	=> CloneAsInternalSyntaxReceiver.HasCloneAsInternalAttribute(syntaxNode, ct),
-				transform: static (context, ct)		=> CloneAsInternalSyntaxReceiver.GetCloneAsInternalDefinition(context, ct))
-			.Where(static definition => definition is not null)
-			.Collect();
-
-		context.RegisterSourceOutput(
-			source: recordsToCopy,
-			action: (context, members) => CloneAsInternalSourceBuilder.CreateSource(context, members!));
 	}
 
 	/// <summary>
