@@ -26,7 +26,7 @@ internal static class TypeSymbolExtensions
 	/// </summary>
 	public static bool IsType(this ITypeSymbol typeSymbol, Type type)
 	{
-		if (type.IsGenericTypeDefinition) ThrowOpenGenericTypeException();
+		if (!IsType(typeSymbol, type.Name, type.Namespace)) return false;
 
 		if (!typeSymbol.IsType(type.Name, type.Namespace!)) return false;
 
@@ -60,7 +60,7 @@ internal static class TypeSymbolExtensions
 	/// Returns whether the <see cref="ITypeSymbol"/> has the given <paramref name="fullTypeName"/>.
 	/// </summary>
 	/// <param name="fullTypeName">The type name including the namespace, e.g. System.Object.</param>
-	public static bool IsType(this ITypeSymbol typeSymbol, string fullTypeName, bool? generic = null)
+	public static bool IsType(this ITypeSymbol typeSymbol, string fullTypeName, bool? isGenericType = null)
 	{
 		var fullTypeNameSpan = fullTypeName.AsSpan();
 
@@ -71,7 +71,7 @@ internal static class TypeSymbolExtensions
 		var typeName = fullTypeNameSpan.Slice(1 + lastDotIndex);
 		var containingNamespace = fullTypeNameSpan.Slice(0, lastDotIndex);
 
-		return typeSymbol.IsType(typeName, containingNamespace, generic);
+		return IsType(typeSymbol, typeName, containingNamespace, isGenericType);
 	}
 
 	/// <summary>
@@ -79,7 +79,7 @@ internal static class TypeSymbolExtensions
 	/// </summary>
 	public static bool IsType(this ITypeSymbol typeSymbol, string typeName, string containingNamespace, bool? isGenericType = null)
 	{
-		return typeSymbol.IsType(typeName.AsSpan(), containingNamespace.AsSpan(), isGenericType);
+		return IsType(typeSymbol, typeName.AsSpan(), containingNamespace.AsSpan(), isGenericType);
 	}
 
 	/// <summary>
@@ -164,15 +164,15 @@ internal static class TypeSymbolExtensions
 		if (typeSymbol.IsNullable(out var underlyingType) && seeThroughNullable)
 			typeSymbol = underlyingType;
 
-		var result = typeSymbol.IsType<byte>() ||
-			typeSymbol.IsType<sbyte>() ||
-			typeSymbol.IsType<ushort>() ||
-			typeSymbol.IsType<short>() ||
-			typeSymbol.IsType<uint>() ||
-			typeSymbol.IsType<int>() ||
-			typeSymbol.IsType<ulong>() ||
-			typeSymbol.IsType<long>() ||
-			includeDecimal && typeSymbol.IsType<decimal>();
+		var result = typeSymbol.IsType<byte>()
+			|| typeSymbol.IsType<sbyte>()
+			|| typeSymbol.IsType<ushort>()
+			|| typeSymbol.IsType<short>()
+			|| typeSymbol.IsType<uint>()
+			|| typeSymbol.IsType<int>()
+			|| typeSymbol.IsType<ulong>()
+			|| typeSymbol.IsType<long>()
+			|| (includeDecimal && typeSymbol.IsType<decimal>());
 
 		return result;
 	}
@@ -198,7 +198,7 @@ internal static class TypeSymbolExtensions
 
 		if (typeSymbol is not INamedTypeSymbol namedTypeSymbol) return false;
 
-		if (!typeSymbol.IsGeneric(typeParameterCount)) return false;
+		if (!IsGeneric(typeSymbol, typeParameterCount)) return false;
 
 		typeArguments = namedTypeSymbol.TypeArguments;
 		return true;
@@ -217,7 +217,7 @@ internal static class TypeSymbolExtensions
 	/// </summary>
 	public static bool IsNullable(this ITypeSymbol typeSymbol, out ITypeSymbol underlyingType)
 	{
-		if (typeSymbol is INamedTypeSymbol namedTypeSymbol && typeSymbol.IsType("System.Nullable", generic: true))
+		if (typeSymbol is INamedTypeSymbol namedTypeSymbol && typeSymbol.IsType("System.Nullable", isGenericType: true))
 		{
 			underlyingType = namedTypeSymbol.TypeArguments[0];
 			return true;
@@ -270,22 +270,22 @@ internal static class TypeSymbolExtensions
 			elementType = ((INamedTypeSymbol)interf).TypeArguments[0] as INamedTypeSymbol;
 			return true;
 		}
-		if (typeSymbol.IsOrImplementsInterface(type => type.IsType("ISet", "System.Collections.Generic", isGenericType: true), out interf))
-		{
-			elementType = ((INamedTypeSymbol)interf).TypeArguments[0] as INamedTypeSymbol;
-			return true;
-		}
-		if (typeSymbol.IsOrImplementsInterface(type => type.IsType("ICollection", "System.Collections.Generic", isGenericType: true), out interf))
-		{
-			elementType = ((INamedTypeSymbol)interf).TypeArguments[0] as INamedTypeSymbol;
-			return true;
-		}
 		if (typeSymbol.IsOrImplementsInterface(type => type.IsType("IReadOnlyList", "System.Collections.Generic", isGenericType: true), out interf))
 		{
 			elementType = ((INamedTypeSymbol)interf).TypeArguments[0] as INamedTypeSymbol;
 			return true;
 		}
+		if (typeSymbol.IsOrImplementsInterface(type => type.IsType("ISet", "System.Collections.Generic", isGenericType: true), out interf))
+		{
+			elementType = ((INamedTypeSymbol)interf).TypeArguments[0] as INamedTypeSymbol;
+			return true;
+		}
 		if (typeSymbol.IsOrImplementsInterface(type => type.IsType("IReadOnlySet", "System.Collections.Generic", isGenericType: true), out interf))
+		{
+			elementType = ((INamedTypeSymbol)interf).TypeArguments[0] as INamedTypeSymbol;
+			return true;
+		}
+		if (typeSymbol.IsOrImplementsInterface(type => type.IsType("ICollection", "System.Collections.Generic", isGenericType: true), out interf))
 		{
 			elementType = ((INamedTypeSymbol)interf).TypeArguments[0] as INamedTypeSymbol;
 			return true;
@@ -302,6 +302,18 @@ internal static class TypeSymbolExtensions
 		}
 
 		return true;
+	}
+
+	/// <summary>
+	/// Returns whether the <see cref="ITypeSymbol"/> or a base type has an override of <see cref="Object.Equals(object)"/> more specific than <see cref="Object"/>'s implementation.
+	/// </summary>
+	public static bool HasEqualsOverride(this ITypeSymbol typeSymbol, bool falseForStructs = false)
+	{
+		// Technically this could match an overridden "new" Equals defined by a base type, but that is a nonsense scenario
+		var result = typeSymbol.GetMembers(nameof(Object.Equals)).OfType<IMethodSymbol>().Any(method => method.IsOverride && !method.IsStatic &&
+			method.Arity == 0 && method.Parameters.Length == 1 && method.Parameters[0].Type.IsType<object>());
+
+		return result;
 	}
 
 	/// <summary>
@@ -395,9 +407,11 @@ internal static class TypeSymbolExtensions
 	/// <summary>
 	/// Enumerates the primitive types (string, int, bool, etc.) from which the given <see cref="ITypeSymbol"/> is convertible.
 	/// </summary>
-	public static IEnumerable<Type> GetAvailableConversionsFromPrimitives(this ITypeSymbol typeSymbol)
+	/// <param name="skipForSystemTypes">If true, if the given type is directly under the System namespace, this method yields nothing.</param>
+	public static IEnumerable<Type> GetAvailableConversionsFromPrimitives(this ITypeSymbol typeSymbol, bool skipForSystemTypes)
 	{
-		if (typeSymbol.HasConversionFrom("String", "System")) yield return typeof(string);
+		if (skipForSystemTypes && typeSymbol.ContainingNamespace.Name == "System" && (typeSymbol.ContainingNamespace.ContainingNamespace?.IsGlobalNamespace ?? true))
+			yield break;
 
 		if (typeSymbol.HasConversionFrom("Boolean", "System")) yield return typeof(bool);
 
@@ -415,6 +429,7 @@ internal static class TypeSymbolExtensions
 	/// Returns the code for a string expression of the given <paramref name="memberName"/> of "this".
 	/// </summary>
 	/// <param name="memberName">The member name. For example, "Value" leads to a string of "this.Value".</param>
+	/// <param name="stringVariant">The expression to use for strings. Any {0} is replaced by the member name.</param>
 	public static string CreateStringExpression(this ITypeSymbol typeSymbol, string memberName, string stringVariant = "this.{0}")
 	{
 		if (typeSymbol.IsValueType && !typeSymbol.IsNullable()) return $"this.{memberName}.ToString()";
@@ -426,12 +441,17 @@ internal static class TypeSymbolExtensions
 	/// Returns the code for a comparison expression on the given <paramref name="memberName"/> between "this" and "other".
 	/// </summary>
 	/// <param name="memberName">The member name. For example, "Value" leads to a comparison between "this.Value" and "other.Value".</param>
+	/// <param name="stringVariant">The expression to use for strings. Any {0} is replaced by the member name.</param>
 	public static string CreateComparisonExpression(this ITypeSymbol typeSymbol, string memberName, string stringVariant = "String.Compare(this.{0}, other.{0}, StringComparison.Ordinal)")
 	{
+		// DO NOT REORDER
+
+		// Collections have not been implemented, as we do not generate CompareTo() if any data member is not IComparable (as is the case for collections)
+
+		if (typeSymbol.IsType<string>()) return String.Format(stringVariant, memberName);
 		if (typeSymbol.IsNullable()) return $"(this.{memberName} is null || other.{memberName} is null ? -(this.{memberName} is null).CompareTo(other.{memberName} is null) : this.{memberName}.Value.CompareTo(other.{memberName}.Value))";
-		else if (typeSymbol.IsValueType) return $"this.{memberName}.CompareTo(other.{memberName})";
-		else if (typeSymbol.IsType<string>()) return String.Format(stringVariant, memberName);
-		else return $"(this.{memberName} is null || other.{memberName} is null ? -(this.{memberName} is null).CompareTo(other.{memberName} is null) : this.{memberName}.CompareTo(other.{memberName}))";
+		if (typeSymbol.IsValueType) return $"this.{memberName}.CompareTo(other.{memberName})";
+		return $"(this.{memberName} is null || other.{memberName} is null ? -(this.{memberName} is null).CompareTo(other.{memberName} is null) : this.{memberName}.CompareTo(other.{memberName}))";
 	}
 
 	/// <summary>
