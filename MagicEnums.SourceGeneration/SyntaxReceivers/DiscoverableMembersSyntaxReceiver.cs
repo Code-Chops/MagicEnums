@@ -12,8 +12,6 @@ internal static class DiscoverableMembersSyntaxReceiver
 	/// </summary>
 	internal static bool CheckIfIsProbablyEnumMemberInvocation(SyntaxNode syntaxNode)
 	{
-		return false;
-
 		// Explicit enum member invocation.
 		if (syntaxNode is InvocationExpressionSyntax invocation)
 		{

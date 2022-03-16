@@ -24,10 +24,10 @@ internal static class EnumSourceBuilder
 
 		foreach (var definition in enumDefinitionsByName.Values)
 		{
-			var relevantDiscoveredMembers = relevantDiscoveredMembersByDefinition.TryGetValue(definition, out var members) 
-				? members.ToList() 
+			var relevantDiscoveredMembers = relevantDiscoveredMembersByDefinition.TryGetValue(definition, out var members)
+				? members.ToList()
 				: new List<DiscoveredEnumMember>();
-			
+
 			var enumCode = CreateEnumSource(definition!, relevantDiscoveredMembers);
 			if (enumCode is null) continue;
 
@@ -38,7 +38,7 @@ internal static class EnumSourceBuilder
 	private static string? CreateEnumSource(EnumDefinition definition, List<DiscoveredEnumMember> relevantDiscoveredMembers)
 	{
 		var code = new StringBuilder();
-		
+
 		// Place the members that are discovered in the enum definition file itself first. The order can be relevant because the value of enum members can be implicitily incremental.
 		// Do a distinct on the file path and line position so the members will be deduplicated while typing their invocation.
 		// Also do a distinct on the member name.		
@@ -49,7 +49,7 @@ internal static class EnumSourceBuilder
 			.GroupBy(member => member.Name)
 			.Select(membersByName => membersByName.First())
 			.ToList();
-		
+
 		var members = definition.AttributeMembers.Concat(relevantDiscoveredMembers);
 
 		// Is used for correct enum member outlining.
@@ -64,7 +64,6 @@ internal static class EnumSourceBuilder
 using System;
 using CodeChops.MagicEnums;
 {GetValueTypeUsing()}
-
 {GetNamespaceDeclaration()}
 {GetEnumRecord()}
 /// <summary>
@@ -85,7 +84,7 @@ using CodeChops.MagicEnums;
 			var ns = definition.ValueTypeNamespace;
 			if (ns == "System") return null;
 
-			ns = $"using {ns};";
+			ns = $"using {ns};{Environment.NewLine}";
 			return ns;
 		}
 
@@ -102,7 +101,7 @@ using CodeChops.MagicEnums;
 		string? GetEnumRecord()
 		{
 			if (!members.Any()) return null;
-			
+
 			var code = new StringBuilder();
 
 			// Create the comments on the enum record.
@@ -138,7 +137,7 @@ using CodeChops.MagicEnums;
 	/// <summary>");
 
 					if (member.Value is not null)
-					{ 
+					{
 						code.Append($@"
 	/// <para>(value: {member.Value})</para>");
 					}
@@ -149,9 +148,9 @@ using CodeChops.MagicEnums;
 	/// {member.Comment}");
 					}
 
-				code.Append($@"
+					code.Append($@"
 	/// </summary>");
-				}				
+				}
 
 				// Create the enum member itself.
 				var outlineSpaces = new string(' ', longestMemberNameLength - member.Name.Length);
