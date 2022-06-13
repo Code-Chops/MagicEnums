@@ -16,11 +16,14 @@ public record EnumDefinition
 	public bool IsStruct { get; }
 
 	public EnumDefinition(INamedTypeSymbol type, string valueTypeName, string valueTypeNamespace, DiscoverabilityMode discoverabilityMode, string filePath, string accessModifier, List<EnumMember> attributeMembers)
+		: this(type.Name, type.ContainingNamespace?.ToDisplayString(), valueTypeName, valueTypeNamespace, discoverabilityMode, filePath, accessModifier, attributeMembers, isStruct: type.TypeKind == TypeKind.Struct)
 	{
-		this.Name = type.Name;
+	}
 
-		var ns = type.ContainingNamespace?.ToDisplayString();
-		this.Namespace = String.IsNullOrWhiteSpace(ns) ? null : ns;
+	public EnumDefinition(string name, string? enumNamespace, string valueTypeName, string valueTypeNamespace, DiscoverabilityMode discoverabilityMode, string filePath, string accessModifier, IEnumerable<EnumMember> attributeMembers, bool isStruct)
+	{
+		this.Name = name;
+		this.Namespace = String.IsNullOrWhiteSpace(enumNamespace) ? null : enumNamespace;
 
 		this.ValueTypeName = valueTypeName;
 		this.ValueTypeNamespace = valueTypeNamespace;
@@ -30,7 +33,7 @@ public record EnumDefinition
 		this.FilePath = filePath;
 		this.AccessModifier = accessModifier.Replace("partial ", "").Replace("static ", "");
 
-		this.AttributeMembers = attributeMembers;
-		this.IsStruct = type.TypeKind == TypeKind.Struct;
+		this.AttributeMembers = attributeMembers as List<EnumMember> ?? attributeMembers.ToList();
+		this.IsStruct = isStruct;
 	}
 }

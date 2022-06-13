@@ -54,11 +54,11 @@ internal class EnumDefinitionSyntaxReceiver
 		var valueType = genericTypeArgument.Skip(1).FirstOrDefault();
 
 		var definition = new EnumDefinition(
-			type: type, 
+			type: type,
 			valueTypeName: valueType?.Name ?? "Int32",
 			valueTypeNamespace: valueType?.ContainingNamespace.ToDisplayString() ?? "System",
-			discoverabilityMode: discoverabilityMode, 
-			filePath: filePath, 
+			discoverabilityMode: discoverabilityMode,
+			filePath: filePath,
 			accessModifier: typeDeclaration.Modifiers.ToFullString(),
 			attributeMembers: attributeMembers.ToList());
 
