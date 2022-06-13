@@ -14,13 +14,13 @@ namespace CodeChops.MagicEnums.SourceGeneration;
 [Generator]
 public class SourceGenerator : IIncrementalGenerator
 {
+	public const string GenerateMethodName					= "CreateMember";
 	internal const string InterfaceName						= "IMagicEnumCore";
 	internal const string InterfaceNamespace				= "CodeChops.MagicEnums.Core";
 	internal const string AttributeNamespace				= "CodeChops.MagicEnums.Attributes";
 	internal const string MemberAttributeName				= "EnumMember";
 	internal const string DiscoverableAttributeName			= "DiscoverableEnumMembers";
 	internal const string CreateInternalCopyAttributeName	= "CloneAsInternal";
-	internal const string GenerateMethodName				= "CreateMember";
 
 	private Dictionary<string, EnumDefinition>? EnumDefinitionsByName { get; set; }
 

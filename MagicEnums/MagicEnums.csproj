@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>1.1.1</VersionPrefix>
-		<PackageReleaseNotes>Added unit tests. Added member interface. Made interfaces public.</PackageReleaseNotes>
+		<VersionPrefix>1.2.0</VersionPrefix>
+		<PackageReleaseNotes>Added uninitialized object enums.</PackageReleaseNotes>
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<LangVersion>10</LangVersion>
 	</PropertyGroup>
