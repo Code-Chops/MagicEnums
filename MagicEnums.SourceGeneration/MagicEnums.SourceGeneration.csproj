@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<Version>1.0.2</Version>
-		<PackageReleaseNotes>Generate package on build.</PackageReleaseNotes>
+		<Version>1.0.3</Version>
+		<PackageReleaseNotes>Public accessibility generate method.</PackageReleaseNotes>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<LangVersion>10</LangVersion>
 	</PropertyGroup>
