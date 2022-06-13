@@ -3,7 +3,7 @@ using CodeChops.MagicEnums.SourceGeneration.Extensions;
 
 namespace CodeChops.MagicEnums.SourceGeneration.Entities;
 
-internal record EnumMember
+public record EnumMember
 {
 	public string Name { get; }
 	public object? Value { get; }

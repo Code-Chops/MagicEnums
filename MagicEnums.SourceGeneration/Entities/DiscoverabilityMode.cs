@@ -1,6 +1,6 @@
 ﻿namespace CodeChops.MagicEnums.SourceGeneration.Entities;
 
-internal enum DiscoverabilityMode
+public enum DiscoverabilityMode
 {
 	None,
 	Explicit,

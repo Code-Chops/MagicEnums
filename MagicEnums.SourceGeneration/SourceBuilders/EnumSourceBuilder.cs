@@ -6,7 +6,7 @@ using System.Collections.Immutable;
 
 namespace CodeChops.MagicEnums.SourceGeneration.SourceBuilders;
 
-internal static class EnumSourceBuilder
+public static class EnumSourceBuilder
 {
 	/// <summary>
 	/// Creates a partial record of the enum definition which includes the discovered enum members. It also generates an extension class for the explicit enum definitions.
@@ -35,7 +35,7 @@ internal static class EnumSourceBuilder
 		}
 	}
 
-	private static string? CreateEnumSource(EnumDefinition definition, List<DiscoveredEnumMember> relevantDiscoveredMembers)
+	public static string? CreateEnumSource(EnumDefinition definition, List<DiscoveredEnumMember> relevantDiscoveredMembers)
 	{
 		var code = new StringBuilder();
 

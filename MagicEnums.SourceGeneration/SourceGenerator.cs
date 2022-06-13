@@ -8,7 +8,7 @@ namespace CodeChops.MagicEnums.SourceGeneration;
 
 /// <summary>
 /// Generates newly enum members by discovering them from an implicit or explicit invocation.
-/// This way no manual enum member definition is needed anymore.
+/// This way manual enum member definitions are not needed anymore.
 /// This discovery will only work on enums with the correct attribute <see cref="DiscoverableAttributeName"/>.
 /// </summary>
 [Generator]

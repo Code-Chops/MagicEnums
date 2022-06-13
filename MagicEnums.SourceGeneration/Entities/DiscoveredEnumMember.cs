@@ -2,7 +2,7 @@
 
 namespace CodeChops.MagicEnums.SourceGeneration.Entities;
 
-internal record DiscoveredEnumMember : EnumMember
+public record DiscoveredEnumMember : EnumMember
 {
 	public string EnumName { get; }
 	public DiscoverabilityMode DiscoverabilityMode { get; }
