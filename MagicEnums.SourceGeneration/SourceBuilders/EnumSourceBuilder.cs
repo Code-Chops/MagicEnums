@@ -35,7 +35,7 @@ public static class EnumSourceBuilder
 		}
 	}
 
-	public static string? CreateEnumSource(EnumDefinition definition, List<DiscoveredEnumMember> relevantDiscoveredMembers)
+	private static string? CreateEnumSource(EnumDefinition definition, List<DiscoveredEnumMember> relevantDiscoveredMembers)
 	{
 		var code = new StringBuilder();
 

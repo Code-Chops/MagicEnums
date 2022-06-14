@@ -14,7 +14,7 @@ namespace CodeChops.MagicEnums.SourceGeneration;
 [Generator]
 public class SourceGenerator : IIncrementalGenerator
 {
-	public const string GenerateMethodName					= "CreateMember";
+	internal const string GenerateMethodName				= "CreateMember";
 	internal const string InterfaceName						= "IMagicEnumCore";
 	internal const string InterfaceNamespace				= "CodeChops.MagicEnums.Core";
 	internal const string AttributeNamespace				= "CodeChops.MagicEnums.Attributes";
@@ -48,6 +48,7 @@ public class SourceGenerator : IIncrementalGenerator
 			source: enumDefinitions,
 			action: (source, definitions) => AddEnumDefinitions(definitions!));
 		
+
 		void AddEnumDefinitions(ImmutableArray<EnumDefinition> enumDefinitions)
 		{
 			this.EnumDefinitionsByName = enumDefinitions

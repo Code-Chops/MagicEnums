@@ -29,7 +29,6 @@ internal record struct MagicStructEnum : IMagicEnumCore<MagicStructEnum, int>
 	/// <inheritdoc cref="IMember{TValue}.Value"/>
 	public int Value { get; internal init; } = default!;
 
-	/// <inheritdoc cref="IMember{TValue}.Index"/>
 	public int Index { get; internal init; }
 
 	public MagicStructEnum(string name, int value, int index)

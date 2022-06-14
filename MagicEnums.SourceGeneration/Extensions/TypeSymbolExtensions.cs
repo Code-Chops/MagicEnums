@@ -32,11 +32,6 @@ internal static class TypeSymbolExtensions
 
 		return !type.IsGenericType || HasGenericTypeArguments(typeSymbol, type);
 
-		// Local function that throws for open generic types
-		static void ThrowOpenGenericTypeException()
-		{
-			throw new NotSupportedException("This method does not support open generic types.");
-		}
 
 		// Local function that returns whether the input types have matching generic type arguments
 		static bool HasGenericTypeArguments(ITypeSymbol typeSymbol, Type type)

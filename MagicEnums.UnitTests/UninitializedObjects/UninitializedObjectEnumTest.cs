@@ -42,6 +42,5 @@ public class UninitializedObjectEnumTest
 		Assert.Equal(UninitializedObjectWithBaseTypeEnumMock.Cat.Value,	UninitializedObjectWithBaseTypeEnumMock.Cat.Value);
 		Assert.Equal(UninitializedObjectWithBaseTypeEnumMock.Dog,		UninitializedObjectWithBaseTypeEnumMock.Dog);
 		Assert.Equal(UninitializedObjectWithBaseTypeEnumMock.Dog.Value,	UninitializedObjectWithBaseTypeEnumMock.Dog.Value);
-
 	}
 }
