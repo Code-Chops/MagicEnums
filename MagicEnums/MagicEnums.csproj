@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>1.2.2</VersionPrefix>
-		<PackageReleaseNotes>Fixed reference to source generator</PackageReleaseNotes>
+		<VersionPrefix>1.2.3</VersionPrefix>
+		<PackageReleaseNotes>Updated third-party packages.</PackageReleaseNotes>
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<LangVersion>10</LangVersion>
 	</PropertyGroup>
@@ -61,6 +61,11 @@ Flexible and extendable enums for C#:
 		<None Include="..\MagicEnums.SourceGeneration\bin\$(Configuration)\netstandard2.0\$(AssemblyName).SourceGeneration.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 	</ItemGroup>
 
+	<!-- Creates local nuget packages if environment variable LocalNuGetPackagesFolder is configured -->
+	<Target Name="AddNugetPackage" AfterTargets="Pack" Condition="'$(Configuration)' == 'Debug' And '$(LocalNuGetPackagesFolder)' != null">
+		<Exec Command="$(LocalNuGetPackagesFolder)\nuget.exe add $(OutputPath)..\$(PackageId).$(PackageVersion).nupkg -source $(LocalNuGetPackagesFolder)" />
+	</Target>
+	
 	<ItemGroup>
 		<None Include="Properties\LICENSE" Pack="true" PackagePath="" />
 		<None Include="Properties\icon.png" Pack="true" Visible="true" PackagePath="" />

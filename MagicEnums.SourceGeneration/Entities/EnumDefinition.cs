@@ -2,7 +2,7 @@
 
 namespace CodeChops.MagicEnums.SourceGeneration.Entities;
 
-public record EnumDefinition
+public record EnumDefinition : IEnumEntity
 {
 	public string Name { get; }
 	public string? Namespace { get; }
