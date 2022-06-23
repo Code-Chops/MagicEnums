@@ -1,4 +1,4 @@
-﻿namespace CodeChops.MagicEnums.UnitTests.InitializedObjects;
+﻿namespace CodeChops.MagicEnums.UnitTests.UninitializedObjects;
 
 public record UninitializedObjectWithBaseTypeEnumMock : MagicUninitializedObjectEnum<UninitializedObjectWithBaseTypeEnumMock, Animal>
 {
