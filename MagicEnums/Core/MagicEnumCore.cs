@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
+using CodeChops.Identities;
 using CodeChops.MagicEnums.Core.Members;
 
 namespace CodeChops.MagicEnums.Core;
@@ -10,29 +11,31 @@ namespace CodeChops.MagicEnums.Core;
 /// </summary>
 /// <typeparam name="TEnum">The type of the enum itself. Is also the type of each member.</typeparam>
 /// <typeparam name="TValue">The type of the value of the enum.</typeparam>
-public abstract partial record MagicEnumCore<TEnum, TValue> : IMagicEnumCore<TEnum, TValue>
+public abstract partial record MagicEnumCore<TEnum, TValue> : IMagicEnumCore<TEnum, TValue>, IId<TValue>
 	where TEnum : MagicEnumCore<TEnum, TValue>
 	where TValue : notnull
 {
 	/// <summary>
 	/// Returns the name of the enum member.
 	/// </summary>
-	public sealed override string? ToString() => this.Name;
+	public sealed override string ToString() => this.Name;
 
 	public virtual bool Equals(MagicEnumCore<TEnum, TValue>? other) 
 		=> other is not null && (this.Value is null ? other.Value is null : this.Value.Equals(other.Value));
-	public override int GetHashCode() => this.Value?.GetHashCode() ?? 0;
+	public override int GetHashCode() => this.Value.GetHashCode();
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static implicit operator TValue?(MagicEnumCore<TEnum, TValue> magicEnum) => magicEnum.Value;
+	public static implicit operator TValue(MagicEnumCore<TEnum, TValue> magicEnum) => magicEnum.Value;
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static explicit operator MagicEnumCore<TEnum, TValue>(TValue value) => GetSingleMember(value);
 
 	/// <inheritdoc cref="IMember{TValue}.Name"/>
-	public string Name { get; internal init; } = default!;
+	public string Name { get; private init; } = default!;
 
 	/// <inheritdoc cref="IMember{TValue}.Value"/>
-	public TValue Value { get; internal init; } = default!;
+	public TValue Value { get; private init; } = default!;
+
+	public object GetValue() => this.Value;
 
 	/// <inheritdoc cref="IMagicEnumCore{TEnum, TValue}.GetDefaultValue"/>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -50,12 +53,12 @@ public abstract partial record MagicEnumCore<TEnum, TValue> : IMagicEnumCore<TEn
 	public static IEnumerable<TEnum> GetEnumerable() => IMagicEnumCore<TEnum, TValue>.GetEnumerable();
 
 	protected static TEnum CreateMember(TValue value, string name)
-		=> IMagicEnumCore<TEnum, TValue>.CreateMember(value, name, () => CachedUnitializedMember with { Name = name, Value = value });
+		=> IMagicEnumCore<TEnum, TValue>.CreateMember(value, name, () => CachedUninitializedMember with { Name = name, Value = value });
 
 	/// <summary>
 	/// Used to create new members.
 	/// </summary>
-	private static readonly TEnum CachedUnitializedMember = (TEnum)FormatterServices.GetUninitializedObject(typeof(TEnum));
+	private static readonly TEnum CachedUninitializedMember = (TEnum)FormatterServices.GetUninitializedObject(typeof(TEnum));
 
 	/// <inheritdoc cref="IMagicEnumCore{TEnum, TValue}.TryGetSingleMember(string, out TEnum)"/>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
