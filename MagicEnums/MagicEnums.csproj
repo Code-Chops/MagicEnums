@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>1.2.8</VersionPrefix>
-		<PackageReleaseNotes>Small code fixes.</PackageReleaseNotes>
+		<VersionPrefix>1.2.9</VersionPrefix>
+		<PackageReleaseNotes>Updated generic math package reference.</PackageReleaseNotes>
 		<TargetFramework>net6.0</TargetFramework>
 		<LangVersion>10</LangVersion>
 	</PropertyGroup>
@@ -90,7 +90,7 @@ Flexible and extendable enums for C#:
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CodeChops.GenericMath" Version="1.3.0" />
+		<PackageReference Include="CodeChops.GenericMath" Version="1.3.2" />
 		<PackageReference Include="CodeChops.Identities" Version="0.0.5" />
 	</ItemGroup>
 
