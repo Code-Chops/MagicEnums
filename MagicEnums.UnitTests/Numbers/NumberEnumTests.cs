@@ -66,14 +66,12 @@ public class NumberEnumTests
 	[Fact]
 	public void NumberEnum_CorrectEquals()
 	{
-		Assert.True(NumberEnumMock.InitialImplicitValue			== NumberEnumMock.InitialImplicitValue);
-		Assert.True(NumberEnumMock.InitialImplicitValue.Value	== NumberEnumMock.InitialImplicitValue.Value);
+		Assert.True(NumberEnumMock.InitialImplicitValue			== NumberEnumMock.InitialImplicitValue.Value);
 		Assert.True(NumberEnumMock.InitialImplicitValue			!= NumberEnumMock.ImplicitValue);
 		Assert.True(NumberEnumMock.InitialImplicitValue.Value	!= NumberEnumMock.ImplicitValue.Value);
 		Assert.True(NumberEnumMock.NonExistingExplicitValue		== NumberEnumMock.ExistingExplicitValue);
 
-		Assert.Equal(NumberEnumMock.InitialImplicitValue,			NumberEnumMock.InitialImplicitValue);
-		Assert.Equal(NumberEnumMock.InitialImplicitValue.Value,		NumberEnumMock.InitialImplicitValue.Value);
+		Assert.Equal(NumberEnumMock.InitialImplicitValue,			NumberEnumMock.InitialImplicitValue.Value);
 		Assert.NotEqual(NumberEnumMock.InitialImplicitValue,		NumberEnumMock.ImplicitValue);
 		Assert.NotEqual(NumberEnumMock.InitialImplicitValue.Value,	NumberEnumMock.ImplicitValue.Value);
 		Assert.Equal(NumberEnumMock.NonExistingExplicitValue.Value, NumberEnumMock.ExistingExplicitValue.Value);

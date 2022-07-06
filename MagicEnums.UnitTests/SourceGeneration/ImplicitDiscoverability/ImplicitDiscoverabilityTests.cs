@@ -1,6 +1,6 @@
 ﻿using Xunit;
 
-namespace CodeChops.MagicEnums.UnitTests.SourceGeneration.Implicit;
+namespace CodeChops.MagicEnums.UnitTests.SourceGeneration.ImplicitDiscoverability;
 
 public class ImplicitDiscoverabilityTests
 {

@@ -1,4 +1,4 @@
-﻿namespace CodeChops.MagicEnums.UnitTests.Strings;
+﻿namespace CodeChops.MagicEnums.UnitTests.Custom;
 
 internal partial record CustomClassEnumMock : MagicCustomEnum<CustomClassEnumMock, DataClass>
 {

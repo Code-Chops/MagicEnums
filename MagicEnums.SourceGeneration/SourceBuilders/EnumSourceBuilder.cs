@@ -29,17 +29,16 @@ public static class EnumSourceBuilder
 				: new List<DiscoveredEnumMember>();
 
 			var enumCode = CreateEnumSource(definition!, relevantDiscoveredMembers);
-			if (enumCode is null) continue;
 
 			context.AddSource($"{definition!.Name}.g.cs", SourceText.From(enumCode, Encoding.UTF8));
 		}
 	}
 
-	private static string? CreateEnumSource(EnumDefinition definition, List<DiscoveredEnumMember> relevantDiscoveredMembers)
+	private static string CreateEnumSource(EnumDefinition definition, List<DiscoveredEnumMember> relevantDiscoveredMembers)
 	{
 		var code = new StringBuilder();
 
-		// Place the members that are discovered in the enum definition file itself first. The order can be relevant because the value of enum members can be implicitily incremental.
+		// Place the members that are discovered in the enum definition file itself first. The order can be relevant because the value of enum members can be implicitly incremental.
 		// Do a distinct on the file path and line position so the members will be deduplicated while typing their invocation.
 		// Also do a distinct on the member name.		
 		relevantDiscoveredMembers = relevantDiscoveredMembers
@@ -50,7 +49,9 @@ public static class EnumSourceBuilder
 			.Select(membersByName => membersByName.First())
 			.ToList();
 
-		var members = definition.AttributeMembers.Concat(relevantDiscoveredMembers);
+		var members = definition.AttributeMembers
+			.Concat(relevantDiscoveredMembers)
+			.ToList();
 
 		// Is used for correct enum member outlining.
 		var longestMemberNameLength = members

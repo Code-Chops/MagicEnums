@@ -1,6 +1,6 @@
-﻿namespace CodeChops.MagicEnums.Core.Members;
+﻿namespace CodeChops.MagicEnums.Core;
 
-public interface IMember<TValue>
+public interface IMember<out TValue>
 	where TValue : notnull
 {
 	/// <summary>

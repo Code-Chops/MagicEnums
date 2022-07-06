@@ -21,7 +21,9 @@ public record EnumTests : MagicCustomEnum<EnumTests, bool>
 	[Fact]
 	public void Enum_WithSameValues_ShouldNotThrow()
 	{
+		// ReSharper disable once ExplicitCallerInfoArgument
 		CreateMember(false, "Name1");
+		// ReSharper disable once ExplicitCallerInfoArgument
 		CreateMember(false, "Name2");
 	}
 

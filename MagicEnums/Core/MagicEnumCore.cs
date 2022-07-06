@@ -2,7 +2,6 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using CodeChops.Identities;
-using CodeChops.MagicEnums.Core.Members;
 
 namespace CodeChops.MagicEnums.Core;
 
@@ -21,7 +20,7 @@ public abstract partial record MagicEnumCore<TEnum, TValue> : IMagicEnumCore<TEn
 	public sealed override string ToString() => this.Name;
 
 	public virtual bool Equals(MagicEnumCore<TEnum, TValue>? other) 
-		=> other is not null && (this.Value is null ? other.Value is null : this.Value.Equals(other.Value));
+		=> other is not null && this.Value.Equals(other.Value);
 	public override int GetHashCode() => this.Value.GetHashCode();
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]

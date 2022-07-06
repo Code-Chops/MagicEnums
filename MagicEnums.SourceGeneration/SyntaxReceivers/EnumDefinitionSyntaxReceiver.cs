@@ -31,7 +31,7 @@ internal class EnumDefinitionSyntaxReceiver
 		if (attributeSyntax.Parent?.Parent is not RecordDeclarationSyntax typeDeclaration) return null;
 		if (context.SemanticModel.GetDeclaredSymbol(typeDeclaration, cancellationToken) is not INamedTypeSymbol type) return null;
 
-		if (type is null || type.IsStatic || !type.IsRecord || !typeDeclaration.Modifiers.Any(m => m.ValueText == "partial")) return null;
+		if (type.IsStatic || !type.IsRecord || !typeDeclaration.Modifiers.Any(m => m.ValueText == "partial")) return null;
 
 		if (!type.IsOrImplementsInterface(type => type.IsType(SourceGenerator.InterfaceName, SourceGenerator.InterfaceNamespace, isGenericType: true), out var interf)) return null;
 		if (!interf.IsGeneric(typeParameterCount: 2, out var genericTypeArgument)) return null;

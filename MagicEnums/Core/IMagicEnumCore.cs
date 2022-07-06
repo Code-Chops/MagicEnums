@@ -2,7 +2,6 @@
 using System.Runtime.CompilerServices;
 using System.Diagnostics.CodeAnalysis;
 using CodeChops.MagicEnums.Attributes;
-using CodeChops.MagicEnums.Core.Members;
 
 namespace CodeChops.MagicEnums.Core;
 
@@ -63,16 +62,16 @@ public interface IMagicEnumCore<TEnum, TValue> : IMember<TValue>
 	private static IDictionary<TValue, IEnumerable<TEnum>> MembersByValues
 		=> _membersByValues ??= MemberByNames
 			.GroupBy(memberByName => memberByName.Value, memberByName => memberByName.Value)
-			.ToDictionary(member => member.Key.Value!, member => member.AsEnumerable());
+			.ToDictionary(member => member.Key.Value, member => member.AsEnumerable());
 
 	/// <summary>
 	/// A mapping of a member value to one or more members. Don't change this value. Only reset it (to null).
 	/// </summary>
-	private static IDictionary<TValue, IEnumerable<TEnum>> _membersByValues = null!;
+	private static IDictionary<TValue, IEnumerable<TEnum>>? _membersByValues;
 
 	/// <summary>
 	/// A lock for the dictionary. 
-	/// This lock is used for switching between a concurrent and not-concurrent state (when using <see cref="ConcurrencyMode.AdaptiveConcurrency"/>).
+	/// This lock is used for switching between a concurrent and not-concurrent state (when using <see cref="Core.ConcurrencyMode.AdaptiveConcurrency"/>).
 	/// </summary>
 	private static readonly object DictionaryLock = new();
 
@@ -91,7 +90,7 @@ public interface IMagicEnumCore<TEnum, TValue> : IMember<TValue>
 	/// <summary>
 	/// Gets the last inserted value of the enum.
 	/// </summary>
-	protected static TValue? GetLastInsertedValue()
+	protected static TValue GetLastInsertedValue()
 	{
 		return MembersByValues.LastOrDefault().Key;
 	}
@@ -200,9 +199,10 @@ public interface IMagicEnumCore<TEnum, TValue> : IMember<TValue>
 			return false;
 		}
 
-		if (members.Count() > 1) throw new InvalidOperationException($"Expected enum {typeof(TEnum).Name} to have exactly one member with value '{memberValue}'.");
+		var membersList = members.ToList();
+		if (membersList.Count > 1) throw new InvalidOperationException($"Expected enum {typeof(TEnum).Name} to have exactly one member with value '{memberValue}'.");
 
-		member = members.First();
+		member = membersList.First();
 		return true;
 	}
 
@@ -229,7 +229,7 @@ public interface IMagicEnumCore<TEnum, TValue> : IMember<TValue>
 	/// <param name="members">The queried member(s).</param>
 	/// <returns>True if one or more members have been found.</returns>
 	/// <exception cref="ArgumentNullException">When value is null.</exception>
-	public static bool TryGetMembers(TValue memberValue, [NotNullWhen(true)] out IEnumerable<TEnum> members)
+	public static bool TryGetMembers(TValue memberValue, out IEnumerable<TEnum> members)
 		=> memberValue is null
 			 ? throw new ArgumentNullException(nameof(memberValue))
 			 : MembersByValues.TryGetValue(memberValue, out members!);

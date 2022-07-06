@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>1.2.7</VersionPrefix>
-		<PackageReleaseNotes>Replace package on build.</PackageReleaseNotes>
+		<VersionPrefix>1.2.8</VersionPrefix>
+		<PackageReleaseNotes>Small code fixes.</PackageReleaseNotes>
 		<TargetFramework>net6.0</TargetFramework>
 		<LangVersion>10</LangVersion>
 	</PropertyGroup>
@@ -61,13 +61,18 @@ Flexible and extendable enums for C#:
 	<ItemGroup>
 		<None Include="..\MagicEnums.SourceGeneration\bin\$(Configuration)\netstandard2.0\$(AssemblyName).SourceGeneration.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 	</ItemGroup>
-	
+
+	<!-- Generate source generated output -->
+	<PropertyGroup Condition="'$(LocalNuGetPackagesFolder)' != null">
+		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+		<CompilerGeneratedFilesOutputPath>$(LocalNuGetPackagesFolder)\..\_sourcegenerated</CompilerGeneratedFilesOutputPath>
+	</PropertyGroup>
 	<!-- Removes local nuget packages, so the package will be replaced when it exists -->
-	<Target Name="RemoveNugetPackage" AfterTargets="Pack" Condition="'$(Configuration)' == 'Debug' And '$(LocalNuGetPackagesFolder)' != null">
+	<Target Name="RemoveNugetPackage" AfterTargets="Pack" Condition="'$(LocalNuGetPackagesFolder)' != null">
 		<Exec Command="rmdir $(LocalNuGetPackagesFolder)\$(PackageId)\$(PackageVersion)\ /s /q" />
 	</Target>
 	<!-- Creates local nuget packages if environment variable LocalNuGetPackagesFolder is configured -->
-	<Target Name="AddNugetPackage" AfterTargets="Pack" Condition="'$(Configuration)' == 'Debug' And '$(LocalNuGetPackagesFolder)' != null">
+	<Target Name="AddNugetPackage" AfterTargets="Pack" Condition="'$(LocalNuGetPackagesFolder)' != null">
 		<Exec Command="$(LocalNuGetPackagesFolder)\nuget.exe add $(OutputPath)..\$(PackageId).$(PackageVersion).nupkg -source $(LocalNuGetPackagesFolder)" />
 	</Target>
 	
@@ -86,7 +91,7 @@ Flexible and extendable enums for C#:
 
 	<ItemGroup>
 		<PackageReference Include="CodeChops.GenericMath" Version="1.3.0" />
-		<PackageReference Include="CodeChops.Identities" Version="0.0.4" />
+		<PackageReference Include="CodeChops.Identities" Version="0.0.5" />
 	</ItemGroup>
 
 	<PropertyGroup>

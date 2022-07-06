@@ -39,13 +39,11 @@ public class StringEnumTests
 	[Fact]
 	public void StringEnum_Equals_IsCorrect()
 	{
-		Assert.True(StringEnum.ValueA		== StringEnum.ValueA);
-		Assert.True(StringEnum.ValueA.Value == StringEnum.ValueA.Value);
+		Assert.True(StringEnum.ValueA		== StringEnum.ValueA.Value);
 		Assert.True(StringEnum.ValueA		!= StringEnum.ValueB);
 		Assert.True(StringEnum.ValueA.Value != StringEnum.ValueB.Value);
 
-		Assert.Equal(StringEnum.ValueA,				StringEnum.ValueA);
-		Assert.Equal(StringEnum.ValueA.Value,		StringEnum.ValueA.Value);
+		Assert.Equal(StringEnum.ValueA,				StringEnum.ValueA.Value);
 		Assert.NotEqual(StringEnum.ValueA,			StringEnum.ValueB);
 		Assert.NotEqual(StringEnum.ValueA.Value,	StringEnum.ValueB.Value);
 	}

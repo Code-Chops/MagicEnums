@@ -1,6 +1,6 @@
 ﻿using Xunit;
 
-namespace CodeChops.MagicEnums.UnitTests.Strings;
+namespace CodeChops.MagicEnums.UnitTests.Custom;
 
 public class CustomClassEnumTests
 {
@@ -35,13 +35,11 @@ public class CustomClassEnumTests
 	[Fact]
 	public void CustomClassEnum_Equals_IsCorrect()
 	{
-		Assert.True(CustomClassEnumMock.ValueA			== CustomClassEnumMock.ValueA);
-		Assert.True(CustomClassEnumMock.ValueA.Value	== CustomClassEnumMock.ValueA.Value);
+		Assert.True(CustomClassEnumMock.ValueA			== CustomClassEnumMock.ValueA.Value);
 		Assert.True(CustomClassEnumMock.ValueA			!= CustomClassEnumMock.ValueB);
 		Assert.True(CustomClassEnumMock.ValueA.Value	!= CustomClassEnumMock.ValueB.Value);
 
-		Assert.Equal(CustomClassEnumMock.ValueA,			CustomClassEnumMock.ValueA);
-		Assert.Equal(CustomClassEnumMock.ValueA.Value,		CustomClassEnumMock.ValueA.Value);
+		Assert.Equal(CustomClassEnumMock.ValueA,			CustomClassEnumMock.ValueA.Value);
 		Assert.NotEqual(CustomClassEnumMock.ValueA,			CustomClassEnumMock.ValueB);
 		Assert.NotEqual(CustomClassEnumMock.ValueA.Value,	CustomClassEnumMock.ValueB.Value);
 	}

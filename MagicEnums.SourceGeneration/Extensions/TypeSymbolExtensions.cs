@@ -26,6 +26,8 @@ internal static class TypeSymbolExtensions
 	/// </summary>
 	public static bool IsType(this ITypeSymbol typeSymbol, Type type)
 	{
+		if (type.Namespace is null) return false;
+		
 		if (!IsType(typeSymbol, type.Name, type.Namespace)) return false;
 
 		if (!typeSymbol.IsType(type.Name, type.Namespace!)) return false;
@@ -257,7 +259,7 @@ internal static class TypeSymbolExtensions
 	{
 		elementType = null;
 
-		if (!typeSymbol.IsOrImplementsInterface(type => type.IsType("IEnumerable", "System.Collections", isGenericType: false), out var nonGenericEnumerableInterface))
+		if (!typeSymbol.IsOrImplementsInterface(type => type.IsType("IEnumerable", "System.Collections", isGenericType: false), out _))
 			return false;
 
 		if (typeSymbol.IsOrImplementsInterface(type => type.IsType("IList", "System.Collections.Generic", isGenericType: true), out var interf))

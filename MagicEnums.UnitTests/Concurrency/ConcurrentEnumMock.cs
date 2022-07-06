@@ -10,5 +10,6 @@ internal record DynamicConcurrentEnumMock : MagicEnum<DynamicConcurrentEnumMock>
 {
 	public static DynamicConcurrentEnumMock ValueA { get; } = CreateMember();
 
+	// ReSharper disable once ExplicitCallerInfoArgument
 	public static void CreateDynamicTestMember() => CreateMember("DynamicMember");
 }

@@ -46,7 +46,7 @@ public class SourceGenerator : IIncrementalGenerator
 		// Store the enum definitions in the property for later use.
 		context.RegisterSourceOutput(
 			source: enumDefinitions,
-			action: (source, definitions) => AddEnumDefinitions(definitions!));
+			action: (_, definitions) => AddEnumDefinitions(definitions!));
 		
 
 		void AddEnumDefinitions(ImmutableArray<EnumDefinition> enumDefinitions)
@@ -64,7 +64,7 @@ public class SourceGenerator : IIncrementalGenerator
 	{
 		var memberInvokations = context.SyntaxProvider
 			.CreateSyntaxProvider(
-				predicate: static (syntaxNode, ct)	=> DiscoverableMembersSyntaxReceiver.CheckIfIsProbablyEnumMemberInvocation(syntaxNode),
+				predicate: static (syntaxNode, _)	=> DiscoverableMembersSyntaxReceiver.CheckIfIsProbablyEnumMemberInvocation(syntaxNode),
 				transform: (context, ct)			=> DiscoverableMembersSyntaxReceiver.GetProbablyDiscoveredEnumMember(context, EnumDefinitionsByName, ct))
 			.Where(static member => member is not null)
 			.Collect();

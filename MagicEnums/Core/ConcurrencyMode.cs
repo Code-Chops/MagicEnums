@@ -15,7 +15,7 @@ internal sealed partial record ConcurrencyMode : MagicEnum<ConcurrencyMode>
 	public static ConcurrencyMode AdaptiveConcurrency { get; } = CreateMember();
 
 	/// <summary>
-	/// The enum is not concurrent througout its lifetime.
+	/// The enum is not concurrent throughout its lifetime.
 	/// Warning! Only use this label when the members are created from a static context.
 	/// </summary>
 	public static ConcurrencyMode NeverConcurrent { get; } = CreateMember();

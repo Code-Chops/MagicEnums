@@ -7,18 +7,16 @@ namespace CodeChops.MagicEnums;
 /// <summary>
 /// An enum with an integer value. 
 /// Use <see cref="MagicEnum{TEnum, TValue}.CreateMember(string?)"/> 
-/// or <see cref="MagicEnum{TEnum, TValue}.CreateMember(TValue, string?)"/> to create a member.
+/// or <see cref="CodeChops.MagicEnums.MagicEnum{TEnum, TValue}.CreateMember(TValue, string?)"/> to create a member.
 /// </summary>
 /// <typeparam name="TEnum">The type of the number enum itself. Is also equal to the type of each member.</typeparam>
 public abstract partial record MagicEnum<TEnum> : MagicEnum<TEnum, int>
-	where TEnum : MagicEnum<TEnum>
-{
-}
+	where TEnum : MagicEnum<TEnum>;
 
 /// <summary>
 /// An enum with an integral value.
 /// Use <see cref="MagicEnum{TEnum, TValue}.CreateMember(string?)"/> 
-/// or <see cref="MagicEnum{TEnum, TValue}.CreateMember(TValue, string?)"/> to create a member.
+/// or <see cref="CodeChops.MagicEnums.MagicEnum{TEnum, TValue}.CreateMember(TValue, string?)"/> to create a member.
 /// </summary>
 /// <typeparam name="TEnum">The type of the number enum itself. Is also equal to the type of each member.</typeparam>
 /// <typeparam name="TValue">The integral type.</typeparam>
@@ -74,6 +72,7 @@ public abstract partial record MagicEnum<TEnum, TValue> : MagicEnumCore<TEnum, T
 			if (LastInsertedNumber is null)
 				LastInsertedNumber = new();
 			else
+				// ReSharper disable once RedundantSuppressNullableWarningExpression
 				LastInsertedNumber!++;
 		}
 	}
@@ -83,12 +82,12 @@ public abstract partial record MagicEnum<TEnum, TValue> : MagicEnumCore<TEnum, T
 	/// </summary>
 	/// <param name="enforcedName">
 	/// The name of the new member.
-	/// Don't provide this parameter, so the property name of the enum will automaticaly be used as the name of the member. 
+	/// Don't provide this parameter, so the property name of the enum will automatically be used as the name of the member. 
 	/// If provided, the enforced name will be used, and the property name the will be forgotten. 
 	/// </param>
 	/// <returns>The newly created member.</returns>
 	/// <exception cref="ArgumentException">When a member already exists with the same name.</exception>
-	protected static new TEnum CreateMember(TValue value, [CallerMemberName] string? enforcedName = null)
+	protected new static TEnum CreateMember(TValue value, [CallerMemberName] string? enforcedName = null)
 	{
 		if (IMagicEnumCore<TEnum, TValue>.IsInConcurrentState)
 			lock (LockLastInsertedNumber) LastInsertedNumber = value;

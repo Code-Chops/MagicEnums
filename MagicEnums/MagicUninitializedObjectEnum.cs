@@ -4,17 +4,15 @@ using System.Runtime.Serialization;
 namespace CodeChops.MagicEnums;
 
 /// <summary>
-/// An enum with an unitialized object as member value.
+/// An enum with an uninitialized object as member value.
 /// Use <see cref="MagicStringEnum{TEnum}.CreateMember(string?)"/> to create a member.
 /// </summary>
 /// <typeparam name="TEnum">The type of the number enum itself. Is also equal to the type of each member.</typeparam>
 public abstract record MagicUninitializedObjectEnum<TEnum> : MagicUninitializedObjectEnum<TEnum, object>
-	where TEnum : MagicUninitializedObjectEnum<TEnum>
-{
-}
+	where TEnum : MagicUninitializedObjectEnum<TEnum>;
 
 /// <summary>
-/// An enum with an unitialized object (of TBaseType) as member value.
+/// An enum with an uninitialized object (of TBaseType) as member value.
 /// Use <see cref="MagicStringEnum{TEnum}.CreateMember(string?)"/> to create a member.
 /// </summary>
 /// <typeparam name="TEnum">The type of the number enum itself. Is also equal to the type of each member.</typeparam>

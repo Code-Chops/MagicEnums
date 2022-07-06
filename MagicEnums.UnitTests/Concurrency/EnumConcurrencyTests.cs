@@ -11,7 +11,7 @@ public record EnumConcurrencyTests : MagicEnum<EnumConcurrencyTests>
 	[Fact]
 	public async Task EnumConcurrency_WithImplicitIncrementalNumber_ShouldBeCorrect()
 	{
-		var index = 0;
+		int index;
 		for (index = 0; index < 100; index += 2)
 		{
 			var taskA = Task.Run(() => CreateMember(index, enforcedName: index.ToString()));

@@ -64,7 +64,7 @@ internal static class DiscoverableMembersSyntaxReceiver
 			if (argumentCount == 2)
 			{
 				if (invocation.ArgumentList.Arguments[1].Expression is not LiteralExpressionSyntax commentLiteral) return null;
-				memberComment = commentLiteral?.Token.ValueText;
+				memberComment = commentLiteral.Token.ValueText;
 			}
 
 			var filePath = invocation.SyntaxTree.FilePath;

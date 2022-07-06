@@ -1,4 +1,4 @@
-﻿using CodeChops.MagicEnums;
+﻿namespace CodeChops.MagicEnums.UnitTests.Custom;
 
 internal partial record CustomStructEnumMock : MagicCustomEnum<CustomStructEnumMock, DataStruct>
 {

@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
-using CodeChops.MagicEnums.Core.Members;
 
 namespace CodeChops.MagicEnums.Core;
 
@@ -15,7 +14,7 @@ internal record struct MagicStructEnum : IMagicEnumCore<MagicStructEnum, int>
 	/// </summary>
 	public override string? ToString() => this.Name;
 
-	public bool Equals(MagicStructEnum? other) => other is not null && this.Value.Equals(other.Value);
+	public bool Equals(MagicStructEnum? other) => other is not null && this.Value.Equals(other.Value.Value);
 	public override int GetHashCode() => this.Value.GetHashCode();
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -24,12 +23,12 @@ internal record struct MagicStructEnum : IMagicEnumCore<MagicStructEnum, int>
 	public static explicit operator MagicStructEnum(int value) => GetSingleMember(value);
 
 	/// <inheritdoc cref="IMember{TValue}.Name"/>
-	public string Name { get; internal init; } = default!;
+	public string Name { get; private init; } = default!;
 
 	/// <inheritdoc cref="IMember{TValue}.Value"/>
-	public int Value { get; internal init; } = default!;
+	public int Value { get; private init; }
 
-	public int Index { get; internal init; }
+	public int Index { get; }
 
 	public MagicStructEnum(string name, int value, int index)
 	{
@@ -55,15 +54,17 @@ internal record struct MagicStructEnum : IMagicEnumCore<MagicStructEnum, int>
 
 	/// <inheritdoc cref="IMagicEnumCore{TEnum, TValue}.GetEnumerable()"/>
 	public static MagicStructEnum CreateMember(int value, string name) 
-		=> IMagicEnumCore<MagicStructEnum, int>.CreateMember(value, name, () => CachedUnitializedMember with { Name = name, Value = value });
+		=> IMagicEnumCore<MagicStructEnum, int>.CreateMember(value, name, () => CachedUninitializedMember with { Name = name, Value = value });
 
 	/// <summary>
 	/// Used to create new members.
 	/// </summary>
-	private static readonly MagicStructEnum CachedUnitializedMember = (MagicStructEnum)FormatterServices.GetUninitializedObject(typeof(MagicStructEnum));
+	private static readonly MagicStructEnum CachedUninitializedMember = (MagicStructEnum)FormatterServices.GetUninitializedObject(typeof(MagicStructEnum));
 
 	/// <inheritdoc cref="IMagicEnumCore{TEnum, TValue}.TryGetSingleMember(string, out TEnum)"/>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	
+	// ReSharper disable once RedundantNullableFlowAttribute
 	public static bool TryGetSingleMember(string memberName, [NotNullWhen(true)] out MagicStructEnum member) => IMagicEnumCore<MagicStructEnum, int>.TryGetSingleMember(memberName, out member);
 
 	/// <inheritdoc cref="IMagicEnumCore{TEnum, TValue}.GetSingleMember(string)"/>
@@ -72,14 +73,17 @@ internal record struct MagicStructEnum : IMagicEnumCore<MagicStructEnum, int>
 
 	/// <inheritdoc cref="IMagicEnumCore{TEnum, TValue}.TryGetSingleMember(TValue, out TEnum)"/>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	// ReSharper disable once RedundantNullableFlowAttribute
 	public static bool TryGetSingleMember(int memberValue, [NotNullWhen(true)] out MagicStructEnum member) => IMagicEnumCore<MagicStructEnum, int>.TryGetSingleMember(memberValue, out member);
 
 	/// <inheritdoc cref="IMagicEnumCore{TEnum, TValue}.GetSingleMember(TValue)"/>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	// ReSharper disable once MemberCanBePrivate.Global
 	public static MagicStructEnum GetSingleMember(int memberValue) => IMagicEnumCore<MagicStructEnum, int>.GetSingleMember(memberValue);
 
 	/// <inheritdoc cref="IMagicEnumCore{TEnum, TValue}.GetSingleMember(TValue)"/>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	// ReSharper disable once RedundantNullableFlowAttribute
 	public static bool TryGetMembers(int memberValue, [NotNullWhen(true)] out IEnumerable<MagicStructEnum> members) => IMagicEnumCore<MagicStructEnum, int>.TryGetMembers(memberValue, out members);
 
 	/// <inheritdoc cref="IMagicEnumCore{TEnum, TValue}.GetMembers(TValue)"/>
