@@ -28,13 +28,10 @@ internal record struct MagicStructEnum : IMagicEnumCore<MagicStructEnum, int>
 	/// <inheritdoc cref="IMember{TValue}.Value"/>
 	public int Value { get; private init; }
 
-	public int Index { get; }
-
-	public MagicStructEnum(string name, int value, int index)
+	public MagicStructEnum(string name, int value)
 	{
 		this.Name = name ?? throw new ArgumentNullException(nameof(name));
 		this.Value = value;
-		this.Index = index;
 	}
 
 	/// <inheritdoc cref="IMagicEnumCore{TEnum, TValue}.GetDefaultValue"/>
@@ -49,10 +46,10 @@ internal record struct MagicStructEnum : IMagicEnumCore<MagicStructEnum, int>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static int GetUniqueValueCount() => IMagicEnumCore<MagicStructEnum, int>.GetUniqueValueCount();
 
-	/// <inheritdoc cref="IMagicEnumCore{TEnum, TValue}.GetEnumerable()"/>
+	/// <inheritdoc cref="IMagicEnumCore{TEnum, TValue}.GetEnumerable"/>
 	public static IEnumerable<MagicStructEnum> GetEnumerable() => IMagicEnumCore<MagicStructEnum, int>.GetEnumerable();
 
-	/// <inheritdoc cref="IMagicEnumCore{TEnum, TValue}.GetEnumerable()"/>
+	/// <inheritdoc cref="IMagicEnumCore{TEnum, TValue}.CreateMember"/>
 	public static MagicStructEnum CreateMember(int value, string name) 
 		=> IMagicEnumCore<MagicStructEnum, int>.CreateMember(value, name, () => CachedUninitializedMember with { Name = name, Value = value });
 

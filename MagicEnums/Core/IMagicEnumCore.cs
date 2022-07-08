@@ -10,7 +10,7 @@ namespace CodeChops.MagicEnums.Core;
 /// </summary>
 /// <typeparam name="TEnum">The type of the enum itself. Is also the type of each member.</typeparam>
 /// <typeparam name="TValue">The type of the enum member value.</typeparam>
-public interface IMagicEnumCore<TEnum, TValue> : IMember<TValue>
+public interface IMagicEnumCore<TEnum, out TValue> : IMember<TValue>
 	where TEnum : IMagicEnumCore<TEnum, TValue>
 	where TValue : notnull
 {
@@ -22,13 +22,11 @@ public interface IMagicEnumCore<TEnum, TValue> : IMember<TValue>
 	/// <summary>
 	/// Get the member count.
 	/// </summary>
-	/// <returns></returns>
 	public static int GetMemberCount() => MemberByNames.Keys.Count;
 
 	/// <summary>
 	/// Get the unique member value count.
 	/// </summary>
-	/// <returns></returns>
 	public static int GetUniqueValueCount() => MembersByValues.Keys.Count;
 
 	/// <summary>
@@ -37,6 +35,11 @@ public interface IMagicEnumCore<TEnum, TValue> : IMember<TValue>
 	public static IEnumerable<TEnum> GetEnumerable() => MemberByNames.Values;
 
 	/// <summary>
+	/// Enumerates over the values.
+	/// </summary>
+	public static IEnumerable<TValue> GetValues() => GetEnumerable().Select(member => member.Value);
+	
+	/// <summary>
 	/// Is true if the dictionary is in a concurrent state.
 	/// </summary>
 	protected static bool IsInConcurrentState => MemberByNames is ConcurrentDictionary<string, TEnum>;
@@ -44,12 +47,12 @@ public interface IMagicEnumCore<TEnum, TValue> : IMember<TValue>
 	/// <summary>
 	/// Is true of the enum is in a static creation. The enum does not have to be concurrent during this period.
 	/// </summary>
-	private static bool IsInStaticBuildup { get; set; } = true;
+	private static bool IsInStaticBuildup { get; } = true;
 
 	/// <summary>
 	/// The concurrency mode of the enum. <see cref="Core.ConcurrencyMode"/>
 	/// </summary>
-	private static ConcurrencyMode ConcurrencyMode { get; set; }
+	private static ConcurrencyMode ConcurrencyMode { get; }
 
 	/// <summary>
 	/// A mapping of a member name to a single member.
@@ -101,7 +104,7 @@ public interface IMagicEnumCore<TEnum, TValue> : IMember<TValue>
 	/// <param name="value">The value of the new member. Inserting null values is not supported.</param>
 	/// <param name="name">
 	/// The name of the new member.
-	/// Don't provide this parameter, so the property name of the enum will automaticaly be used as the name of the member. 
+	/// Don't provide this parameter, so the property name of the enum will automatically be used as the name of the member. 
 	/// If provided, the enforced name will be used, and the property name the will be forgotten. 
 	/// </param>
 	/// <returns>The newly created member.</returns>

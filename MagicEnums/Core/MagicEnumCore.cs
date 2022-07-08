@@ -50,6 +50,9 @@ public abstract partial record MagicEnumCore<TEnum, TValue> : IMagicEnumCore<TEn
 
 	/// <inheritdoc cref="IMagicEnumCore{TEnum, TValue}.GetEnumerable"/>
 	public static IEnumerable<TEnum> GetEnumerable() => IMagicEnumCore<TEnum, TValue>.GetEnumerable();
+	
+	/// <inheritdoc cref="IMagicEnumCore{TEnum, TValue}.GetValues"/>
+	public static IEnumerable<TValue> GetValues() => IMagicEnumCore<TEnum, TValue>.GetValues();
 
 	protected static TEnum CreateMember(TValue value, string name)
 		=> IMagicEnumCore<TEnum, TValue>.CreateMember(value, name, () => CachedUninitializedMember with { Name = name, Value = value });
