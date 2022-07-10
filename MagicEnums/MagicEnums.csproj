@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>1.4.1</VersionPrefix>
-		<PackageReleaseNotes>Added GetValues() method. Fixed minor issues.</PackageReleaseNotes>
+		<VersionPrefix>1.4.2</VersionPrefix>
+		<PackageReleaseNotes>Updated GenericMath package.</PackageReleaseNotes>
 		<TargetFramework>net6.0</TargetFramework>
 		<LangVersion>10</LangVersion>
 	</PropertyGroup>
@@ -86,7 +86,7 @@ Flexible and extendable enums for C#:
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CodeChops.GenericMath" Version="1.3.4" />
+		<PackageReference Include="CodeChops.GenericMath" Version="1.3.6" />
 		<PackageReference Include="CodeChops.Identities" Version="0.0.6" />
 	</ItemGroup>
 
