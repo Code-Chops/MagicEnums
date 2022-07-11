@@ -115,7 +115,7 @@ using CodeChops.MagicEnums;
 				var outlineSpaces = new String(' ', longestMemberNameLength - member.Name.Length);
 
 				code.Append($@"
-/// -{member.Name}{outlineSpaces} = {(member.Value is null ? "?" : member.Value)}");
+/// <para><![CDATA[ -{member.Name}{outlineSpaces} = {member.Value ?? "?"} ]]></para>");
 			}
 
 			code.Append($@"
@@ -140,7 +140,7 @@ using CodeChops.MagicEnums;
 					if (member.Value is not null)
 					{
 						code.Append($@"
-	/// <![CDATA[ (value: {member.Value}) ]]</para>");
+	/// <para><![CDATA[ (value: {member.Value}) ]]></para>");
 					}
 
 					if (member.Comment is not null)

@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>1.4.3</VersionPrefix>
-		<PackageReleaseNotes>Updated GenericMath package and added GlobalUsings.</PackageReleaseNotes>
+		<VersionPrefix>1.5.0</VersionPrefix>
+		<PackageReleaseNotes>Fixed para and cdata comments.</PackageReleaseNotes>
 		<TargetFramework>net6.0</TargetFramework>
 		<LangVersion>10</LangVersion>
 	</PropertyGroup>
