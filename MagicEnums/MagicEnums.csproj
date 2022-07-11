@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>1.5.5</VersionPrefix>
-		<PackageReleaseNotes>Updated Identities package.</PackageReleaseNotes>
+		<VersionPrefix>1.5.6</VersionPrefix>
+		<PackageReleaseNotes>Added IId to IMagicEnum.</PackageReleaseNotes>
 		<TargetFramework>net6.0</TargetFramework>
 		<LangVersion>10</LangVersion>
 	</PropertyGroup>

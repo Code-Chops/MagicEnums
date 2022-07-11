@@ -28,6 +28,7 @@ internal record struct MagicStructEnum : IMagicEnumCore<MagicStructEnum, int>
 	/// <inheritdoc cref="IMember{TValue}.Value"/>
 	public int Value { get; private init; }
 
+	public object GetValue() => this.Value;
 	public MagicStructEnum(string name, int value)
 	{
 		this.Name = name ?? throw new ArgumentNullException(nameof(name));

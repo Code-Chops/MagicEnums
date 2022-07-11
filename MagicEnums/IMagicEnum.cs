@@ -1,5 +1,7 @@
-﻿namespace CodeChops.MagicEnums;
+﻿using CodeChops.Identities;
 
-public interface IMagicEnum
+namespace CodeChops.MagicEnums;
+
+public interface IMagicEnum : IId
 {
 }
