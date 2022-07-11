@@ -10,7 +10,7 @@ namespace CodeChops.MagicEnums.Core;
 /// </summary>
 /// <typeparam name="TEnum">The type of the enum itself. Is also the type of each member.</typeparam>
 /// <typeparam name="TValue">The type of the enum member value.</typeparam>
-public interface IMagicEnumCore<TEnum, out TValue> : IMember<TValue>
+internal interface IMagicEnumCore<TEnum, out TValue> : IMember<TValue>, IMagicEnum
 	where TEnum : IMagicEnumCore<TEnum, TValue>
 	where TValue : notnull
 {

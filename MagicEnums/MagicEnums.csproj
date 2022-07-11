@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>1.5.0</VersionPrefix>
-		<PackageReleaseNotes>Fixed para and cdata comments.</PackageReleaseNotes>
+		<VersionPrefix>1.5.1</VersionPrefix>
+		<PackageReleaseNotes>Added IMagicEnum interface.</PackageReleaseNotes>
 		<TargetFramework>net6.0</TargetFramework>
 		<LangVersion>10</LangVersion>
 	</PropertyGroup>
