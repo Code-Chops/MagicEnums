@@ -1,6 +1,4 @@
-﻿using Xunit;
-
-namespace CodeChops.MagicEnums.UnitTests.Strings;
+﻿namespace CodeChops.MagicEnums.UnitTests.Strings;
 
 public class StringEnumTests
 {

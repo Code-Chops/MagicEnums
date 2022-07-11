@@ -140,7 +140,7 @@ using CodeChops.MagicEnums;
 					if (member.Value is not null)
 					{
 						code.Append($@"
-	/// <para><![CDATA[ (value: {member.Value}) ]]</para>");
+	/// <![CDATA[ (value: {member.Value}) ]]</para>");
 					}
 
 					if (member.Comment is not null)

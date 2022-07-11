@@ -1,6 +1,4 @@
-﻿using Xunit;
-
-namespace CodeChops.MagicEnums.UnitTests.UninitializedObjects;
+﻿namespace CodeChops.MagicEnums.UnitTests.UninitializedObjects;
 
 public class UninitializedObjectEnumTest
 {

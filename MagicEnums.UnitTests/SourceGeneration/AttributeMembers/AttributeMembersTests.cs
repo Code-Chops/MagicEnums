@@ -1,6 +1,4 @@
-﻿using Xunit;
-
-namespace CodeChops.MagicEnums.UnitTests.SourceGeneration.AttributeMembers;
+﻿namespace CodeChops.MagicEnums.UnitTests.SourceGeneration.AttributeMembers;
 
 public class AttributeMembers
 {

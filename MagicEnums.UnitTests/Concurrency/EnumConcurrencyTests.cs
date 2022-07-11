@@ -1,5 +1,4 @@
 ﻿using CodeChops.MagicEnums.Core;
-using Xunit;
 
 namespace CodeChops.MagicEnums.UnitTests.Concurrency;
 

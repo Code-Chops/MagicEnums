@@ -1,6 +1,4 @@
-﻿using Xunit;
-
-namespace CodeChops.MagicEnums.UnitTests.SourceGeneration.Internal;
+﻿namespace CodeChops.MagicEnums.UnitTests.SourceGeneration.Internal;
 
 public class InternalEnumTests
 {

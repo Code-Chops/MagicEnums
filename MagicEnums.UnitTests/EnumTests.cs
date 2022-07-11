@@ -1,6 +1,4 @@
-﻿using Xunit;
-
-namespace CodeChops.MagicEnums.UnitTests;
+﻿namespace CodeChops.MagicEnums.UnitTests;
 
 public record EnumTests : MagicCustomEnum<EnumTests, bool>
 {

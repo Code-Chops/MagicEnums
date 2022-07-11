@@ -1,6 +1,4 @@
-﻿using Xunit;
-
-namespace CodeChops.MagicEnums.UnitTests.Numbers;
+﻿namespace CodeChops.MagicEnums.UnitTests.Numbers;
 
 public record NumberEnumConcurrencyTests : MagicEnum<NumberEnumConcurrencyTests>
 {
