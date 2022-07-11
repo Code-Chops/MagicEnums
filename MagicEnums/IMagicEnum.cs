@@ -1,7 +1,8 @@
-﻿using CodeChops.Identities;
+﻿using CodeChops.DomainDrivenDesign.DomainModeling;
+using CodeChops.Identities;
 
 namespace CodeChops.MagicEnums;
 
-public interface IMagicEnum : IId
+public interface IMagicEnum : IId, IValueObject
 {
 }
