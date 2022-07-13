@@ -55,8 +55,10 @@ internal class EnumDefinitionSyntaxReceiver
 
 		var definition = new EnumDefinition(
 			type: type,
-			valueTypeName: valueType?.Name ?? "Int32",
-			valueTypeNamespace: valueType?.ContainingNamespace.ToDisplayString() ?? "System",
+			valueTypeNameIncludingGenerics: valueType?.Name ?? "Int32",
+			valueTypeNamespace: valueType?.ContainingNamespace.IsGlobalNamespace ?? false
+				? null
+				: valueType?.ContainingNamespace.ToDisplayString() ?? "System",
 			discoverabilityMode: discoverabilityMode,
 			filePath: filePath,
 			accessModifier: typeDeclaration.Modifiers.ToFullString(),

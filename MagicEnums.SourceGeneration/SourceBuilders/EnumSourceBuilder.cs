@@ -30,7 +30,7 @@ public static class EnumSourceBuilder
 
 			var enumCode = CreateEnumSource(definition!, relevantDiscoveredMembers);
 
-			context.AddSource($"{definition!.Name}.g.cs", SourceText.From(enumCode, Encoding.UTF8));
+			context.AddSource($"{definition.Identifier}.{definition.Name}.g.cs", SourceText.From(enumCode, Encoding.UTF8));
 		}
 	}
 
@@ -83,7 +83,7 @@ using CodeChops.MagicEnums;
 		string? GetValueTypeUsing()
 		{
 			var ns = definition.ValueTypeNamespace;
-			if (ns == "System") return null;
+			if (ns is null or "System") return null;
 
 			ns = $"using {ns};{Environment.NewLine}";
 			return ns;
@@ -108,18 +108,18 @@ using CodeChops.MagicEnums;
 			// Create the comments on the enum record.
 			code.Append($@"
 /// <summary>
-/// <code>");
+/// <list type=""bullet"">");
 
 			foreach (var member in members)
 			{
 				var outlineSpaces = new String(' ', longestMemberNameLength - member.Name.Length);
 
 				code.Append($@"
-/// <para><![CDATA[ -{member.Name}{outlineSpaces} = {member.Value ?? "?"} ]]></para>");
+/// <item><c><![CDATA[ {member.Name}{outlineSpaces} = {member.Value ?? "?"} ]]></c></item>");
 			}
 
 			code.Append($@"
-/// </code>
+/// </list>
 /// </summary>");
 
 			// Define the enum record.
@@ -137,16 +137,16 @@ using CodeChops.MagicEnums;
 					code.Append($@"
 	/// <summary>");
 
-					if (member.Value is not null)
-					{
-						code.Append($@"
-	/// <para><![CDATA[ (value: {member.Value}) ]]></para>");
-					}
-
 					if (member.Comment is not null)
 					{
 						code.Append($@"
-	/// {member.Comment}");
+	/// <para>{member.Comment}</para>");
+					}
+
+					if (member.Value is not null)
+					{
+						code.Append($@"
+	/// <c><![CDATA[ (value: {member.Value}) ]]></c>");
 					}
 
 					code.Append($@"
