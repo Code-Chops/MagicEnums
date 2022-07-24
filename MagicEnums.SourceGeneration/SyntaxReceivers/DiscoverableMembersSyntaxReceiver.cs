@@ -74,7 +74,7 @@ internal static class DiscoverableMembersSyntaxReceiver
 			return member;
 		}
 		// Implicit enum member invocation.
-		else if (context.Node is MemberAccessExpressionSyntax memberAccess && memberAccess.Parent is not InvocationExpressionSyntax)
+		else if (context.Node is MemberAccessExpressionSyntax { Parent: not InvocationExpressionSyntax } memberAccess)
 		{
 			var memberName = memberAccess.Name.Identifier.ValueText;
 			if (memberAccess.Expression is not IdentifierNameSyntax identifierName) return null;

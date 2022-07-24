@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>1.7.5</VersionPrefix>
-		<PackageReleaseNotes>Updated Identities package.</PackageReleaseNotes>
+		<VersionPrefix>1.7.6</VersionPrefix>
+		<PackageReleaseNotes>Removed CreateMember from MagicStringEnum.</PackageReleaseNotes>
 		<TargetFramework>net6.0</TargetFramework>
 		<LangVersion>10</LangVersion>
 	</PropertyGroup>
