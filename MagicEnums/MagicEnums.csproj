@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<VersionPrefix>1.7.7</VersionPrefix>
-		<PackageReleaseNotes>Re-added CreateMember to MagicStringEnum.</PackageReleaseNotes>
+		<PackageReleaseNotes>Updated Identities package.</PackageReleaseNotes>
 		<TargetFramework>net6.0</TargetFramework>
 		<LangVersion>10</LangVersion>
 	</PropertyGroup>
@@ -87,7 +87,7 @@ Flexible and extendable enums for C#:
 
 	<ItemGroup>
 		<PackageReference Include="CodeChops.GenericMath" Version="1.4.1" />
-		<PackageReference Include="CodeChops.Identities" Version="0.1.5" />	
+		<PackageReference Include="CodeChops.Identities" Version="0.1.7" />	
 	</ItemGroup>
 
 	<PropertyGroup>
