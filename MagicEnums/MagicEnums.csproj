@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>1.7.1</VersionPrefix>
-		<PackageReleaseNotes>Updated GenericMath-package.</PackageReleaseNotes>
+		<VersionPrefix>1.7.2</VersionPrefix>
+		<PackageReleaseNotes>Made CreateMember of CustomEnum protected.</PackageReleaseNotes>
 		<TargetFramework>net6.0</TargetFramework>
 		<LangVersion>10</LangVersion>
 	</PropertyGroup>

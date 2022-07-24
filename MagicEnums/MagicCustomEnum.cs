@@ -24,5 +24,5 @@ public abstract partial record MagicCustomEnum<TEnum, TValue> : MagicEnumCore<TE
 	/// </param>
 	/// <returns>The newly created member.</returns>
 	/// <exception cref="ArgumentException">When a member already exists with the same name.</exception>
-	public new static TEnum CreateMember(TValue value, [CallerMemberName] string enforcedName = null!) => MagicEnumCore<TEnum, TValue>.CreateMember(value, enforcedName);
+	protected new static TEnum CreateMember(TValue value, [CallerMemberName] string enforcedName = null!) => MagicEnumCore<TEnum, TValue>.CreateMember(value, enforcedName);
 }
