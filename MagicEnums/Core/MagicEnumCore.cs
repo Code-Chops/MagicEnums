@@ -66,7 +66,7 @@ public abstract partial record MagicEnumCore<TEnum, TValue> : IMagicEnumCore<TEn
 	/// <returns>The newly created member.</returns>
 	/// <exception cref="ArgumentException">When a member already exists with the same name.</exception>
 	protected static TEnum CreateMember(TValue value, [CallerMemberName] string enforcedName = null!)
-		=> IMagicEnumCore<TEnum, TValue>.CreateMember(value, enforcedName, () => CachedUninitializedMember with { Name = enforcedName, Value = value });
+		=> IMagicEnumCore<TEnum, TValue>.CreateMember(() => CachedUninitializedMember with { Name = enforcedName, Value = value });
 
 	/// <summary>
 	/// Used to create new members.

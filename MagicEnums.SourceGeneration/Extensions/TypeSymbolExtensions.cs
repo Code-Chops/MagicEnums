@@ -307,7 +307,7 @@ internal static class TypeSymbolExtensions
 	public static bool HasEqualsOverride(this ITypeSymbol typeSymbol, bool falseForStructs = false)
 	{
 		// Technically this could match an overridden "new" Equals defined by a base type, but that is a nonsense scenario
-		var result = typeSymbol.GetMembers(nameof(Object.Equals)).OfType<IMethodSymbol>().Any(method => method.IsOverride && !method.IsStatic &&
+		var result = typeSymbol.GetMembers(nameof(Equals)).OfType<IMethodSymbol>().Any(method => method.IsOverride && !method.IsStatic &&
 			method.Arity == 0 && method.Parameters.Length == 1 && method.Parameters[0].Type.IsType<object>());
 
 		return result;

@@ -47,6 +47,7 @@ internal interface IMagicEnumCore<TEnum, out TValue> : IMember<TValue>, IMagicEn
 	/// <summary>
 	/// Is true of the enum is in a static creation. The enum does not have to be concurrent during this period.
 	/// </summary>
+	// ReSharper disable once MemberInitializerValueIgnored
 	private static bool IsInStaticBuildup { get; } = true;
 
 	/// <summary>
@@ -101,40 +102,34 @@ internal interface IMagicEnumCore<TEnum, out TValue> : IMember<TValue>, IMagicEn
 	/// <summary>
 	/// Creates a new enum member.
 	/// </summary>
-	/// <param name="value">The value of the new member. Inserting null values is not supported.</param>
-	/// <param name="name">
-	/// The name of the new member.
-	/// Don't provide this parameter, so the property name of the enum will automatically be used as the name of the member. 
-	/// If provided, the enforced name will be used, and the property name the will be forgotten. 
-	/// </param>
+	/// <param name="memberCreator">A function that creates the member.</param>
 	/// <returns>The newly created member.</returns>
 	/// <exception cref="ArgumentNullException">When no name or value has been provided.</exception>
 	/// <exception cref="ArgumentException">When a member already exists with the same name.</exception>
-	protected static TEnum CreateMember(TValue value, string name, Func<TEnum> memberCreator)
+	protected static TEnum CreateMember(Func<TEnum> memberCreator)
 	{
-		if (String.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
-		if (value is null) throw new ArgumentNullException(nameof(value));
-
 		var memberByNames = MemberByNames;
 
 		// Switch to a concurrent mode if necessary.
 		if (ConcurrencyMode == ConcurrencyMode.AdaptiveConcurrency && !IsInConcurrentState && !IsInStaticBuildup)
 		{
-			return SwitchToConcurrentModeAndAddMember();
+			return SwitchToConcurrentModeAndAddMember(memberCreator, memberByNames);
 		}
 
 		// Create the new member.
-		return CreateAndAddMemberToDictionary(memberCreator, memberByNames);
+		var member = CreateAndAddMemberToDictionary(memberCreator, memberByNames);
+		return member;
+		
 
-
-		TEnum SwitchToConcurrentModeAndAddMember()
+		static TEnum SwitchToConcurrentModeAndAddMember(Func<TEnum> memberCreator, IDictionary<string, TEnum> memberByNames)
 		{
 			lock (DictionaryLock)
 			{
-				// Check if we won the race.
+				// Check if we didn't win the race.
 				if (MemberByNames != memberByNames)
 				{
-					return CreateAndAddMemberToDictionary(memberCreator, MemberByNames);
+					var member = CreateAndAddMemberToDictionary(memberCreator, MemberByNames);
+					return member;
 				}
 
 				// Convert to a concurrent dictionary.

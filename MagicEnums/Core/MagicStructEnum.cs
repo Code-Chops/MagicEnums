@@ -52,7 +52,7 @@ internal record struct MagicStructEnum : IMagicEnumCore<MagicStructEnum, int>
 
 	/// <inheritdoc cref="IMagicEnumCore{TEnum, TValue}.CreateMember"/>
 	public static MagicStructEnum CreateMember(int value, string name) 
-		=> IMagicEnumCore<MagicStructEnum, int>.CreateMember(value, name, () => CachedUninitializedMember with { Name = name, Value = value });
+		=> IMagicEnumCore<MagicStructEnum, int>.CreateMember(() => CachedUninitializedMember with { Name = name, Value = value });
 
 	/// <summary>
 	/// Used to create new members.

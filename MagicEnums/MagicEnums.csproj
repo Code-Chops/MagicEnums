@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>1.7.8</VersionPrefix>
-		<PackageReleaseNotes>Updated Identities package.</PackageReleaseNotes>
+		<VersionPrefix>1.7.9</VersionPrefix>
+		<PackageReleaseNotes>Fixed concurrency.</PackageReleaseNotes>
 		<TargetFramework>net6.0</TargetFramework>
 		<LangVersion>10</LangVersion>
 	</PropertyGroup>

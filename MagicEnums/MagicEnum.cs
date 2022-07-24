@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using CodeChops.GenericMath;
+using CodeChops.Identities;
 using CodeChops.MagicEnums.Core;
 
 namespace CodeChops.MagicEnums;
@@ -26,7 +27,7 @@ public abstract partial record MagicEnum<TEnum, TValue> : MagicEnumCore<TEnum, T
 {
 	#region Comparison
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public virtual int CompareTo(MagicEnum<TEnum, TValue> other) => Value.CompareTo(other.Value);
+	private int CompareTo(IId<TValue> other) => this.Value.CompareTo(other.Value);
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static bool operator <(MagicEnum<TEnum, TValue> left, MagicEnum<TEnum, TValue> right)	=> left.CompareTo(right) <	0;
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -58,22 +59,24 @@ public abstract partial record MagicEnum<TEnum, TValue> : MagicEnumCore<TEnum, T
 	/// <exception cref="ArgumentException">When a member already exists with the same name.</exception>
 	public static TEnum CreateMember([CallerMemberName] string? enforcedName = null)
 	{
+		Number<TValue>? lastInsertedNumber;
 		if (IMagicEnumCore<TEnum, TValue>.IsInConcurrentState)
-			lock (LockLastInsertedNumber) IncrementLastInsertedNumber();
+			lock (LockLastInsertedNumber) lastInsertedNumber = IncrementLastInsertedNumber();
 		else
-			IncrementLastInsertedNumber();
+			lastInsertedNumber = IncrementLastInsertedNumber();
 
-		var id = MagicEnumCore<TEnum, TValue>.CreateMember(LastInsertedNumber ?? IMagicEnumCore<TEnum, TValue>.GetLastInsertedValue(), enforcedName!);
+		var id = MagicEnumCore<TEnum, TValue>.CreateMember(lastInsertedNumber ?? IMagicEnumCore<TEnum, TValue>.GetLastInsertedValue(), enforcedName!);
 		return id;
 
 
-		static void IncrementLastInsertedNumber()
+		static Number<TValue>? IncrementLastInsertedNumber()
 		{
 			if (LastInsertedNumber is null)
 				LastInsertedNumber = new();
 			else
-				// ReSharper disable once RedundantSuppressNullableWarningExpression
-				LastInsertedNumber!++;
+				LastInsertedNumber++;
+			
+			return LastInsertedNumber;
 		}
 	}
 

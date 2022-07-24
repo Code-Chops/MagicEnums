@@ -62,14 +62,14 @@ public class SourceGenerator : IIncrementalGenerator
 	/// </summary>
 	private IncrementalValueProvider<ImmutableArray<DiscoveredEnumMember?>> GetProbableDiscoveredEnumMembers(IncrementalGeneratorInitializationContext context)
 	{
-		var memberInvokations = context.SyntaxProvider
+		var memberInvocations = context.SyntaxProvider
 			.CreateSyntaxProvider(
 				predicate: static (syntaxNode, _)	=> DiscoverableMembersSyntaxReceiver.CheckIfIsProbablyEnumMemberInvocation(syntaxNode),
-				transform: (context, ct)			=> DiscoverableMembersSyntaxReceiver.GetProbablyDiscoveredEnumMember(context, EnumDefinitionsByName, ct))
+				transform: (context, ct)			=> DiscoverableMembersSyntaxReceiver.GetProbablyDiscoveredEnumMember(context, this.EnumDefinitionsByName, ct))
 			.Where(static member => member is not null)
 			.Collect();
 
-		return memberInvokations;
+		return memberInvocations;
 	}
 
 	/// <summary>
@@ -79,6 +79,6 @@ public class SourceGenerator : IIncrementalGenerator
 	{
 		context.RegisterSourceOutput(
 			source: this.GetProbableDiscoveredEnumMembers(context),
-			action: (context, members) => EnumSourceBuilder.CreateSource(context, members!, EnumDefinitionsByName!));
+			action: (context, members) => EnumSourceBuilder.CreateSource(context, members!, this.EnumDefinitionsByName!));
 	}
 }
