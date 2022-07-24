@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>1.7.6</VersionPrefix>
-		<PackageReleaseNotes>Removed CreateMember from MagicStringEnum.</PackageReleaseNotes>
+		<VersionPrefix>1.7.7</VersionPrefix>
+		<PackageReleaseNotes>Re-added CreateMember to MagicStringEnum.</PackageReleaseNotes>
 		<TargetFramework>net6.0</TargetFramework>
 		<LangVersion>10</LangVersion>
 	</PropertyGroup>
