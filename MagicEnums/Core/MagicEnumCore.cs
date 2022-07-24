@@ -54,8 +54,19 @@ public abstract partial record MagicEnumCore<TEnum, TValue> : IMagicEnumCore<TEn
 	/// <inheritdoc cref="IMagicEnumCore{TEnum, TValue}.GetValues"/>
 	public static IEnumerable<TValue> GetValues() => IMagicEnumCore<TEnum, TValue>.GetValues();
 
-	protected static TEnum CreateMember(TValue value, string name)
-		=> IMagicEnumCore<TEnum, TValue>.CreateMember(value, name, () => CachedUninitializedMember with { Name = name, Value = value });
+	/// <summary>
+	/// Creates a new enum member with value TValue.
+	/// </summary>
+	/// <param name="value">The value of the new member. Inserting null values is not supported.</param>
+	/// <param name="enforcedName">
+	/// The name of the new member.
+	/// Don't provide this parameter, so the property name of the enum will automatically be used as the name of the member. 
+	/// If provided, the enforced name will be used, and the property name the will be forgotten. 
+	/// </param>
+	/// <returns>The newly created member.</returns>
+	/// <exception cref="ArgumentException">When a member already exists with the same name.</exception>
+	protected static TEnum CreateMember(TValue value, [CallerMemberName] string enforcedName = null!)
+		=> IMagicEnumCore<TEnum, TValue>.CreateMember(value, enforcedName, () => CachedUninitializedMember with { Name = enforcedName, Value = value });
 
 	/// <summary>
 	/// Used to create new members.
