@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>1.8.2</VersionPrefix>
+		<VersionPrefix>1.8.3</VersionPrefix>
 		<PackageReleaseNotes>Updated Identities package.</PackageReleaseNotes>
 		<TargetFramework>net6.0</TargetFramework>
 		<LangVersion>10</LangVersion>
@@ -87,7 +87,7 @@ Flexible and extendable enums for C#:
 
 	<ItemGroup>
 		<PackageReference Include="CodeChops.GenericMath" Version="1.4.1" />
-		<PackageReference Include="CodeChops.Identities" Version="0.1.8" />	
+		<PackageReference Include="CodeChops.Identities" Version="0.1.9" />	
 	</ItemGroup>
 
 	<PropertyGroup>
