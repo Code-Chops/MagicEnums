@@ -60,6 +60,7 @@ public abstract partial record MagicEnum<TEnum, TValue> : MagicEnumCore<TEnum, T
 	public static TEnum CreateMember([CallerMemberName] string? enforcedName = null)
 	{
 		Number<TValue>? lastInsertedNumber;
+		
 		if (IMagicEnumCore<TEnum, TValue>.IsInConcurrentState)
 			lock (LockLastInsertedNumber) lastInsertedNumber = IncrementLastInsertedNumber();
 		else
@@ -74,7 +75,10 @@ public abstract partial record MagicEnum<TEnum, TValue> : MagicEnumCore<TEnum, T
 			if (LastInsertedNumber is null)
 				LastInsertedNumber = new();
 			else
-				LastInsertedNumber++;
+			{
+				// ReSharper disable once RedundantSuppressNullableWarningExpression
+				LastInsertedNumber!++;
+			}
 			
 			return LastInsertedNumber;
 		}

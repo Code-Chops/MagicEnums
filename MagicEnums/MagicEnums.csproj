@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>1.7.9</VersionPrefix>
-		<PackageReleaseNotes>Fixed concurrency.</PackageReleaseNotes>
+		<VersionPrefix>1.7.10</VersionPrefix>
+		<PackageReleaseNotes>Small enhancements.</PackageReleaseNotes>
 		<TargetFramework>net6.0</TargetFramework>
 		<LangVersion>10</LangVersion>
 	</PropertyGroup>
