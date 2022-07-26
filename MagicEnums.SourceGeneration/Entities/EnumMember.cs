@@ -15,17 +15,17 @@ public record EnumMember : IEnumEntity
 
 	public EnumMember(AttributeData data)
 	{
-		if (!data.TryGetArguments(out var arguments))
+		if (!data.TryGetArguments(out var argumentsByName))
 		{
 			throw new Exception($"Could not retrieve attribute parameters of attribute {data.AttributeClass?.Name}.");
 		}
 
-		this.Name = (string)arguments![nameof(this.Name)].Value!;
+		this.Name = (string)argumentsByName![nameof(this.Name)].Value!;
 
-		this.Value = arguments.TryGetValue(nameof(this.Value), out var valueArgument) 
-			? valueArgument.Type?.GetFullTypeNameWithGenericParameters() == "System.String" ? $"\"{valueArgument.Value}\"" : valueArgument.Value
+		this.Value = argumentsByName.TryGetValue(nameof(this.Value), out var valueArgument) 
+			? valueArgument.Type?.GetFullTypeNameWithoutGenericParameters() == "global::System.String" ? $"\"{valueArgument.Value}\"" : valueArgument.Value
 			: null;
 
-		this.Comment = (string?)(arguments.TryGetValue(nameof(this.Comment), out var commentArgument) ? commentArgument.Value : null);
+		this.Comment = (string?)(argumentsByName.TryGetValue(nameof(this.Comment), out var commentArgument) ? commentArgument.Value : null);
 	}
 }

@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>1.8.4</VersionPrefix>
-		<PackageReleaseNotes>Removed source generation extensions.</PackageReleaseNotes>
+		<VersionPrefix>1.8.5</VersionPrefix>
+		<PackageReleaseNotes>Fixed bugs and source generation.</PackageReleaseNotes>
 		<TargetFramework>net6.0</TargetFramework>
 		<LangVersion>10</LangVersion>
 	</PropertyGroup>

@@ -23,12 +23,13 @@
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<Copyright>Copyright (c) CodeChops $([System.DateTime]::Now.ToString(yyyy))</Copyright>
 		<Description>
-Source generation for magic enums: Flexible and extendable enums for .NET that support other member values than integral types
+Source generation for magic enums: Flexible and extendable enums for .NET that support other member values than integral types.
 		</Description>
 		<AnalysisLevel>latest</AnalysisLevel>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<IncludeBuildOutput>false</IncludeBuildOutput>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -41,10 +42,21 @@ Source generation for magic enums: Flexible and extendable enums for .NET that s
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CodeChops.SourceGeneration.Utilities" Version="0.0.4" />
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.2.0" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3" PrivateAssets="all" />
+		<PackageReference Include="CodeChops.SourceGeneration.Utilities" Version="0.0.9" PrivateAssets="all" GeneratePathProperty="true" />
+		<None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 	</ItemGroup>
+
+	<PropertyGroup>
+		<GetTargetPathDependsOn>$(GetTargetPathDependsOn);GetDependencyTargetPaths</GetTargetPathDependsOn>
+	</PropertyGroup>
+
+	<Target Name="GetDependencyTargetPaths">
+		<ItemGroup>
+			<TargetPathWithTargetPlatformMoniker Include="$(PkgCodeChops_SourceGeneration_Utilities)\lib\netstandard2.0\CodeChops.SourceGeneration.Utilities.dll" IncludeRuntimeDependency="false" />
+		</ItemGroup>
+	</Target>
 
 	<PropertyGroup>
 		<!-- CA1822: Instance member does not access instance data and can be marked as static -->
