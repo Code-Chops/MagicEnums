@@ -1,7 +1,5 @@
 ﻿using CodeChops.MagicEnums.SourceGeneration.Entities;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Text;
 
 namespace CodeChops.MagicEnums.SourceGeneration.SyntaxReceivers;
 

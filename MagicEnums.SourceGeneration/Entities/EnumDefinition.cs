@@ -1,6 +1,4 @@
-﻿using Microsoft.CodeAnalysis;
-
-namespace CodeChops.MagicEnums.SourceGeneration.Entities;
+﻿namespace CodeChops.MagicEnums.SourceGeneration.Entities;
 
 public record EnumDefinition : IEnumEntity
 {

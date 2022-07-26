@@ -1,8 +1,4 @@
-﻿using System.Text;
-using Microsoft.CodeAnalysis;
-using CodeChops.MagicEnums.SourceGeneration.Entities;
-using Microsoft.CodeAnalysis.Text;
-using System.Collections.Immutable;
+﻿using CodeChops.MagicEnums.SourceGeneration.Entities;
 
 namespace CodeChops.MagicEnums.SourceGeneration.SourceBuilders;
 

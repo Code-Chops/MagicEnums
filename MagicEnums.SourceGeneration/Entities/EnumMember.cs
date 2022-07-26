@@ -1,7 +1,4 @@
-﻿using Microsoft.CodeAnalysis;
-using CodeChops.MagicEnums.SourceGeneration.Extensions;
-
-namespace CodeChops.MagicEnums.SourceGeneration.Entities;
+﻿namespace CodeChops.MagicEnums.SourceGeneration.Entities;
 
 public record EnumMember : IEnumEntity
 {
@@ -26,7 +23,7 @@ public record EnumMember : IEnumEntity
 		this.Name = (string)arguments![nameof(this.Name)].Value!;
 
 		this.Value = arguments.TryGetValue(nameof(this.Value), out var valueArgument) 
-			? valueArgument.Type == "System.String" ? $"\"{valueArgument.Value}\"" : valueArgument.Value
+			? valueArgument.Type?.GetFullTypeNameWithGenericParameters() == "System.String" ? $"\"{valueArgument.Value}\"" : valueArgument.Value
 			: null;
 
 		this.Comment = (string?)(arguments.TryGetValue(nameof(this.Comment), out var commentArgument) ? commentArgument.Value : null);

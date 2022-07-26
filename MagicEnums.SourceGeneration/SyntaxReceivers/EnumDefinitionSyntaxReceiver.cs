@@ -1,7 +1,5 @@
 ﻿using CodeChops.MagicEnums.SourceGeneration.Entities;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis;
-using CodeChops.MagicEnums.SourceGeneration.Extensions;
 
 namespace CodeChops.MagicEnums.SourceGeneration.SyntaxReceivers;
 
@@ -12,7 +10,7 @@ internal class EnumDefinitionSyntaxReceiver
 	/// </summary>
 	internal static bool CheckIfIsProbablyEnumDefinition(SyntaxNode syntaxNode, CancellationToken cancellationToken)
 	{
-		if (syntaxNode is not AttributeSyntax attribute || attribute.ArgumentList is null || attribute.ArgumentList.Arguments.Count == 0 || attribute.ArgumentList.Arguments.Count > 3) return false;
+		if (syntaxNode is not AttributeSyntax attribute || attribute.ArgumentList is null || attribute.ArgumentList.Arguments.Count is 0 or > 3) return false;
 		if (attribute.Parent?.Parent is not RecordDeclarationSyntax) return false;
 
 		var hasAttributeName = attribute.Name.HasAttributeName(SourceGenerator.DiscoverableAttributeName, cancellationToken)

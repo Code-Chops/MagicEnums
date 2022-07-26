@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>1.8.3</VersionPrefix>
-		<PackageReleaseNotes>Updated Identities package.</PackageReleaseNotes>
+		<VersionPrefix>1.8.4</VersionPrefix>
+		<PackageReleaseNotes>Removed source generation extensions.</PackageReleaseNotes>
 		<TargetFramework>net6.0</TargetFramework>
 		<LangVersion>10</LangVersion>
 	</PropertyGroup>
@@ -21,7 +21,7 @@
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<PackageIcon>icon.png</PackageIcon>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
-		<Copyright>Copyright (c) CodeChops 2022</Copyright>
+		<Copyright>Copyright (c) CodeChops $([System.DateTime]::Now.ToString(yyyy))</Copyright>
 		<Description>
 Flexible and extendable enums for C#:
 * It is possible to use other member values than integral types. For example: 
@@ -86,6 +86,7 @@ Flexible and extendable enums for C#:
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="CodeChops.DomainDrivenDesign.DomainModeling" Version="0.0.9" />
 		<PackageReference Include="CodeChops.GenericMath" Version="1.4.1" />
 		<PackageReference Include="CodeChops.Identities" Version="0.1.9" />	
 	</ItemGroup>

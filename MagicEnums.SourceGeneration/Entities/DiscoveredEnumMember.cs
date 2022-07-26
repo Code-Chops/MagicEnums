@@ -1,6 +1,4 @@
-﻿using Microsoft.CodeAnalysis.Text;
-
-namespace CodeChops.MagicEnums.SourceGeneration.Entities;
+﻿namespace CodeChops.MagicEnums.SourceGeneration.Entities;
 
 public record DiscoveredEnumMember : EnumMember
 {
