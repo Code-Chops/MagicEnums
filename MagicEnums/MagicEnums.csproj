@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>2.0.2</VersionPrefix>
-		<PackageReleaseNotes>Cleanup and updated DomainModeling package reference.</PackageReleaseNotes>
+		<VersionPrefix>2.0.3</VersionPrefix>
+		<PackageReleaseNotes>Removed MagicUninitializedObjectEnum.</PackageReleaseNotes>
 		<TargetFramework>net6.0</TargetFramework>
 		<LangVersion>10</LangVersion>
 	</PropertyGroup>
@@ -28,7 +28,7 @@ Flexible and extendable enums for C#:
 	- Strings that automatically represent their member name:
 		* This prohibits incorrect usage of integral values when they are not needed;
 		* It removes the need to keep track of (incremental) integral values;
-	- Custom defined types, for example see StrictDirection: https://github.com/Code-Chops/Geometry/;
+	- Custom defined types, for example see StrictDirectionModes: https://github.com/Code-Chops/Geometry/;
 
 * Inheritance and/or partial records can be used to extend your enums: 
 	- Enums can now be extended in multiple projects;
