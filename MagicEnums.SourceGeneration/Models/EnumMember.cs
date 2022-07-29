@@ -1,4 +1,4 @@
-﻿namespace CodeChops.MagicEnums.SourceGeneration.Entities;
+﻿namespace CodeChops.MagicEnums.SourceGeneration.Models;
 
 public record EnumMember : IEnumEntity
 {

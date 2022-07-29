@@ -1,15 +1,13 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿namespace CodeChops.MagicEnums.UnitTests.Concurrency;
 
-namespace CodeChops.MagicEnums.UnitTests.Numbers;
-
-public record NumberEnumConcurrencyTests : MagicEnum<NumberEnumConcurrencyTests>
+public record ImplicitValueConcurrencyTests : MagicEnum<ImplicitValueConcurrencyTests>
 {
 	/// <summary>
 	/// Multiple threads should create enum options with implicit incremental values. The order is not guaranteed. 
 	/// </summary>
 	[Fact]
 	[SuppressMessage("ReSharper", "AccessToModifiedClosure")]
-	public async Task NumberEnumConcurrency_WithImplicitIncrementalNumber_IsCorrect()
+	public async Task EnumConcurrency_WithImplicitIncrementalNumber_IsCorrect()
 	{
 		int index;
 		for (index = 0; index < 10000; index += 4)

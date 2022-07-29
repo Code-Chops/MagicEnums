@@ -1,41 +1,40 @@
 ﻿using System.Runtime.CompilerServices;
 using CodeChops.GenericMath;
-using CodeChops.Identities;
 using CodeChops.MagicEnums.Core;
 
 namespace CodeChops.MagicEnums;
 
 /// <summary>
 /// An enum with an integer value. 
-/// Use <see cref="MagicEnum{TEnum, TValue}.CreateMember(string?)"/> 
-/// or <see cref="CodeChops.MagicEnums.MagicEnum{TEnum, TValue}.CreateMember(TValue, string?)"/> to create a member.
+/// Use <see cref="MagicEnum{TSelf, TValue}.CreateMember(string?)"/> 
+/// or <see cref="CodeChops.MagicEnums.MagicEnum{TSelf, TValue}.CreateMember(TValue, string?)"/> to create a member.
 /// </summary>
-/// <typeparam name="TEnum">The type of the number enum itself. Is also equal to the type of each member.</typeparam>
-public abstract partial record MagicEnum<TEnum> : MagicEnum<TEnum, int>
-	where TEnum : MagicEnum<TEnum>;
+/// <typeparam name="TSelf">The type of the number enum itself. Is also equal to the type of each member.</typeparam>
+public abstract record MagicEnum<TSelf> : MagicEnum<TSelf, int>
+	where TSelf : MagicEnum<TSelf>;
 
 /// <summary>
 /// An enum with an integral value.
-/// Use <see cref="MagicEnum{TEnum, TValue}.CreateMember(string?)"/> 
-/// or <see cref="CodeChops.MagicEnums.MagicEnum{TEnum, TValue}.CreateMember(TValue, string?)"/> to create a member.
+/// Use <see cref="MagicEnum{TSelf, TValue}.CreateMember(string?)"/> 
+/// or <see cref="CodeChops.MagicEnums.MagicEnum{TSelf, TValue}.CreateMember(TValue, string?)"/> to create a member.
 /// </summary>
-/// <typeparam name="TEnum">The type of the number enum itself. Is also equal to the type of each member.</typeparam>
+/// <typeparam name="TSelf">The type of the number enum itself. Is also equal to the type of each member.</typeparam>
 /// <typeparam name="TValue">The integral type.</typeparam>
-public abstract partial record MagicEnum<TEnum, TValue> : MagicEnumCore<TEnum, TValue>
-	where TEnum : MagicEnum<TEnum, TValue>
+public abstract record MagicEnum<TSelf, TValue> : MagicEnumCore<TSelf, TValue>
+	where TSelf : MagicEnum<TSelf, TValue>
 	where TValue : struct, IComparable<TValue>, IEquatable<TValue>, IConvertible
 {
 	#region Comparison
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	private int CompareTo(IId<TValue> other) => this.Value.CompareTo(other.Value);
+	private int CompareTo(TValue other) => this.Value.CompareTo(other);
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static bool operator <(MagicEnum<TEnum, TValue> left, MagicEnum<TEnum, TValue> right)	=> left.CompareTo(right) <	0;
+	public static bool operator <(MagicEnum<TSelf, TValue> left, MagicEnum<TSelf, TValue> right)	=> left.CompareTo(right) <	0;
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static bool operator <=(MagicEnum<TEnum, TValue> left, MagicEnum<TEnum, TValue> right)	=> left.CompareTo(right) <= 0;
+	public static bool operator <=(MagicEnum<TSelf, TValue> left, MagicEnum<TSelf, TValue> right)	=> left.CompareTo(right) <= 0;
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static bool operator >(MagicEnum<TEnum, TValue> left, MagicEnum<TEnum, TValue> right)	=> left.CompareTo(right) >	0;
+	public static bool operator >(MagicEnum<TSelf, TValue> left, MagicEnum<TSelf, TValue> right)	=> left.CompareTo(right) >	0;
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static bool operator >=(MagicEnum<TEnum, TValue> left, MagicEnum<TEnum, TValue> right)	=> left.CompareTo(right) >= 0;
+	public static bool operator >=(MagicEnum<TSelf, TValue> left, MagicEnum<TSelf, TValue> right)	=> left.CompareTo(right) >= 0;
 	#endregion
 
 	/// <summary>
@@ -57,16 +56,16 @@ public abstract partial record MagicEnum<TEnum, TValue> : MagicEnumCore<TEnum, T
 	/// </param>
 	/// <returns>The newly created member.</returns>
 	/// <exception cref="ArgumentException">When a member already exists with the same name.</exception>
-	public static TEnum CreateMember([CallerMemberName] string? enforcedName = null)
+	public static TSelf CreateMember([CallerMemberName] string? enforcedName = null)
 	{
 		Number<TValue>? lastInsertedNumber;
 		
-		if (IMagicEnumCore<TEnum, TValue>.IsInConcurrentState)
+		if (IsInConcurrentState)
 			lock (LockLastInsertedNumber) lastInsertedNumber = IncrementLastInsertedNumber();
 		else
 			lastInsertedNumber = IncrementLastInsertedNumber();
 
-		var id = MagicEnumCore<TEnum, TValue>.CreateMember(lastInsertedNumber ?? IMagicEnumCore<TEnum, TValue>.GetLastInsertedValue(), enforcedName!);
+		var id = MagicEnumCore<TSelf, TValue>.CreateMember(lastInsertedNumber ?? GetLastInsertedValue(), enforcedName!);
 		return id;
 
 
@@ -94,13 +93,13 @@ public abstract partial record MagicEnum<TEnum, TValue> : MagicEnumCore<TEnum, T
 	/// </param>
 	/// <returns>The newly created member.</returns>
 	/// <exception cref="ArgumentException">When a member already exists with the same name.</exception>
-	protected new static TEnum CreateMember(TValue value, [CallerMemberName] string? enforcedName = null)
+	protected new static TSelf CreateMember(TValue value, [CallerMemberName] string? enforcedName = null)
 	{
-		if (IMagicEnumCore<TEnum, TValue>.IsInConcurrentState)
+		if (IsInConcurrentState)
 			lock (LockLastInsertedNumber) LastInsertedNumber = value;
 		else
 			LastInsertedNumber = value;
 
-		return MagicEnumCore<TEnum, TValue>.CreateMember(value, enforcedName!);
+		return MagicEnumCore<TSelf, TValue>.CreateMember(value, enforcedName!);
 	}
 }

@@ -1,5 +1,4 @@
-﻿using CodeChops.MagicEnums.SourceGeneration.Entities;
-using CodeChops.MagicEnums.SourceGeneration.SourceBuilders;
+﻿using CodeChops.MagicEnums.SourceGeneration.SourceBuilders;
 using CodeChops.MagicEnums.SourceGeneration.SyntaxReceivers;
 
 namespace CodeChops.MagicEnums.SourceGeneration;
@@ -13,12 +12,11 @@ namespace CodeChops.MagicEnums.SourceGeneration;
 public class SourceGenerator : IIncrementalGenerator
 {
 	internal const string GenerateMethodName				= "CreateMember";
-	internal const string InterfaceName						= "IMagicEnumCore";
-	internal const string InterfaceNamespace				= "CodeChops.MagicEnums.Core";
+	internal const string CoreName							= "MagicEnumCore";
+	internal const string CoreNamespace						= "CodeChops.MagicEnums.Core";
 	internal const string AttributeNamespace				= "CodeChops.MagicEnums.Attributes";
 	internal const string MemberAttributeName				= "EnumMember";
 	internal const string DiscoverableAttributeName			= "DiscoverableEnumMembers";
-	internal const string CreateInternalCopyAttributeName	= "CloneAsInternal";
 
 	private Dictionary<string, EnumDefinition>? EnumDefinitionsByName { get; set; }
 

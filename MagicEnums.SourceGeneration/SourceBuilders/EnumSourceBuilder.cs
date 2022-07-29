@@ -1,6 +1,4 @@
-﻿using CodeChops.MagicEnums.SourceGeneration.Entities;
-
-namespace CodeChops.MagicEnums.SourceGeneration.SourceBuilders;
+﻿namespace CodeChops.MagicEnums.SourceGeneration.SourceBuilders;
 
 public static class EnumSourceBuilder
 {

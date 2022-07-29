@@ -5,11 +5,11 @@ namespace CodeChops.MagicEnums;
 
 /// <summary>
 /// An enum with a string as member value.
-/// Use <see cref="MagicStringEnum{TEnum}.CreateMember(string?)"/> to create a member.
+/// Use <see cref="MagicStringEnum{TSelf}.CreateMember(string?)"/> to create a member.
 /// </summary>
-/// <typeparam name="TEnum">The type of the number enum itself. Is also equal to the type of each member.</typeparam>
-public abstract partial record MagicStringEnum<TEnum> : MagicEnumCore<TEnum, string>
-	where TEnum : MagicStringEnum<TEnum>
+/// <typeparam name="TSelf">The type of the number enum itself. Is also equal to the type of each member.</typeparam>
+public abstract record MagicStringEnum<TSelf> : MagicEnumCore<TSelf, string>
+	where TSelf : MagicStringEnum<TSelf>
 {
 	/// <summary>
 	/// Creates a new enum member with the member name as string value.
@@ -21,5 +21,5 @@ public abstract partial record MagicStringEnum<TEnum> : MagicEnumCore<TEnum, str
 	/// </param>
 	/// <returns>The newly created member.</returns>
 	/// <exception cref="ArgumentException">When a member already exists with the same name.</exception>
-	public static TEnum CreateMember([CallerMemberName] string? enforcedName = null) => CreateMember(enforcedName!, enforcedName!);
+	public static TSelf CreateMember([CallerMemberName] string? enforcedName = null) => CreateMember(enforcedName!, enforcedName!);
 }

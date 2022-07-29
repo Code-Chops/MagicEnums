@@ -1,4 +1,4 @@
-﻿namespace CodeChops.MagicEnums.SourceGeneration.Entities;
+﻿namespace CodeChops.MagicEnums.SourceGeneration.Models;
 
 public record DiscoveredEnumMember : EnumMember
 {
@@ -12,7 +12,7 @@ public record DiscoveredEnumMember : EnumMember
 	{
 		if (discoverabilityMode == DiscoverabilityMode.None)
 		{
-			throw new ArgumentException($"Member {name} of enum {enumName} should be implicity or explicitly discovered. File path: {filePath}. Line position: {linePosition}.");
+			throw new ArgumentException($"Member {name} of enum {enumName} should be implicitly or explicitly discovered. File path: {filePath}. Line position: {linePosition}.");
 		}
 
 		this.EnumName = enumName;

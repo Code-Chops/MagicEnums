@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>1.8.5</VersionPrefix>
-		<PackageReleaseNotes>Fixed bugs and source generation.</PackageReleaseNotes>
+		<VersionPrefix>2.0.0</VersionPrefix>
+		<PackageReleaseNotes>Removed IMagicEnumCore. Changed TEnum to TSelf. Changed package creation. Fixed unit tests.</PackageReleaseNotes>
 		<TargetFramework>net6.0</TargetFramework>
 		<LangVersion>10</LangVersion>
 	</PropertyGroup>
@@ -56,19 +56,19 @@ Flexible and extendable enums for C#:
 		<ImplicitUsings>enable</ImplicitUsings>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<EnablePreviewFeatures>true</EnablePreviewFeatures>
-		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
 	</PropertyGroup>
 
+	<PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+		<DebugType>portable</DebugType>
+	</PropertyGroup>
+	
 	<ItemGroup>
 		<ProjectReference Include="..\MagicEnums.SourceGeneration\MagicEnums.SourceGeneration.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 	</ItemGroup>
 
-	<!-- Removes local nuget packages, so the package will be replaced when it exists -->
-	<Target Name="RemoveNugetPackage" AfterTargets="Pack" Condition="'$(LocalNuGetPackagesFolder)' != null">
-		<Exec Command="rmdir $(LocalNuGetPackagesFolder)\$(PackageId)\$(PackageVersion)\ /s /q" />
-	</Target>
-	<!-- Creates local nuget packages if environment variable LocalNuGetPackagesFolder is configured -->
-	<Target Name="AddNugetPackage" AfterTargets="Pack" Condition="'$(LocalNuGetPackagesFolder)' != null">
+	<!-- Creates local nuget packages if in release mode and environment variable LocalNuGetPackagesFolder is configured -->
+	<Target Name="AddNugetPackage" AfterTargets="Pack" Condition="'$(Configuration)' == 'Release' AND '$(LocalNuGetPackagesFolder)' != null">
 		<Exec Command="$(LocalNuGetPackagesFolder)\nuget.exe add $(OutputPath)..\$(PackageId).$(PackageVersion).nupkg -source $(LocalNuGetPackagesFolder)" />
 	</Target>
 	
@@ -86,9 +86,9 @@ Flexible and extendable enums for C#:
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CodeChops.DomainDrivenDesign.DomainModeling" Version="0.0.9" />
-		<PackageReference Include="CodeChops.GenericMath" Version="1.4.1" />
-		<PackageReference Include="CodeChops.Identities" Version="0.1.9" />	
+		<PackageReference Include="CodeChops.DomainDrivenDesign.DomainModeling" Version="0.1.2" />
+		<PackageReference Include="CodeChops.GenericMath" Version="1.4.8" />
+		<PackageReference Include="CodeChops.Identities" Version="0.4.5" />	
 	</ItemGroup>
 
 	<PropertyGroup>
@@ -97,6 +97,5 @@ Flexible and extendable enums for C#:
 		<!-- CS1591: Missing XML comment for publicly visible type -->
 		<!-- CA1816: Dispose() should call GC.SuppressFinalize()-->
 		<NoWarn>CA1822,CS1573,CS1591,CA1816</NoWarn>
-		<DebugType>none</DebugType>
 	</PropertyGroup>
 </Project>

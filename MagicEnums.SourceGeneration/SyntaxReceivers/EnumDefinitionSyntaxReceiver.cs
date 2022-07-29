@@ -1,7 +1,4 @@
-﻿using CodeChops.MagicEnums.SourceGeneration.Entities;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-
-namespace CodeChops.MagicEnums.SourceGeneration.SyntaxReceivers;
+﻿namespace CodeChops.MagicEnums.SourceGeneration.SyntaxReceivers;
 
 internal class EnumDefinitionSyntaxReceiver
 {
@@ -27,12 +24,12 @@ internal class EnumDefinitionSyntaxReceiver
 	{
 		var attributeSyntax = (AttributeSyntax)context.Node;
 		if (attributeSyntax.Parent?.Parent is not RecordDeclarationSyntax typeDeclaration) return null;
-		if (context.SemanticModel.GetDeclaredSymbol(typeDeclaration, cancellationToken) is not INamedTypeSymbol type) return null;
+		if (context.SemanticModel.GetDeclaredSymbol(typeDeclaration, cancellationToken) is not { } type) return null;
 
-		if (type.IsStatic || !type.IsRecord || !typeDeclaration.Modifiers.Any(m => m.ValueText == "partial")) return null;
+		if (type.IsStatic || !type.IsRecord || !typeDeclaration.Modifiers.Any(m =>  m.IsKind(SyntaxKind.PartialKeyword))) return null;
 
-		if (!type.IsOrImplementsInterface(type => type.IsType(SourceGenerator.InterfaceName, SourceGenerator.InterfaceNamespace, isGenericType: true), out var interf)) return null;
-		if (!interf.IsGeneric(typeParameterCount: 2, out var genericTypeArgument)) return null;
+		if (!type.IsOrInheritsClass(type => type.IsType(SourceGenerator.CoreName, SourceGenerator.CoreNamespace, isGenericType: true), out var baseClass)) return null;
+		if (!baseClass.IsGeneric(typeParameterCount: 2, out var genericTypeArgument)) return null;
 
 		var hasDiscoverableAttribute = type.HasAttribute(SourceGenerator.DiscoverableAttributeName, SourceGenerator.AttributeNamespace, out var discoverableAttribute);
 		var hasAttributeMembers = type.HasAttributes(SourceGenerator.MemberAttributeName, SourceGenerator.AttributeNamespace, out var attributeMemberDataList);

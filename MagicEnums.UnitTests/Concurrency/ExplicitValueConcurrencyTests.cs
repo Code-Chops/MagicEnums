@@ -1,22 +1,22 @@
-﻿using CodeChops.MagicEnums.Core;
+﻿namespace CodeChops.MagicEnums.UnitTests.Concurrency;
 
-namespace CodeChops.MagicEnums.UnitTests.Concurrency;
-
-public record EnumConcurrencyTests : MagicEnum<EnumConcurrencyTests>
+public record ExplicitValueConcurrencyTests : MagicEnum<ExplicitValueConcurrencyTests>
 {
 	/// <summary>
-	/// Multiple threads should create enum options with implicit incremental values. The order is not guaranteed. 
+	/// Multiple threads should create enum options with explicit incremental values. The order is not guaranteed. 
 	/// </summary>
 	[Fact]
-	public async Task EnumConcurrency_WithImplicitIncrementalNumber_ShouldBeCorrect()
+	[SuppressMessage("ReSharper", "AccessToModifiedClosure")]
+	public async Task EnumConcurrency_WithExplicitIncrementalNumber_ShouldBeCorrect()
 	{
 		int index;
-		for (index = 0; index < 100; index += 2)
+		for (index = 0; index < 10000; index += 4)
 		{
 			var taskA = Task.Run(() => CreateMember(index, enforcedName: index.ToString()));
 			var taskB = Task.Run(() => CreateMember(index + 1, enforcedName: (index + 1).ToString()));
-			var taskC = Task.Run(() => GetEnumerable().Select(member => member));
-			await Task.WhenAll(taskA, taskB, taskC);
+			var taskC = Task.Run(() => CreateMember(index + 2, enforcedName: (index + 2).ToString()));
+			var taskD = Task.Run(() => CreateMember(index + 3, enforcedName: (index + 3).ToString()));
+			await Task.WhenAll(taskA, taskB, taskC, taskD);
 		}
 
 		index = 0;
@@ -31,7 +31,7 @@ public record EnumConcurrencyTests : MagicEnum<EnumConcurrencyTests>
 	[Fact]
 	public void EnumConcurrency_ConcurrencyDisabled_AfterStaticBuildup_ShouldNotBeInConcurrentState()
 	{
-		Assert.False(IMagicEnumCore<StaticNotConcurrentEnumMock, int>.IsInConcurrentState);
+		Assert.False(StaticNotConcurrentEnumMock.IsInConcurrentState);
 	}
 
 	[Fact]
@@ -39,13 +39,13 @@ public record EnumConcurrencyTests : MagicEnum<EnumConcurrencyTests>
 	{
 		DynamicNotConcurrentEnumMock.CreateDynamicTestMember();
 
-		Assert.False(IMagicEnumCore<DynamicConcurrentEnumMock, int>.IsInConcurrentState);
+		Assert.False(DynamicNotConcurrentEnumMock.IsInConcurrentState);
 	}
 
 	[Fact]
 	public void EnumConcurrency_ConcurrencyEnabled_AfterStaticBuildup_ShouldBeInNotConcurrentState()
 	{
-		Assert.False(IMagicEnumCore<StaticNotConcurrentEnumMock, int>.IsInConcurrentState);
+		Assert.False(StaticNotConcurrentEnumMock.IsInConcurrentState);
 	}
 
 	[Fact]
@@ -53,6 +53,6 @@ public record EnumConcurrencyTests : MagicEnum<EnumConcurrencyTests>
 	{
 		DynamicConcurrentEnumMock.CreateDynamicTestMember();
 
-		Assert.True(IMagicEnumCore<DynamicConcurrentEnumMock, int>.IsInConcurrentState);
+		Assert.True(DynamicConcurrentEnumMock.IsInConcurrentState);
 	}
 }

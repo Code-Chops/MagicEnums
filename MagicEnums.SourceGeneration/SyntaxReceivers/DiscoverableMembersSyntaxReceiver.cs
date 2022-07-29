@@ -1,7 +1,4 @@
-﻿using CodeChops.MagicEnums.SourceGeneration.Entities;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-
-namespace CodeChops.MagicEnums.SourceGeneration.SyntaxReceivers;
+﻿namespace CodeChops.MagicEnums.SourceGeneration.SyntaxReceivers;
 
 internal static class DiscoverableMembersSyntaxReceiver
 {
