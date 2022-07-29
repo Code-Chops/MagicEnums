@@ -1,7 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using System.Runtime.Serialization;
-
-namespace CodeChops.MagicEnums;
+﻿namespace CodeChops.MagicEnums;
 
 /// <summary>
 /// An enum with an uninitialized object as member value.

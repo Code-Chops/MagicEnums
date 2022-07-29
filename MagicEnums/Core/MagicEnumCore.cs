@@ -1,7 +1,5 @@
 ﻿using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
-using System.Runtime.Serialization;
 using CodeChops.MagicEnums.Attributes;
 
 namespace CodeChops.MagicEnums.Core;

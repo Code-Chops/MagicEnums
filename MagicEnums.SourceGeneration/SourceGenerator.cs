@@ -34,18 +34,18 @@ public class SourceGenerator : IIncrementalGenerator
 		// Get the enum definitions.
 		var enumDefinitions = context.SyntaxProvider
 			.CreateSyntaxProvider(
-				predicate: static (syntaxNode, ct)	=> EnumDefinitionSyntaxReceiver.CheckIfIsProbablyEnumDefinition(syntaxNode, ct),
-				transform: static (context, ct)		=> EnumDefinitionSyntaxReceiver.GetEnumDefinition(context, ct))
+				predicate: EnumDefinitionSyntaxReceiver.CheckIfIsProbablyEnumDefinition,
+				transform: EnumDefinitionSyntaxReceiver.GetEnumDefinition)
 			.Where(static definition => definition is not null)
 			.Collect();
 
 		// Store the enum definitions in the property for later use.
 		context.RegisterSourceOutput(
 			source: enumDefinitions,
-			action: (_, definitions) => AddEnumDefinitions(definitions!));
+			action: AddEnumDefinitions!);
 		
 
-		void AddEnumDefinitions(ImmutableArray<EnumDefinition> enumDefinitions)
+		void AddEnumDefinitions(SourceProductionContext context, ImmutableArray<EnumDefinition> enumDefinitions)
 		{
 			this.EnumDefinitionsByName = enumDefinitions
 				.GroupBy(definition => definition.Name)
@@ -60,8 +60,8 @@ public class SourceGenerator : IIncrementalGenerator
 	{
 		var memberInvocations = context.SyntaxProvider
 			.CreateSyntaxProvider(
-				predicate: static (syntaxNode, _)	=> DiscoverableMembersSyntaxReceiver.CheckIfIsProbablyEnumMemberInvocation(syntaxNode),
-				transform: (context, ct)			=> DiscoverableMembersSyntaxReceiver.GetProbablyDiscoveredEnumMember(context, this.EnumDefinitionsByName, ct))
+				predicate: DiscoverableMembersSyntaxReceiver.CheckIfIsProbablyEnumMemberInvocation,
+				transform: (context, ct) => DiscoverableMembersSyntaxReceiver.GetProbablyDiscoveredEnumMember(context, this.EnumDefinitionsByName, ct))
 			.Where(static member => member is not null)
 			.Collect();
 

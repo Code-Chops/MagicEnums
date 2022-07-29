@@ -1,7 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using CodeChops.MagicEnums.Core;
-
-namespace CodeChops.MagicEnums;
+﻿namespace CodeChops.MagicEnums;
 
 /// <summary>
 /// An enum with a string as member value.

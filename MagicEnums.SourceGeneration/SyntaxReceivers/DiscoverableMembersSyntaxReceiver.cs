@@ -5,7 +5,7 @@ internal static class DiscoverableMembersSyntaxReceiver
 	/// <summary>
 	/// The predicate for every node that is probably an enum member invocation.
 	/// </summary>
-	internal static bool CheckIfIsProbablyEnumMemberInvocation(SyntaxNode syntaxNode)
+	internal static bool CheckIfIsProbablyEnumMemberInvocation(SyntaxNode syntaxNode, CancellationToken cancellation)
 	{
 		// Explicit enum member invocation.
 		if (syntaxNode is InvocationExpressionSyntax invocation)
@@ -21,7 +21,7 @@ internal static class DiscoverableMembersSyntaxReceiver
 			return true;
 		}
 		// Implicit enum member invocation.
-		else if (syntaxNode is MemberAccessExpressionSyntax memberAccess && memberAccess.Parent is not InvocationExpressionSyntax)
+		else if (syntaxNode is MemberAccessExpressionSyntax { Parent: not InvocationExpressionSyntax } memberAccess)
 		{
 			if (memberAccess.Expression is not IdentifierNameSyntax) return false;
 			return true;

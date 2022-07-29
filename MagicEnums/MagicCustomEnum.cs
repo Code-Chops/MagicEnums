@@ -1,6 +1,4 @@
-﻿using CodeChops.MagicEnums.Core;
-
-namespace CodeChops.MagicEnums;
+﻿namespace CodeChops.MagicEnums;
 
 /// <summary>
 /// An enum with a custom type as member value.

@@ -1,8 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using CodeChops.GenericMath;
-using CodeChops.MagicEnums.Core;
-
-namespace CodeChops.MagicEnums;
+﻿namespace CodeChops.MagicEnums;
 
 /// <summary>
 /// An enum with an integer value. 
