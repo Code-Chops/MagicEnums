@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>2.0.4</VersionPrefix>
-		<PackageReleaseNotes>Updated package references.</PackageReleaseNotes>
+		<VersionPrefix>2.0.5</VersionPrefix>
+		<PackageReleaseNotes>Included extra source generation reference.</PackageReleaseNotes>
 		<TargetFramework>net6.0</TargetFramework>
 		<LangVersion>10</LangVersion>
 	</PropertyGroup>
@@ -65,6 +65,7 @@ Flexible and extendable enums for C#:
 	
 	<ItemGroup>
 		<ProjectReference Include="..\MagicEnums.SourceGeneration\MagicEnums.SourceGeneration.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+		<None Include="..\MagicEnums.SourceGeneration\bin\$(Configuration)\netstandard2.0\$(AssemblyName).SourceGeneration.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 	</ItemGroup>
 
 	<!-- Creates local nuget packages if in release mode and environment variable LocalNuGetPackagesFolder is configured -->
