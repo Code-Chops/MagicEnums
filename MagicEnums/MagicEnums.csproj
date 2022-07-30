@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>2.0.7</VersionPrefix>
-		<PackageReleaseNotes>Fixed source generation reference.</PackageReleaseNotes>
+		<VersionPrefix>2.0.8</VersionPrefix>
+		<PackageReleaseNotes>Trying to fix source generation reference.</PackageReleaseNotes>
 		<TargetFramework>net6.0</TargetFramework>
 		<LangVersion>10</LangVersion>
 	</PropertyGroup>

@@ -10,14 +10,8 @@
 		<Title>CodeChops.MagicEnums.SourceGeneration</Title>
 		<AssemblyName>CodeChops.MagicEnums.SourceGeneration</AssemblyName>
 		<RootNamespace>CodeChops.MagicEnums.SourceGeneration</RootNamespace>
-		<PackageId>CodeChops.MagicEnums.SourceGeneration</PackageId>
 		<Authors>CodeChops (@Code-Chops), Max Bergman</Authors>
 		<Company>CodeChops</Company>
-		<PackageProjectUrl>https://github.com/code-chops/MagicEnums</PackageProjectUrl>
-		<PackageTags>CodeChops;CodeChops.MagicEnums;CodeChops.MagicEnum;CodeChops.MagicEnums.SourceGeneration;MagicEnums;MagicEnum;Magic enums;Magic enum;Smart enums;Smart enum;Better enums;Better enum;Enum source generation;</PackageTags>
-		<RepositoryUrl>https://github.com/code-chops/MagicEnums</RepositoryUrl>
-		<RepositoryType>Git</RepositoryType>
-		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<PackageIcon>icon.png</PackageIcon>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<Copyright>Copyright (c) CodeChops $([System.DateTime]::Now.ToString(yyyy))</Copyright>
@@ -27,8 +21,7 @@ Source generation for magic enums: Flexible and extendable enums for .NET that s
 		<AnalysisLevel>latest</AnalysisLevel>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<IncludeBuildOutput>false</IncludeBuildOutput>
+		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -47,7 +40,6 @@ Source generation for magic enums: Flexible and extendable enums for .NET that s
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="CodeChops.SourceGeneration.Utilities" Version="0.1.8" PrivateAssets="all" GeneratePathProperty="true" />
-		<None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 	</ItemGroup>
 
 	<PropertyGroup>
