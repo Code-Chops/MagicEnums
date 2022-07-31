@@ -41,9 +41,9 @@ Source generation for magic enums: Flexible and extendable enums for .NET that s
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="CodeChops.SourceGeneration.Utilities" Version="0.1.8" PrivateAssets="all" GeneratePathProperty="true" />
+		<PackageReference Include="CodeChops.SourceGeneration.Utilities" Version="0.1.8" PrivateAssets="all" />
 	</ItemGroup>
-
+	
 	<PropertyGroup>
 		<!-- CS1591: Missing XML comment for publicly visible type -->
 		<!-- CS1573: Undocumented public symbol while -doc compiler option is used -->

@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>2.0.9</VersionPrefix>
-		<PackageReleaseNotes>Trying to fix source generation reference 2.</PackageReleaseNotes>
+		<VersionPrefix>2.0.10</VersionPrefix>
+		<PackageReleaseNotes>Finally fixed source generation reference.</PackageReleaseNotes>
 		<TargetFramework>net6.0</TargetFramework>
 		<LangVersion>10</LangVersion>
 	</PropertyGroup>
@@ -72,10 +72,10 @@ Flexible and extendable enums for C#:
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Include="$(PkgCodeChops_SourceGeneration_Utilities)\lib\netstandard2.0\CodeChops.SourceGeneration.Utilities.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 		<!-- Package the generator in the analyzer directory of the nuget package -->
 		<None Remove="$(OutputPath)/$(AssemblyName).SourceGeneration.dll" />
 		<None Include="$(OutputPath)/$(AssemblyName).SourceGeneration.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-		<None Include="$(PkgCodeChops_SourceGeneration_Utilities)\lib\netstandard2.0\CodeChops.SourceGeneration.Utilities.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 	</ItemGroup>
 	
 	<ItemGroup>
