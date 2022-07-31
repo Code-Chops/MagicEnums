@@ -22,6 +22,8 @@ Source generation for magic enums: Flexible and extendable enums for .NET that s
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<IsPackable>false</IsPackable>
+		<DevelopmentDependency>true</DevelopmentDependency>
+		<IncludeBuildOutput>false</IncludeBuildOutput>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -41,16 +43,6 @@ Source generation for magic enums: Flexible and extendable enums for .NET that s
 		</PackageReference>
 		<PackageReference Include="CodeChops.SourceGeneration.Utilities" Version="0.1.8" PrivateAssets="all" GeneratePathProperty="true" />
 	</ItemGroup>
-
-	<PropertyGroup>
-		<GetTargetPathDependsOn>$(GetTargetPathDependsOn);GetDependencyTargetPaths</GetTargetPathDependsOn>
-	</PropertyGroup>
-
-	<Target Name="GetDependencyTargetPaths">
-		<ItemGroup>
-			<TargetPathWithTargetPlatformMoniker Include="$(PkgCodeChops_SourceGeneration_Utilities)\lib\netstandard2.0\CodeChops.SourceGeneration.Utilities.dll" IncludeRuntimeDependency="false" />
-		</ItemGroup>
-	</Target>
 
 	<PropertyGroup>
 		<!-- CS1591: Missing XML comment for publicly visible type -->

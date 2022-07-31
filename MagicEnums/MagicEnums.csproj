@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>2.0.8</VersionPrefix>
-		<PackageReleaseNotes>Trying to fix source generation reference.</PackageReleaseNotes>
+		<VersionPrefix>2.0.9</VersionPrefix>
+		<PackageReleaseNotes>Trying to fix source generation reference 2.</PackageReleaseNotes>
 		<TargetFramework>net6.0</TargetFramework>
 		<LangVersion>10</LangVersion>
 	</PropertyGroup>
@@ -60,17 +60,23 @@ Flexible and extendable enums for C#:
 
 	<PropertyGroup Condition="'$(Configuration)' == 'Debug'">
 		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
-		<DebugType>portable</DebugType>
 	</PropertyGroup>
-	
+
 	<ItemGroup>
-		<ProjectReference Include="..\MagicEnums.SourceGeneration\MagicEnums.SourceGeneration.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+		<PackageReference Include="CodeChops.SourceGeneration.Utilities" Version="0.1.8" PrivateAssets="all" GeneratePathProperty="true" />
+		<ProjectReference Include="..\MagicEnums.SourceGeneration\MagicEnums.SourceGeneration.csproj" Pack="false">
+			<ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+			<OutputItemType>Content</OutputItemType>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</ProjectReference>
 	</ItemGroup>
 
-	<!-- Creates local nuget packages if in release mode and environment variable LocalNuGetPackagesFolder is configured -->
-	<Target Name="AddNugetPackage" AfterTargets="Pack" Condition="'$(Configuration)' == 'Release' AND '$(LocalNuGetPackagesFolder)' != null">
-		<Exec Command="$(LocalNuGetPackagesFolder)\nuget.exe add $(OutputPath)..\$(PackageId).$(PackageVersion).nupkg -source $(LocalNuGetPackagesFolder)" />
-	</Target>
+	<ItemGroup>
+		<!-- Package the generator in the analyzer directory of the nuget package -->
+		<None Remove="$(OutputPath)/$(AssemblyName).SourceGeneration.dll" />
+		<None Include="$(OutputPath)/$(AssemblyName).SourceGeneration.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+		<None Include="$(PkgCodeChops_SourceGeneration_Utilities)\lib\netstandard2.0\CodeChops.SourceGeneration.Utilities.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+	</ItemGroup>
 	
 	<ItemGroup>
 		<None Include="Properties\LICENSE" Pack="true" PackagePath="" />
@@ -88,6 +94,7 @@ Flexible and extendable enums for C#:
 	<ItemGroup>
 		<PackageReference Include="CodeChops.DomainDrivenDesign.DomainModeling" Version="0.2.3" />
 		<PackageReference Include="CodeChops.GenericMath" Version="1.5.1" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.2.0" />
 	</ItemGroup>
 
 	<PropertyGroup>
