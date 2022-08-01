@@ -2,10 +2,10 @@
 
 	<PropertyGroup>
 		<Version>1.0.4</Version>
-		<TargetFramework>netstandard2.0</TargetFramework>
-		<LangVersion>10</LangVersion>
 		<AssemblyName>CodeChops.MagicEnums.SourceGeneration</AssemblyName>
 		<RootNamespace>CodeChops.MagicEnums.SourceGeneration</RootNamespace>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<LangVersion>10</LangVersion>
 		<AnalysisLevel>latest</AnalysisLevel>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>

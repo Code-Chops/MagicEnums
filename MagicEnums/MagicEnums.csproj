@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>2.1.0</VersionPrefix>
-		<PackageReleaseNotes>Finally fixed source generation reference 4.</PackageReleaseNotes>
+		<VersionPrefix>2.1.1</VersionPrefix>
+		<PackageReleaseNotes>Fixed package build on release mode.</PackageReleaseNotes>
 		<TargetFramework>net6.0</TargetFramework>
 		<LangVersion>10</LangVersion>
 	</PropertyGroup>
@@ -61,6 +61,11 @@ Flexible and extendable enums for C#:
 	<PropertyGroup Condition="'$(Configuration)' == 'Debug'">
 		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
 	</PropertyGroup>
+
+	<!-- Creates local nuget packages if in release mode and environment variable LocalNuGetPackagesFolder is configured -->
+	<Target Name="AddNugetPackage" AfterTargets="Pack" Condition="'$(Configuration)' == 'Release' AND '$(LocalNuGetPackagesFolder)' != null">
+		<Exec Command="$(LocalNuGetPackagesFolder)\nuget.exe add $(OutputPath)..\$(PackageId).$(PackageVersion).nupkg -source $(LocalNuGetPackagesFolder)" />
+	</Target>
 
 	<ItemGroup>
 		<ProjectReference Include="..\MagicEnums.SourceGeneration\MagicEnums.SourceGeneration.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
