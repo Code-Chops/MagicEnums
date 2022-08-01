@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>2.0.11</VersionPrefix>
-		<PackageReleaseNotes>Finally fixed source generation reference 2.</PackageReleaseNotes>
+		<VersionPrefix>2.1.0</VersionPrefix>
+		<PackageReleaseNotes>Finally fixed source generation reference 4.</PackageReleaseNotes>
 		<TargetFramework>net6.0</TargetFramework>
 		<LangVersion>10</LangVersion>
 	</PropertyGroup>
@@ -63,19 +63,10 @@ Flexible and extendable enums for C#:
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CodeChops.SourceGeneration.Utilities" Version="0.1.8" PrivateAssets="all" GeneratePathProperty="true" />
-		<ProjectReference Include="..\MagicEnums.SourceGeneration\MagicEnums.SourceGeneration.csproj" Pack="false">
-			<ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-			<OutputItemType>Content</OutputItemType>
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</ProjectReference>
-	</ItemGroup>
-
-	<ItemGroup>
+		<ProjectReference Include="..\MagicEnums.SourceGeneration\MagicEnums.SourceGeneration.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 		<!-- Package the generator in the analyzer directory of the nuget package -->
-		<None Remove="$(OutputPath)/$(AssemblyName).SourceGeneration.dll" />
-		<None Include="$(OutputPath)/$(AssemblyName).SourceGeneration.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-		<None Include="$(PkgCodeChops_SourceGeneration_Utilities)\lib\netstandard2.0\CodeChops.SourceGeneration.Utilities.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false"  />
+		<None Include="..\MagicEnums.SourceGeneration/bin/$(Configuration)/netstandard2.0/$(AssemblyName).SourceGeneration.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+		<None Include="..\MagicEnums.SourceGeneration/bin/$(Configuration)/netstandard2.0/CodeChops.SourceGeneration.Utilities.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 	</ItemGroup>
 	
 	<ItemGroup>
@@ -92,7 +83,7 @@ Flexible and extendable enums for C#:
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CodeChops.DomainDrivenDesign.DomainModeling" Version="0.2.3" />
+		<PackageReference Include="CodeChops.DomainDrivenDesign.DomainModeling" Version="0.5.0" />
 		<PackageReference Include="CodeChops.GenericMath" Version="1.5.1" />
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.2.0" />
 	</ItemGroup>

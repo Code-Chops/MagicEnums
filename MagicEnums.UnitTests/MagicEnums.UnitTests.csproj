@@ -5,10 +5,6 @@
 		<Version>1.0.0</Version>
 		<AssemblyName>CodeChops.MagicEnums.UnitTests</AssemblyName>
 		<RootNamespace>CodeChops.MagicEnums.UnitTests</RootNamespace>
-		<Authors>Max Bergman (@Code-Chops)</Authors>
-		<Company>CodeChops</Company>
-		<Summary>Unit tests for magic enums</Summary>
-		<Description>Unit tests for magic enums</Description>
 		<TargetFramework>net6.0</TargetFramework>
 		<LangVersion>10</LangVersion>
 		<AnalysisLevel>latest</AnalysisLevel>
@@ -30,11 +26,10 @@
 		</PackageReference>
 		<PackageReference Include="CodeChops.SourceGeneration.Utilities" Version="0.1.8" PrivateAssets="all" GeneratePathProperty="true" />
 	</ItemGroup>
-
+	
 	<ItemGroup>
-		<ProjectReference Include="..\MagicEnums\MagicEnums.csproj" />
 		<ProjectReference Include="..\MagicEnums.SourceGeneration\MagicEnums.SourceGeneration.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-		<None Include="$(PkgCodeChops_SourceGeneration_Utilities)\lib\netstandard2.0\CodeChops.SourceGeneration.Utilities.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+		<ProjectReference Include="..\MagicEnums\MagicEnums.csproj" />
 	</ItemGroup>
 
 	<PropertyGroup>

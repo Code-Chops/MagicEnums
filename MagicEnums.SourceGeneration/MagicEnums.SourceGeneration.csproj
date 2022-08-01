@@ -4,35 +4,15 @@
 		<Version>1.0.4</Version>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<LangVersion>10</LangVersion>
-	</PropertyGroup>
-
-	<PropertyGroup>
-		<Title>CodeChops.MagicEnums.SourceGeneration</Title>
 		<AssemblyName>CodeChops.MagicEnums.SourceGeneration</AssemblyName>
 		<RootNamespace>CodeChops.MagicEnums.SourceGeneration</RootNamespace>
-		<Authors>CodeChops (@Code-Chops), Max Bergman</Authors>
-		<Company>CodeChops</Company>
-		<PackageIcon>icon.png</PackageIcon>
-		<PackageLicenseFile>LICENSE</PackageLicenseFile>
-		<Copyright>Copyright (c) CodeChops $([System.DateTime]::Now.ToString(yyyy))</Copyright>
-		<Description>
-Source generation for magic enums: Flexible and extendable enums for .NET that support other member values than integral types.
-		</Description>
 		<AnalysisLevel>latest</AnalysisLevel>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<IsPackable>false</IsPackable>
 		<DevelopmentDependency>true</DevelopmentDependency>
 		<IncludeBuildOutput>false</IncludeBuildOutput>
-	</PropertyGroup>
-
-	<ItemGroup>
-		<None Include="Properties\LICENSE" Pack="true" PackagePath="" />
-		<None Include="Properties\icon.png" Pack="true" Visible="true" PackagePath="" />
-	</ItemGroup>
-	
-	<PropertyGroup>
-		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -42,8 +22,17 @@ Source generation for magic enums: Flexible and extendable enums for .NET that s
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="CodeChops.SourceGeneration.Utilities" Version="0.1.8" PrivateAssets="all" GeneratePathProperty="true" />
-		<None Include="$(PkgCodeChops_SourceGeneration_Utilities)\lib\netstandard2.0\CodeChops.SourceGeneration.Utilities.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 	</ItemGroup>
+
+	<PropertyGroup>
+		<GetTargetPathDependsOn>$(GetTargetPathDependsOn);GetDependencyTargetPaths</GetTargetPathDependsOn>
+	</PropertyGroup>
+
+	<Target Name="GetDependencyTargetPaths">
+		<ItemGroup>
+			<TargetPathWithTargetPlatformMoniker Include="$(PkgCodeChops_SourceGeneration_Utilities)\lib\netstandard2.0\CodeChops.SourceGeneration.Utilities.dll" IncludeRuntimeDependency="false" />
+		</ItemGroup>
+	</Target>
 	
 	<PropertyGroup>
 		<!-- CS1591: Missing XML comment for publicly visible type -->
