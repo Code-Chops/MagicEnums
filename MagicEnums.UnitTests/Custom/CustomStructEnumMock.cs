@@ -1,6 +1,8 @@
-﻿namespace CodeChops.MagicEnums.UnitTests.Custom;
+﻿using CodeChops.MagicEnums.Core;
 
-internal partial record CustomStructEnumMock : MagicCustomEnum<CustomStructEnumMock, DataStruct>
+namespace CodeChops.MagicEnums.UnitTests.Custom;
+
+internal partial record CustomStructEnumMock : MagicEnumCore<CustomStructEnumMock, DataStruct>
 {
 	public static CustomStructEnumMock ValueA { get; } = CreateMember(new DataStruct(Text: nameof(ValueA)));
 	public static CustomStructEnumMock ValueB { get; } = CreateMember(new DataStruct(Text: nameof(ValueB)));

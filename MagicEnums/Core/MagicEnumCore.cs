@@ -17,21 +17,33 @@ public abstract record MagicEnumCore<TSelf, TValue> : IMagicEnum
 	/// Returns the name of the enum member.
 	/// </summary>
 	public sealed override string ToString() => this.Name;
-
-	public virtual bool Equals(MagicEnumCore<TSelf, TValue>? other) 
-		=> other is not null && this.Value.Equals(other.Value);
-	public override int GetHashCode() => this.Value.GetHashCode();
-
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static implicit operator TValue(MagicEnumCore<TSelf, TValue> magicEnum) => magicEnum.Value;
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static explicit operator MagicEnumCore<TSelf, TValue>(TValue value) => GetSingleMember(value);
-
+	
 	/// <inheritdoc cref="IMember{TValue}.Name"/>
 	public string Name { get; private init; } = default!;
 
 	/// <inheritdoc cref="IMember{TValue}.Value"/>
 	public TValue Value { get; private init; } = default!;
+
+	#region Comparison
+	
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public virtual bool Equals(MagicEnumCore<TSelf, TValue>? other)
+	{
+		if (other is null) return false;
+		if (ReferenceEquals(this, other)) return true;
+		return this.Value.Equals(other.Value);
+	}
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public override int GetHashCode()
+		=> this.Value.GetHashCode();
+	
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static implicit operator TValue(MagicEnumCore<TSelf, TValue> magicEnum) => magicEnum.Value;
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static explicit operator MagicEnumCore<TSelf, TValue>(TValue value) => GetSingleMember(value);
+	
+	#endregion
 
 	/// <summary>
 	/// The default value of the enum.
@@ -151,6 +163,7 @@ public abstract record MagicEnumCore<TSelf, TValue> : IMagicEnum
 			lock (DictionaryLock)
 			{
 				// Check if we didn't win the race.
+				// ReSharper disable once PossibleUnintendedReferenceComparison
 				if (MemberByNames != memberByNames)
 				{
 					var member = CreateAndAddMemberToDictionary(memberCreator, MemberByNames);
