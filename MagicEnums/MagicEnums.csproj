@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>2.2.0</VersionPrefix>
-		<PackageReleaseNotes>Fixed comparison. Removed DomainModeling package.</PackageReleaseNotes>
+		<VersionPrefix>2.2.1</VersionPrefix>
+		<PackageReleaseNotes>Added DomainModeling package. Added ID to MagicEnum. Removed classcustomenum tests.</PackageReleaseNotes>
 		<TargetFramework>net6.0</TargetFramework>
 		<LangVersion>10</LangVersion>
 	</PropertyGroup>
@@ -88,7 +88,8 @@ Flexible and extendable enums for C#:
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CodeChops.GenericMath" Version="1.5.2" />
+		<PackageReference Include="CodeChops.DomainDrivenDesign.DomainModeling" Version="0.5.13" />
+		<PackageReference Include="CodeChops.GenericMath" Version="1.5.3" />
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.2.0" />
 	</ItemGroup>
 

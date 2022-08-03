@@ -9,9 +9,9 @@ namespace CodeChops.MagicEnums.Core;
 /// </summary>
 /// <typeparam name="TSelf">The type of the enum itself. Is also the type of each member.</typeparam>
 /// <typeparam name="TValue">The type of the enum member value.</typeparam>
-public abstract record MagicEnumCore<TSelf, TValue> : IMagicEnum
+public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicEnum
 	where TSelf : MagicEnumCore<TSelf, TValue>
-	where TValue : notnull
+	where TValue : IEquatable<TValue>, IComparable<TValue>
 {
 	/// <summary>
 	/// Returns the name of the enum member.
@@ -22,7 +22,6 @@ public abstract record MagicEnumCore<TSelf, TValue> : IMagicEnum
 	public string Name { get; private init; } = default!;
 
 	/// <inheritdoc cref="IMember{TValue}.Value"/>
-	public TValue Value { get; private init; } = default!;
 
 	#region Comparison
 	
@@ -42,6 +41,22 @@ public abstract record MagicEnumCore<TSelf, TValue> : IMagicEnum
 	public static implicit operator TValue(MagicEnumCore<TSelf, TValue> magicEnum) => magicEnum.Value;
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static explicit operator MagicEnumCore<TSelf, TValue>(TValue value) => GetSingleMember(value);
+	
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	private int CompareTo(MagicEnumCore<TSelf, TValue>? other)
+	{
+		if (other is null) throw new ArgumentNullException(nameof(other));
+		return this.Value.CompareTo(other.Value);
+	}
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static bool operator <(MagicEnumCore<TSelf, TValue> left, MagicEnumCore<TSelf, TValue> right)	=> left.CompareTo(right) <	0;
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static bool operator <=(MagicEnumCore<TSelf, TValue> left, MagicEnumCore<TSelf, TValue> right)	=> left.CompareTo(right) <= 0;
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static bool operator >(MagicEnumCore<TSelf, TValue> left, MagicEnumCore<TSelf, TValue> right)	=> left.CompareTo(right) >	0;
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static bool operator >=(MagicEnumCore<TSelf, TValue> left, MagicEnumCore<TSelf, TValue> right)	=> left.CompareTo(right) >= 0;
 	
 	#endregion
 
@@ -156,7 +171,7 @@ public abstract record MagicEnumCore<TSelf, TValue> : IMagicEnum
 		return member;
 
 
-		TSelf MemberCreator() => CachedUninitializedMember with { Name = name, Value = value };
+		TSelf MemberCreator() => CachedUninitializedMember with { Name = name, _value = value };
 
 		static TSelf SwitchToConcurrentModeAndAddMember(Func<TSelf> memberCreator, IDictionary<string, TSelf> memberByNames)
 		{

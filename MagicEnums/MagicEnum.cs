@@ -16,30 +16,10 @@ public abstract record MagicEnum<TSelf> : MagicEnum<TSelf, int>
 /// </summary>
 /// <typeparam name="TSelf">The type of the number enum itself. Is also equal to the type of each member.</typeparam>
 /// <typeparam name="TValue">The integral type.</typeparam>
-public abstract record MagicEnum<TSelf, TValue> : MagicEnumCore<TSelf, TValue>, IComparable<MagicEnum<TSelf, TValue>>
+public abstract record MagicEnum<TSelf, TValue> : MagicEnumCore<TSelf, TValue>
 	where TSelf : MagicEnum<TSelf, TValue>
 	where TValue : struct, IComparable<TValue>, IEquatable<TValue>, IConvertible
 {
-	#region Comparison
-
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public int CompareTo(MagicEnum<TSelf, TValue>? other)
-	{
-		if (other is null) throw new ArgumentNullException(nameof(other));
-		return this.Value.CompareTo(other.Value);
-	}
-
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static bool operator <(MagicEnum<TSelf, TValue> left, MagicEnum<TSelf, TValue> right)	=> left.CompareTo(right) <	0;
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static bool operator <=(MagicEnum<TSelf, TValue> left, MagicEnum<TSelf, TValue> right)	=> left.CompareTo(right) <= 0;
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static bool operator >(MagicEnum<TSelf, TValue> left, MagicEnum<TSelf, TValue> right)	=> left.CompareTo(right) >	0;
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static bool operator >=(MagicEnum<TSelf, TValue> left, MagicEnum<TSelf, TValue> right)	=> left.CompareTo(right) >= 0;
-	
-	#endregion
-
 	/// <summary>
 	/// Used for auto-incrementing when no member value has been provided.
 	/// </summary>
