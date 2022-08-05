@@ -9,7 +9,7 @@ namespace CodeChops.MagicEnums.Core;
 /// </summary>
 /// <typeparam name="TSelf">The type of the enum itself. Is also the type of each member.</typeparam>
 /// <typeparam name="TValue">The type of the enum member value.</typeparam>
-public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicEnum
+public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicEnum, IComparable<TValue>
 	where TSelf : MagicEnumCore<TSelf, TValue>
 	where TValue : IEquatable<TValue>, IComparable<TValue>
 {
@@ -43,10 +43,10 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	public static explicit operator MagicEnumCore<TSelf, TValue>(TValue value) => GetSingleMember(value);
 	
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	private int CompareTo(MagicEnumCore<TSelf, TValue>? other)
+	public int CompareTo(TValue? other)
 	{
 		if (other is null) throw new ArgumentNullException(nameof(other));
-		return this.Value.CompareTo(other.Value);
+		return this.Value.CompareTo(other);
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
