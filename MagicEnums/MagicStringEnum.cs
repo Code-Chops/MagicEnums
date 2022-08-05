@@ -12,12 +12,12 @@ public abstract record MagicStringEnum<TSelf> : MagicEnumCore<TSelf, string>
 	/// <summary>
 	/// Creates a new enum member with the member name as string value.
 	/// </summary>
-	/// <param name="enforcedName">
+	/// <param name="name">
 	/// The name of the new member.
 	/// Don't provide this parameter, so the property name of the enum will automatically be used as the name of the member. 
 	/// If provided, the enforced name will be used, and the property name the will be forgotten. 
 	/// </param>
 	/// <returns>The newly created member.</returns>
 	/// <exception cref="ArgumentException">When a member already exists with the same name.</exception>
-	public static TSelf CreateMember([CallerMemberName] string? enforcedName = null) => CreateMember(enforcedName!, enforcedName!);
+	public static TSelf CreateMember([CallerMemberName] string? name = null) => CreateMember(name!, name!);
 }

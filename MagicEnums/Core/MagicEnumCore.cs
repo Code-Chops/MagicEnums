@@ -18,10 +18,10 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	/// </summary>
 	public sealed override string ToString() => this.Name;
 	
-	/// <inheritdoc cref="IMember{TValue}.Name"/>
+	/// <summary>
+	/// The name of the enum member.
+	/// </summary>
 	public string Name { get; private init; } = default!;
-
-	/// <inheritdoc cref="IMember{TValue}.Value"/>
 
 	#region Comparison
 	

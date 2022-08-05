@@ -12,10 +12,10 @@ public record ExplicitValueConcurrencyTests : MagicEnum<ExplicitValueConcurrency
 		int index;
 		for (index = 0; index < 10000; index += 4)
 		{
-			var taskA = Task.Run(() => CreateMember(value: index, enforcedName: index.ToString()));
-			var taskB = Task.Run(() => CreateMember(value: index + 1, enforcedName: (index + 1).ToString()));
-			var taskC = Task.Run(() => CreateMember(value: index + 2, enforcedName: (index + 2).ToString()));
-			var taskD = Task.Run(() => CreateMember(value: index + 3, enforcedName: (index + 3).ToString()));
+			var taskA = Task.Run(() => CreateMember(value: index, name: index.ToString()));
+			var taskB = Task.Run(() => CreateMember(value: index + 1, name: (index + 1).ToString()));
+			var taskC = Task.Run(() => CreateMember(value: index + 2, name: (index + 2).ToString()));
+			var taskD = Task.Run(() => CreateMember(value: index + 3, name: (index + 3).ToString()));
 			await Task.WhenAll(taskA, taskB, taskC, taskD);
 		}
 

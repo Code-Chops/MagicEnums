@@ -32,14 +32,14 @@ public abstract record MagicEnum<TSelf, TValue> : MagicEnumCore<TSelf, TValue>
 	/// <summary>
 	/// Creates a new enum member with an incremental value.
 	/// </summary>
-	/// <param name="enforcedName">
+	/// <param name="name">
 	/// The name of the new member.
 	/// Don't provide this parameter, so the property name of the enum will automatically be used as the name of the member. 
 	/// If provided, the enforced name will be used, and the property name the will be forgotten. 
 	/// </param>
 	/// <returns>The newly created member.</returns>
 	/// <exception cref="ArgumentException">When a member already exists with the same name.</exception>
-	public static TSelf CreateMember([CallerMemberName] string? enforcedName = null)
+	public static TSelf CreateMember([CallerMemberName] string? name = null)
 	{
 		Number<TValue>? lastInsertedNumber;
 		
@@ -48,7 +48,7 @@ public abstract record MagicEnum<TSelf, TValue> : MagicEnumCore<TSelf, TValue>
 		else
 			lastInsertedNumber = IncrementLastInsertedNumber();
 
-		var id = MagicEnumCore<TSelf, TValue>.CreateMember(lastInsertedNumber ?? GetLastInsertedValue(), enforcedName!);
+		var id = MagicEnumCore<TSelf, TValue>.CreateMember(lastInsertedNumber ?? GetLastInsertedValue(), name!);
 		return id;
 
 
@@ -69,20 +69,20 @@ public abstract record MagicEnum<TSelf, TValue> : MagicEnumCore<TSelf, TValue>
 	/// <summary>
 	/// Creates a new enum member with the provided integral value.
 	/// </summary>
-	/// <param name="enforcedName">
+	/// <param name="name">
 	/// The name of the new member.
 	/// Don't provide this parameter, so the property name of the enum will automatically be used as the name of the member. 
 	/// If provided, the enforced name will be used, and the property name the will be forgotten. 
 	/// </param>
 	/// <returns>The newly created member.</returns>
 	/// <exception cref="ArgumentException">When a member already exists with the same name.</exception>
-	protected new static TSelf CreateMember(TValue value, [CallerMemberName] string? enforcedName = null)
+	protected new static TSelf CreateMember(TValue value, [CallerMemberName] string? name = null)
 	{
 		if (IsInConcurrentState)
 			lock (LockLastInsertedNumber) LastInsertedNumber = value;
 		else
 			LastInsertedNumber = value;
 
-		return MagicEnumCore<TSelf, TValue>.CreateMember(value, enforcedName!);
+		return MagicEnumCore<TSelf, TValue>.CreateMember(value, name!);
 	}
 }
