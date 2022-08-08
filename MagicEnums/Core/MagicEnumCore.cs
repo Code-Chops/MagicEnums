@@ -171,7 +171,11 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 		return member;
 
 
-		TSelf MemberCreator() => CachedUninitializedMember with { Name = name, _value = value };
+		TSelf MemberCreator()
+		{
+			if (CachedUninitializedMember is null) throw new InvalidOperationException($"Cannot create a MagicEnum member of abstract type {typeof(TSelf).Name}.");
+			return CachedUninitializedMember with { Name = name, _value = value };
+		}
 
 		static TSelf SwitchToConcurrentModeAndAddMember(Func<TSelf> memberCreator, IDictionary<string, TSelf> memberByNames)
 		{
@@ -208,7 +212,7 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	/// <summary>
 	/// Used to create new members.
 	/// </summary>
-	private static readonly TSelf CachedUninitializedMember = (TSelf)FormatterServices.GetUninitializedObject(typeof(TSelf));
+	private static readonly TSelf? CachedUninitializedMember = typeof(TSelf).IsAbstract ? null : (TSelf)FormatterServices.GetUninitializedObject(typeof(TSelf));
 
 	/// <summary>
 	/// Tries to retrieve a single member that has the provided name. 
