@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>2.3.0</VersionPrefix>
-		<PackageReleaseNotes>Renamed to DiscoverEnumMembers.</PackageReleaseNotes>
+		<VersionPrefix>2.3.1</VersionPrefix>
+		<PackageReleaseNotes>Now creating an abstract enum record.</PackageReleaseNotes>
 		<TargetFramework>net6.0</TargetFramework>
 		<LangVersion>10</LangVersion>
 	</PropertyGroup>
