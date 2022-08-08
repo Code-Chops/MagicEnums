@@ -118,7 +118,7 @@ using CodeChops.MagicEnums;
 
 			// Define the enum record.
 			code.Append($@"
-{definition.AccessModifier}abstract partial record {(definition.IsStruct ? "struct " : "class")} {definition.Name}
+{definition.AccessModifier} partial record {(definition.IsStruct ? "struct " : "class")} {definition.Name}
 {{	
 ");
 
