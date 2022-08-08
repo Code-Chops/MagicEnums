@@ -2,5 +2,5 @@
 
 namespace CodeChops.MagicEnums.UnitTests.SourceGeneration.ImplicitDiscoverability;
 
-[DiscoverableEnumMembers(implicitDiscoverability: true)]
+[DiscoverEnumMembers(implicitDiscoverability: true)]
 public partial record ImplicitDiscoverableEnumMock : MagicEnum<ImplicitDiscoverableEnumMock>;

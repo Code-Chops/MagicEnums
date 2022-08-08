@@ -16,7 +16,7 @@ public class SourceGenerator : IIncrementalGenerator
 	internal const string CoreNamespace						= "CodeChops.MagicEnums.Core";
 	internal const string AttributeNamespace				= "CodeChops.MagicEnums.Attributes";
 	internal const string MemberAttributeName				= "EnumMember";
-	internal const string DiscoverableAttributeName			= "DiscoverableEnumMembers";
+	internal const string DiscoverableAttributeName			= "DiscoverEnumMembers";
 
 	private Dictionary<string, EnumDefinition>? EnumDefinitionsByName { get; set; }
 

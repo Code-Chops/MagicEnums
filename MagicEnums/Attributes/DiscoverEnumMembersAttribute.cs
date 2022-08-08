@@ -10,11 +10,11 @@
 /// </list>
 /// </summary>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = false)]
-public sealed class DiscoverableEnumMembers : Attribute
+public sealed class DiscoverEnumMembers : Attribute
 {
 	public bool ImplicitDiscoverability { get; }
 
-	public DiscoverableEnumMembers(bool implicitDiscoverability = false)
+	public DiscoverEnumMembers(bool implicitDiscoverability = false)
 	{
 		this.ImplicitDiscoverability = implicitDiscoverability;
 	}

@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>2.2.3</VersionPrefix>
-		<PackageReleaseNotes>Updated DomainModeling package.</PackageReleaseNotes>
+		<VersionPrefix>2.3.0</VersionPrefix>
+		<PackageReleaseNotes>Renamed to DiscoverEnumMembers.</PackageReleaseNotes>
 		<TargetFramework>net6.0</TargetFramework>
 		<LangVersion>10</LangVersion>
 	</PropertyGroup>
@@ -36,11 +36,11 @@ Flexible and extendable enums for C#:
 
 * Enum-members can be auto-discovered. This removes the need to keep track of used/unused enum-members:
 	- Explicitly:
-		* Is enabled by adding the DiscoverableEnumMembers-attribute;
+		* Is enabled by adding the DiscoverEnumMembers-attribute;
 		* Use {Enum}.{Member}.CreateMember(...) to create a source generated enum-member on the fly;
 		* A member value (and comment) can be provided;
 	- Implicitly:
-		* Is enabled by adding the DiscoverableEnumMembers-attribute with implicitDiscoverability = true;
+		* Is enabled by adding the DiscoverEnumMembers-attribute with implicitDiscoverability = true;
 		* Use {Enum}.{Member} to create a source generated enum-member on the fly;
 			
 * Enum members can be added at runtime, if necessary;
