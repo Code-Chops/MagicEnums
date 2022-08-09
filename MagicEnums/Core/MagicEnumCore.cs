@@ -229,17 +229,16 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 		
 		TSelf CreateMemberAndAddToDictionary(IDictionary<string, TSelf> memberByNames)
 		{
-			var member = MemberFactory(name, value);
-	
 			// Adds a new member by name.
-			if (memberByNames.ContainsKey(member.Name))
+			if (memberByNames.TryGetValue(name, out var member))
 			{
 				if (throwWhenExists)
-					throw new ArgumentException($"Name '{member.Name}' already defined in enum {typeof(TSelf).Name} (value: '{member.Value}').");
+					throw new ArgumentException($"Name '{name}' already defined in enum {typeof(TSelf).Name} (value: '{member.Value}').");
 
 				return member;
 			}
 			
+			member = MemberFactory(name, value);
 			memberByNames.Add(member.Name, member);
 			_membersByValues = null!;
 	
