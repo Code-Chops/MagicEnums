@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>2.3.4</VersionPrefix>
-		<PackageReleaseNotes>Updated domain modeling package.</PackageReleaseNotes>
+		<VersionPrefix>2.3.5</VersionPrefix>
+		<PackageReleaseNotes>Added GetOrCreateMember.</PackageReleaseNotes>
 		<TargetFramework>net6.0</TargetFramework>
 		<LangVersion>10</LangVersion>
 	</PropertyGroup>

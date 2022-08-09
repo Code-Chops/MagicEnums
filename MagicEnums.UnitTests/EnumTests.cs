@@ -5,7 +5,7 @@ public record EnumTests : MagicCustomEnum<EnumTests, bool>
 	public static EnumTests Member { get; } = CreateMember(false);
 
 	[Fact]
-	public void Enum_WithSameNames_ShouldThrow()
+	public void Enum_WithSameNames_ShouldThrow_UsingCreateMember()
 	{
 		Assert.Throws<ArgumentException>(CreateOptionsWithSameName);
 
@@ -14,6 +14,13 @@ public record EnumTests : MagicCustomEnum<EnumTests, bool>
 			CreateMember(false, nameof(Enum));
 			CreateMember(true, nameof(Enum));
 		}
+	}
+	
+	[Fact]
+	public void Enum_WithSameNames_ShouldNotThrow_UsingGetOrCreateMember()
+	{
+		GetOrCreateMember(false, nameof(Enum));
+		GetOrCreateMember(true, nameof(Enum));
 	}
 
 	[Fact]
