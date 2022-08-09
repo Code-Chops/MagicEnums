@@ -8,16 +8,11 @@
 public abstract record MagicStringEnum<TSelf> : MagicEnumCore<TSelf, string>
 	where TSelf : MagicStringEnum<TSelf>
 {
-
-	/// <summary>
-	/// Creates a new enum member with the member name as string value.
-	/// </summary>
-	/// <param name="name">
-	/// The name of the new member.
-	/// Don't provide this parameter, so the property name of the enum will automatically be used as the name of the member. 
-	/// If provided, the enforced name will be used, and the property name the will be forgotten. 
-	/// </param>
-	/// <returns>The newly created member.</returns>
-	/// <exception cref="ArgumentException">When a member already exists with the same name.</exception>
-	public static TSelf CreateMember([CallerMemberName] string? name = null) => CreateMember(name!, name!);
+	/// <inheritdoc cref="MagicEnumCore{TSelf,TValue}.CreateMember"/>
+	public static TSelf CreateMember([CallerMemberName] string? name = null) 
+		=> CreateMember(value: name!, name: name!);
+	
+	/// <inheritdoc cref="MagicEnumCore{TSelf,TValue}.GetOrCreateMember"/>
+	public static TSelf GetOrCreateMember([CallerMemberName] string? name = null) 
+		=> GetOrCreateMember(value: name!, name: name!);
 }

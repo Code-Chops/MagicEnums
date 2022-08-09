@@ -3,11 +3,11 @@
 public record ExplicitValueConcurrencyTests : MagicEnum<ExplicitValueConcurrencyTests>
 {
 	/// <summary>
-	/// Multiple threads should create enum options with explicit incremental values. The order is not guaranteed. 
+	/// Multiple threads should create enum options with explicit incremental values using CreateMember. The order is not guaranteed. 
 	/// </summary>
 	[Fact]
 	[SuppressMessage("ReSharper", "AccessToModifiedClosure")]
-	public async Task EnumConcurrency_WithExplicitIncrementalNumber_ShouldBeCorrect()
+	public async Task EnumConcurrency_WithExplicitIncrementalNumber_UsingCreateMember_ShouldBeCorrect()
 	{
 		int index;
 		for (index = 0; index < 10000; index += 4)
@@ -28,6 +28,37 @@ public record ExplicitValueConcurrencyTests : MagicEnum<ExplicitValueConcurrency
 		}
 	}
 
+	/// <summary>
+	/// Multiple threads should create enum options with explicit incremental values using GetOrCreateMember. The order is not guaranteed. 
+	/// </summary>
+	[Fact]
+	[SuppressMessage("ReSharper", "AccessToModifiedClosure")]
+	public async Task EnumConcurrency_WithExplicitIncrementalNumber_UsingGetOrCreateMember_ShouldBeCorrect()
+	{
+		int index;
+		for (index = 0; index < 10000; index += 4)
+		{
+			var taskA = Task.Run(() => GetOrCreateMember(value: index, name: index.ToString()));
+			var taskB = Task.Run(() => GetOrCreateMember(value: index + 1, name: (index + 1).ToString()));
+			var taskC = Task.Run(() => GetOrCreateMember(value: index + 2, name: (index + 2).ToString()));
+			var taskD = Task.Run(() => GetOrCreateMember(value: index + 3, name: (index + 3).ToString()));
+
+			var taskE = Task.Run(() => GetOrCreateMember(value: index + 1, name: (index + 1).ToString()));
+			var taskF = Task.Run(() => GetOrCreateMember(value: index + 2, name: (index + 2).ToString()));
+			var taskG = Task.Run(() => GetOrCreateMember(value: index + 3, name: (index + 3).ToString()));
+
+			await Task.WhenAll(taskA, taskB, taskC, taskD, taskE, taskF, taskG);
+		}
+
+		index = 0;
+		var members = GetEnumerable().OrderBy(member => member.Value);
+		foreach (var member in members)
+		{
+			Assert.Equal(index, member.Value);
+			index++;
+		}
+	}
+	
 	[Fact]
 	public void EnumConcurrency_ConcurrencyDisabled_AfterStaticBuildup_ShouldNotBeInConcurrentState()
 	{

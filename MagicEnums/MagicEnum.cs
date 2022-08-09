@@ -70,13 +70,13 @@ public abstract record MagicEnum<TSelf, TValue> : MagicEnumCore<TSelf, TValue>
 	/// Creates a new enum member with the provided integral value.
 	/// </summary>
 	/// <param name="name">
-	/// The name of the new member.
+	/// The name of the member.
 	/// Don't provide this parameter, so the property name of the enum will automatically be used as the name of the member. 
 	/// If provided, the enforced name will be used, and the property name the will be forgotten. 
 	/// </param>
 	/// <returns>The newly created member.</returns>
 	/// <exception cref="ArgumentException">When a member already exists with the same name.</exception>
-	protected new static TSelf CreateMember(TValue value, [CallerMemberName] string? name = null)
+	public new static TSelf CreateMember(TValue value, [CallerMemberName] string? name = null)
 	{
 		if (IsInConcurrentState)
 			lock (LockLastInsertedNumber) LastInsertedNumber = value;
@@ -84,5 +84,25 @@ public abstract record MagicEnum<TSelf, TValue> : MagicEnumCore<TSelf, TValue>
 			LastInsertedNumber = value;
 
 		return MagicEnumCore<TSelf, TValue>.CreateMember(value, name!);
+	}
+
+	/// <summary>
+	/// Creates a new enum member with the provided integral value, or gets an existing member of the provided name.
+	/// </summary>
+	/// <param name="name">
+	/// The name of the member.
+	/// Don't provide this parameter, so the property name of the enum will automatically be used as the name of the member. 
+	/// If provided, the enforced name will be used, and the property name the will be forgotten. 
+	/// </param>
+	/// <returns>The newly created member.</returns>
+	/// <exception cref="ArgumentException">When a member already exists with the same name.</exception>
+	public new static TSelf GetOrCreateMember(TValue value, [CallerMemberName] string name = null!)
+	{
+		if (IsInConcurrentState)
+			lock (LockLastInsertedNumber) LastInsertedNumber = value;
+		else
+			LastInsertedNumber = value;
+		
+		return MagicEnumCore<TSelf, TValue>.GetOrCreateMember(value, name);
 	}
 }

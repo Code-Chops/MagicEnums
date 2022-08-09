@@ -166,7 +166,7 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	/// </summary>
 	/// <param name="value">The value of the new member.</param>
 	/// <param name="name">
-	/// The name of the new member.
+	/// The name of the member.
 	/// <para>
 	/// Warning: Don't provide this parameter, so the property name of the enum will automatically be used as the name of the member. 
 	/// If provided, the enforced name will be used, and the property name the will be forgotten.
