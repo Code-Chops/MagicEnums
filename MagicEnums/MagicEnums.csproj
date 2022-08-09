@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>2.3.6</VersionPrefix>
-		<PackageReleaseNotes>Minor changes to GetOrCreateMember. Added test and enhanced API.</PackageReleaseNotes>
+		<VersionPrefix>2.3.7</VersionPrefix>
+		<PackageReleaseNotes>Fixed problem with existing key in ConcurrentDictionary.</PackageReleaseNotes>
 		<TargetFramework>net6.0</TargetFramework>
 		<LangVersion>10</LangVersion>
 	</PropertyGroup>
