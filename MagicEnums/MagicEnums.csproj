@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>2.3.5</VersionPrefix>
-		<PackageReleaseNotes>Added GetOrCreateMember.</PackageReleaseNotes>
+		<VersionPrefix>2.3.6</VersionPrefix>
+		<PackageReleaseNotes>Minor changes to GetOrCreateMember. Added test and enhanced API.</PackageReleaseNotes>
 		<TargetFramework>net6.0</TargetFramework>
 		<LangVersion>10</LangVersion>
 	</PropertyGroup>
