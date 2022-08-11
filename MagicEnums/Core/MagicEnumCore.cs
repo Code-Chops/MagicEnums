@@ -299,7 +299,7 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 		}
 
 		var membersList = members.ToList();
-		if (membersList.Count > 1) throw new InvalidOperationException($"Expected enum {typeof(TSelf).Name} to have exactly one member with value '{memberValue}'.");
+		if (membersList.Count > 1) throw new InvalidOperationException($"Expected enum {typeof(TSelf).Name} to have exactly one member with value '{memberValue}', but it has {membersList.Count} members.");
 
 		member = membersList.First();
 		return true;

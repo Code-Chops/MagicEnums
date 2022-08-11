@@ -1,27 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>2.3.8</VersionPrefix>
-		<PackageReleaseNotes>Fixed problem with existing key in ConcurrentDictionary 2.</PackageReleaseNotes>
+		<AssemblyName>CodeChops.MagicEnums</AssemblyName>
+		<RootNamespace>CodeChops.MagicEnums</RootNamespace>
 		<TargetFramework>net6.0</TargetFramework>
 		<LangVersion>10</LangVersion>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<EnablePreviewFeatures>true</EnablePreviewFeatures>
 	</PropertyGroup>
 	
 	<PropertyGroup>
+		<VersionPrefix>2.3.9</VersionPrefix>
+		<PackageReleaseNotes>Updated package references.</PackageReleaseNotes>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>CodeChops.MagicEnums</Title>
-		<AssemblyName>CodeChops.MagicEnums</AssemblyName>
-		<RootNamespace>CodeChops.MagicEnums</RootNamespace>
-		<PackageId>CodeChops.MagicEnums</PackageId>
-		<Authors>CodeChops (@Code-Chops), Max Bergman</Authors>
-		<Company>CodeChops</Company>
-		<PackageProjectUrl>https://github.com/code-chops/MagicEnums</PackageProjectUrl>
-		<PackageTags>CodeChops;CodeChops.MagicEnums;CodeChops.MagicEnum;MagicEnums;MagicEnum;Magic enums;Magic enum;Smart enums;Smart enum;Better enums;Better enum;</PackageTags>
-		<RepositoryUrl>https://github.com/code-chops/MagicEnums</RepositoryUrl>
-		<RepositoryType>Git</RepositoryType>
-		<PublishRepositoryUrl>true</PublishRepositoryUrl>
-		<PackageIcon>icon.png</PackageIcon>
-		<PackageLicenseFile>LICENSE</PackageLicenseFile>
-		<Copyright>Copyright (c) CodeChops $([System.DateTime]::Now.ToString(yyyy))</Copyright>
 		<Description>
 Flexible and extendable enums for C#:
 * It is possible to use other member values than integral types. For example: 
@@ -51,11 +44,17 @@ Flexible and extendable enums for C#:
 
 * Optimized, and therefore fast member registration / lookup;
 		</Description>
-		<AnalysisLevel>latest</AnalysisLevel>
-		<Nullable>enable</Nullable>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<EnablePreviewFeatures>true</EnablePreviewFeatures>
+		<PackageId>CodeChops.MagicEnums</PackageId>
+		<PackageProjectUrl>https://github.com/code-chops/MagicEnums</PackageProjectUrl>
+		<PackageTags>CodeChops;CodeChops.MagicEnums;CodeChops.MagicEnum;MagicEnums;MagicEnum;Magic enums;Magic enum;Smart enums;Smart enum;Better enums;Better enum;</PackageTags>
+		<RepositoryUrl>https://github.com/code-chops/MagicEnums</RepositoryUrl>
+		<RepositoryType>Git</RepositoryType>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<Authors>CodeChops (@Code-Chops), Max Bergman</Authors>
+		<Company>CodeChops</Company>
+		<PackageIcon>icon.png</PackageIcon>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<Copyright>Copyright (c) CodeChops $([System.DateTime]::Now.ToString(yyyy))</Copyright>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)' == 'Debug'">
@@ -66,37 +65,28 @@ Flexible and extendable enums for C#:
 	<Target Name="AddNugetPackage" AfterTargets="Pack" Condition="'$(Configuration)' == 'Release' AND '$(LocalNuGetPackagesFolder)' != null">
 		<Exec Command="$(LocalNuGetPackagesFolder)\nuget.exe add $(OutputPath)..\$(PackageId).$(PackageVersion).nupkg -source $(LocalNuGetPackagesFolder)" />
 	</Target>
+	
+	<ItemGroup Label="PackageAssets">
+		<None Include="Properties\LICENSE" Pack="true" PackagePath="" />
+		<None Include="Properties\icon.png" Pack="true" Visible="true" PackagePath="" />
+	</ItemGroup>
 
-	<ItemGroup>
+	<ItemGroup Label="InternalsVisibleTo">
+		<InternalsVisibleTo Include="$(AssemblyName).UnitTests" />
+		<InternalsVisibleTo Include="$(AssemblyName).IntegrationTests" />
+	</ItemGroup>
+	
+	<ItemGroup Label="ProjectReferences">
 		<ProjectReference Include="..\MagicEnums.SourceGeneration\MagicEnums.SourceGeneration.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 		<!-- Package the generator in the analyzer directory of the nuget package -->
 		<None Include="..\MagicEnums.SourceGeneration/bin/$(Configuration)/netstandard2.0/$(AssemblyName).SourceGeneration.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 		<None Include="..\MagicEnums.SourceGeneration/bin/$(Configuration)/netstandard2.0/CodeChops.SourceGeneration.Utilities.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 	</ItemGroup>
-	
-	<ItemGroup>
-		<None Include="Properties\LICENSE" Pack="true" PackagePath="" />
-		<None Include="Properties\icon.png" Pack="true" Visible="true" PackagePath="" />
-	</ItemGroup>
-	
-	<ItemGroup>
-		<InternalsVisibleTo Include="$(AssemblyName).UnitTests" />
-	</ItemGroup>
 
-	<PropertyGroup>
-		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-	</PropertyGroup>
-
-	<ItemGroup>
-		<PackageReference Include="CodeChops.DomainDrivenDesign.DomainModeling" Version="0.8.5" />
-		<PackageReference Include="CodeChops.GenericMath" Version="1.5.3" />
+	<ItemGroup Label="PackageReferences">
+		<PackageReference Include="CodeChops.DomainDrivenDesign.DomainModeling" Version="0.8.9" />
+		<PackageReference Include="CodeChops.GenericMath" Version="1.5.4" />
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.2.0" />
 	</ItemGroup>
 
-	<PropertyGroup>
-		<!-- CS1591: Missing XML comment for publicly visible type -->
-		<!-- CS1573: Undocumented public symbol while -doc compiler option is used -->
-		<!-- CA1822: Instance member does not access instance data and can be marked as static -->
-		<NoWarn>CS1591,CS1573,CA1822</NoWarn>
-	</PropertyGroup>
 </Project>

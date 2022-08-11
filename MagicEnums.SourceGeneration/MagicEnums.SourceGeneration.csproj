@@ -21,7 +21,7 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="CodeChops.SourceGeneration.Utilities" Version="0.1.8" PrivateAssets="all" GeneratePathProperty="true" />
+		<PackageReference Include="CodeChops.SourceGeneration.Utilities" Version="0.1.10" PrivateAssets="all" GeneratePathProperty="true" />
 	</ItemGroup>
 
 	<PropertyGroup>
@@ -33,11 +33,4 @@
 			<TargetPathWithTargetPlatformMoniker Include="$(PkgCodeChops_SourceGeneration_Utilities)\lib\netstandard2.0\CodeChops.SourceGeneration.Utilities.dll" IncludeRuntimeDependency="false" />
 		</ItemGroup>
 	</Target>
-	
-	<PropertyGroup>
-		<!-- CS1591: Missing XML comment for publicly visible type -->
-		<!-- CS1573: Undocumented public symbol while -doc compiler option is used -->
-		<!-- CA1822: Instance member does not access instance data and can be marked as static -->
-		<NoWarn>CS1591,CS1573,CA1822</NoWarn>
-	</PropertyGroup>
 </Project>
