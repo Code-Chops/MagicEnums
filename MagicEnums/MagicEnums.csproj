@@ -11,8 +11,8 @@
 	</PropertyGroup>
 	
 	<PropertyGroup>
-		<VersionPrefix>2.3.9</VersionPrefix>
-		<PackageReleaseNotes>Updated package references.</PackageReleaseNotes>
+		<Version>2.3.10</Version>
+		<PackageReleaseNotes>Trying to fix concurrency problem: "The key already existed in the dictionary.".</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>CodeChops.MagicEnums</Title>
 		<Description>

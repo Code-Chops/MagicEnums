@@ -206,7 +206,7 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 			return SwitchToConcurrentModeAndAddMember(memberByNames);
 
 		// Otherwise, create the new member.
-		var member = CreateMemberAndAddToDictionary(memberByNames);
+		var member = CreateMemberAndAddToDictionary(memberByNames, isInConcurrentState: IsInConcurrentState);
 		return member;
 
 
@@ -217,17 +217,17 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 				// Check if we didn't win the race.
 				// ReSharper disable once PossibleUnintendedReferenceComparison
 				if (MemberByNames != memberByNames)
-					return CreateMemberAndAddToDictionary(MemberByNames);
+					return CreateMemberAndAddToDictionary(MemberByNames, isInConcurrentState: false);
 
 				// Convert to a concurrent dictionary.
 				var concurrentMemberByNames = new ConcurrentDictionary<string, TSelf>(memberByNames);
-				var newMember = CreateMemberAndAddToDictionary(concurrentMemberByNames);
+				var newMember = CreateMemberAndAddToDictionary(concurrentMemberByNames, isInConcurrentState: true);
 				MemberByNames = concurrentMemberByNames;
 				return newMember;
 			}
 		}
 		
-		TSelf CreateMemberAndAddToDictionary(IDictionary<string, TSelf> memberByNames)
+		TSelf CreateMemberAndAddToDictionary(IDictionary<string, TSelf> memberByNames, bool isInConcurrentState)
 		{
 			// Adds a new member by name.
 			if (memberByNames.TryGetValue(name, out var member))
@@ -239,7 +239,12 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 			}
 			
 			member = MemberFactory(name, value);
-			memberByNames.Add(member.Name, member);
+			
+			if (isInConcurrentState) 
+				((ConcurrentDictionary<string, TSelf>)memberByNames).TryAdd(member.Name, member);
+			else 
+				memberByNames.Add(member.Name, member);
+			
 			_membersByValues = null!;
 	
 			return member;
