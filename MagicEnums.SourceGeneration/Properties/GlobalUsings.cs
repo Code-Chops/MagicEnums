@@ -6,6 +6,8 @@ global using Microsoft.CodeAnalysis.CSharp;
 global using Microsoft.CodeAnalysis.CSharp.Syntax;
 global using System.Collections.Generic;
 global using System.Threading;
+global using Microsoft.CodeAnalysis.Diagnostics;
 
+global using CodeChops.SourceGeneration.Utilities;
 global using CodeChops.SourceGeneration.Utilities.Extensions;
 global using CodeChops.MagicEnums.SourceGeneration.Models;

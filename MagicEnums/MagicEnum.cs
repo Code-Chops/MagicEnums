@@ -39,7 +39,7 @@ public abstract record MagicEnum<TSelf, TValue> : MagicEnumCore<TSelf, TValue>
 	/// </param>
 	/// <returns>The newly created member.</returns>
 	/// <exception cref="ArgumentException">When a member already exists with the same name.</exception>
-	public static TSelf CreateMember([CallerMemberName] string? name = null)
+	protected static TSelf CreateMember([CallerMemberName] string? name = null)
 	{
 		Number<TValue>? lastInsertedNumber;
 		
@@ -55,7 +55,7 @@ public abstract record MagicEnum<TSelf, TValue> : MagicEnumCore<TSelf, TValue>
 		static Number<TValue>? IncrementLastInsertedNumber()
 		{
 			if (LastInsertedNumber is null)
-				LastInsertedNumber = new();
+				LastInsertedNumber = Number<TValue>.Zero;
 			else
 			{
 				// ReSharper disable once RedundantSuppressNullableWarningExpression
@@ -69,6 +69,7 @@ public abstract record MagicEnum<TSelf, TValue> : MagicEnumCore<TSelf, TValue>
 	/// <summary>
 	/// Creates a new enum member with the provided integral value.
 	/// </summary>
+	/// <param name="value">The value of the new member.</param>
 	/// <param name="name">
 	/// The name of the member.
 	/// Don't provide this parameter, so the property name of the enum will automatically be used as the name of the member. 
@@ -76,12 +77,12 @@ public abstract record MagicEnum<TSelf, TValue> : MagicEnumCore<TSelf, TValue>
 	/// </param>
 	/// <returns>The newly created member.</returns>
 	/// <exception cref="ArgumentException">When a member already exists with the same name.</exception>
-	public new static TSelf CreateMember(TValue value, [CallerMemberName] string? name = null)
+	protected new static TSelf CreateMember(TValue value, [CallerMemberName] string? name = null)
 	{
 		if (IsInConcurrentState)
-			lock (LockLastInsertedNumber) LastInsertedNumber = value;
+			lock (LockLastInsertedNumber) LastInsertedNumber = (Number<TValue>)value;
 		else
-			LastInsertedNumber = value;
+			LastInsertedNumber = (Number<TValue>)value;
 
 		return MagicEnumCore<TSelf, TValue>.CreateMember(value, name!);
 	}
@@ -89,6 +90,7 @@ public abstract record MagicEnum<TSelf, TValue> : MagicEnumCore<TSelf, TValue>
 	/// <summary>
 	/// Creates a new enum member with the provided integral value, or gets an existing member of the provided name.
 	/// </summary>
+	/// <param name="value">The value of the new member.</param>
 	/// <param name="name">
 	/// The name of the member.
 	/// Don't provide this parameter, so the property name of the enum will automatically be used as the name of the member. 
@@ -99,9 +101,9 @@ public abstract record MagicEnum<TSelf, TValue> : MagicEnumCore<TSelf, TValue>
 	public new static TSelf GetOrCreateMember(TValue value, [CallerMemberName] string name = null!)
 	{
 		if (IsInConcurrentState)
-			lock (LockLastInsertedNumber) LastInsertedNumber = value;
+			lock (LockLastInsertedNumber) LastInsertedNumber = (Number<TValue>)value;
 		else
-			LastInsertedNumber = value;
+			LastInsertedNumber = (Number<TValue>)value;
 		
 		return MagicEnumCore<TSelf, TValue>.GetOrCreateMember(value, name);
 	}

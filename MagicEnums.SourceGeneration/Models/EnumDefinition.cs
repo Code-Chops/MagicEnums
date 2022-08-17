@@ -2,7 +2,6 @@
 
 public record EnumDefinition : IEnumEntity
 {
-	public string Identifier { get; }
 	public string Name { get; }
 	public string? Namespace { get; }
 	public string ValueTypeName { get; }
@@ -45,9 +44,5 @@ public record EnumDefinition : IEnumEntity
 
 		this.AttributeMembers = attributeMembers as List<EnumMember> ?? attributeMembers.ToList();
 		this.IsStruct = isStruct;
-		
-		var genericParameterIndex = valueTypeNameIncludingGenerics.IndexOf('<');
-		var valueTypeNameWithoutGenerics = genericParameterIndex <= 0 ? valueTypeNameIncludingGenerics : valueTypeNameIncludingGenerics.Substring(0, genericParameterIndex);
-		this.Identifier = $"{this.Namespace ?? $"{this.Namespace}."}{valueTypeNameWithoutGenerics}";
 	}
 }

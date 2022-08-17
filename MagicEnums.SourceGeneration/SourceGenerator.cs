@@ -74,7 +74,7 @@ public class SourceGenerator : IIncrementalGenerator
 	private void RegisterEnumSourceCode(IncrementalGeneratorInitializationContext context)
 	{
 		context.RegisterSourceOutput(
-			source: this.GetProbableDiscoveredEnumMembers(context),
-			action: (context, members) => EnumSourceBuilder.CreateSource(context, members!, this.EnumDefinitionsByName!));
+			source: this.GetProbableDiscoveredEnumMembers(context).Combine(context.AnalyzerConfigOptionsProvider),
+			action: (context, members) => EnumSourceBuilder.CreateSource(context, members.Left!, this.EnumDefinitionsByName!, members.Right));
 	}
 }

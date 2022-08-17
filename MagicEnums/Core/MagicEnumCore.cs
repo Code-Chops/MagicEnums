@@ -9,14 +9,14 @@ namespace CodeChops.MagicEnums.Core;
 /// </summary>
 /// <typeparam name="TSelf">The type of the enum itself. Is also the type of each member.</typeparam>
 /// <typeparam name="TValue">The type of the enum member value.</typeparam>
-public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicEnum, IComparable<TValue>
+public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMember<TValue>, IMagicEnum, IComparable<TValue>
 	where TSelf : MagicEnumCore<TSelf, TValue>
 	where TValue : IEquatable<TValue>, IComparable<TValue>
 {
 	/// <summary>
-	/// Returns the name of the enum member.
+	/// Returns the name of the enum.
 	/// </summary>
-	public sealed override string ToString() => this.Name;
+	public sealed override string ToString() => $"{typeof(TSelf).Name} {{ {nameof(this.Name)} = {this.Name}, {nameof(this.Value)} = {this.Value} }}";
 	
 	/// <summary>
 	/// The name of the enum member.

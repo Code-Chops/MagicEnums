@@ -5,7 +5,8 @@ public static class EnumSourceBuilder
 	/// <summary>
 	/// Creates a partial record of the enum definition which includes the discovered enum members. It also generates an extension class for the explicit enum definitions.
 	/// </summary>
-	public static void CreateSource(SourceProductionContext context, ImmutableArray<DiscoveredEnumMember> allDiscoveredMembers, Dictionary<string, EnumDefinition> enumDefinitionsByName)
+	public static void CreateSource(SourceProductionContext context, ImmutableArray<DiscoveredEnumMember> allDiscoveredMembers, 
+		Dictionary<string, EnumDefinition> enumDefinitionsByName, AnalyzerConfigOptionsProvider configOptionsProvider)
 	{
 		if (enumDefinitionsByName.Count == 0) return;
 
@@ -24,7 +25,9 @@ public static class EnumSourceBuilder
 
 			var enumCode = CreateEnumSource(definition!, relevantDiscoveredMembers);
 
-			context.AddSource($"{definition.Identifier}.{definition.Name}.g.cs", SourceText.From(enumCode, Encoding.UTF8));
+			var fileName = $"{definition.Namespace}.{definition.Name}";
+			
+			context.AddSource(FileNameHelpers.GetFileName(fileName, configOptionsProvider), SourceText.From(enumCode, Encoding.UTF8));
 		}
 	}
 

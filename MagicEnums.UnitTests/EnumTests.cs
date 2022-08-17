@@ -33,8 +33,8 @@ public record EnumTests : MagicCustomEnum<EnumTests, bool>
 	}
 
 	[Fact]
-	public void Enum_ToString_ShouldReturnName()
+	public void Enum_ToString_ShouldReturnCorrectString()
 	{
-		Assert.Equal(nameof(Member), Member.ToString());
+		Assert.Equal($"{nameof(EnumTests)} {{ {nameof(this.Name)} = {nameof(Member)}, {nameof(this.Value)} = False }}", Member.ToString());
 	}
 }

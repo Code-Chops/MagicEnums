@@ -9,7 +9,7 @@ public abstract record MagicStringEnum<TSelf> : MagicEnumCore<TSelf, string>
 	where TSelf : MagicStringEnum<TSelf>
 {
 	/// <inheritdoc cref="MagicEnumCore{TSelf,TValue}.CreateMember"/>
-	public static TSelf CreateMember([CallerMemberName] string? name = null) 
+	protected static TSelf CreateMember([CallerMemberName] string? name = null) 
 		=> CreateMember(value: name!, name: name!);
 	
 	/// <inheritdoc cref="MagicEnumCore{TSelf,TValue}.GetOrCreateMember"/>

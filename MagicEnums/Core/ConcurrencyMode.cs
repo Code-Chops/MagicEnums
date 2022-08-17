@@ -3,7 +3,7 @@
 namespace CodeChops.MagicEnums.Core;
 
 [DisableConcurrency]
-internal sealed partial record ConcurrencyMode : MagicEnum<ConcurrencyMode>
+internal sealed record ConcurrencyMode : MagicEnum<ConcurrencyMode>
 {
 	/// <summary>
 	/// Default:
