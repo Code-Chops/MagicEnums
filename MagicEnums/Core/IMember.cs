@@ -1,7 +1,7 @@
 ﻿namespace CodeChops.MagicEnums.Core;
 
 public interface IMember<out TValue>
-	where TValue : notnull
+	where TValue : IEquatable<TValue>, IComparable<TValue>
 {
 	/// <summary>
 	/// The name of the enum member.
