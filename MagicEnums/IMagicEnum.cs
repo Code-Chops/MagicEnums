@@ -7,4 +7,5 @@ public interface IMagicEnum<TValue> : IMember<TValue>, IComparable<TValue>, IMag
 
 public interface IMagicEnum : IId
 {
+	public string Name { get; }
 }

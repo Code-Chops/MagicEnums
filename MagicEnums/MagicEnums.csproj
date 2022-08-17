@@ -11,8 +11,8 @@
 	</PropertyGroup>
 	
 	<PropertyGroup>
-		<Version>2.4.1</Version>
-		<PackageReleaseNotes>Created generic IMagicEnum.</PackageReleaseNotes>
+		<Version>2.4.2</Version>
+		<PackageReleaseNotes>Added name to IMagicEnum.</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>CodeChops.MagicEnums</Title>
 		<Description>
