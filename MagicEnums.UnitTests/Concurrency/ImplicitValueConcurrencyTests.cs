@@ -18,20 +18,19 @@ public record ImplicitValueConcurrencyTests : MagicEnum<ImplicitValueConcurrency
 			var taskD = Task.Run(() => CreateMember(name: (index + 3).ToString()));
 			await Task.WhenAll(taskA, taskB, taskC, taskD);
 		}
-		
+
 		index = 0;
-		var options = GetEnumerable().OrderBy(option => Int32.Parse(option.Name));
-		foreach (var item in options)
+		var orderedValues = this.Select(value => Int32.Parse(value.Name)).OrderBy(value => value);
+		foreach (var value in orderedValues)
 		{
-			Assert.Equal(index.ToString(), item.Name);
+			Assert.Equal(index, value);
 			index++;
 		}
 		
 		index = 0;
-		options = GetEnumerable().OrderBy(option => option.Value);
-		foreach (var item in options)
+		foreach (var value in this.OrderBy(value => value))
 		{
-			Assert.Equal(index, item.Value);
+			Assert.Equal(index, value.Value);
 			index++;
 		}
 	}

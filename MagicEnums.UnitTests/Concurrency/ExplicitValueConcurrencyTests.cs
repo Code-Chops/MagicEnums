@@ -20,10 +20,9 @@ public record ExplicitValueConcurrencyTests : MagicEnum<ExplicitValueConcurrency
 		}
 
 		index = 0;
-		var members = GetEnumerable().OrderBy(member => member.Value);
-		foreach (var member in members)
+		foreach (var value in this.OrderBy(value => value))
 		{
-			Assert.Equal(index, member.Value);
+			Assert.Equal(index, value);
 			index++;
 		}
 	}
@@ -51,10 +50,9 @@ public record ExplicitValueConcurrencyTests : MagicEnum<ExplicitValueConcurrency
 		}
 
 		index = 0;
-		var members = GetEnumerable().OrderBy(member => member.Value);
-		foreach (var member in members)
+		foreach (var value in this.OrderBy(value => value))
 		{
-			Assert.Equal(index, member.Value);
+			Assert.Equal(index, value);
 			index++;
 		}
 	}

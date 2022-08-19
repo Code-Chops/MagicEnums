@@ -1,11 +1,10 @@
 ﻿namespace CodeChops.MagicEnums;
 
-public interface IMagicEnum<TValue> : IMember<TValue>, IComparable<TValue>, IMagicEnum
+public interface IMagicEnum<out TValue> : IMember<TValue>, IMagicEnum
 	where TValue : IEquatable<TValue>, IComparable<TValue>
 {
 }
 
-public interface IMagicEnum : IId
+public interface IMagicEnum : IMember, IId
 {
-	public string Name { get; }
 }

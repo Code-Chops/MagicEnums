@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System.Collections;
+using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
 using CodeChops.MagicEnums.Attributes;
 
@@ -9,7 +10,7 @@ namespace CodeChops.MagicEnums.Core;
 /// </summary>
 /// <typeparam name="TSelf">The type of the enum itself. Is also the type of each member.</typeparam>
 /// <typeparam name="TValue">The type of the enum member value.</typeparam>
-public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicEnum<TValue>
+public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicEnum<TValue>, IEnumerable<TSelf>, IComparable<MagicEnumCore<TSelf, TValue>>
 	where TSelf : MagicEnumCore<TSelf, TValue>
 	where TValue : IEquatable<TValue>, IComparable<TValue>
 {
@@ -17,7 +18,7 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	/// Returns the name of the enum.
 	/// </summary>
 	public sealed override string ToString() => $"{typeof(TSelf).Name} {{ {nameof(this.Name)} = {this.Name}, {nameof(this.Value)} = {this.Value} }}";
-	
+
 	/// <summary>
 	/// The name of the enum member.
 	/// </summary>
@@ -29,7 +30,7 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	public virtual bool Equals(MagicEnumCore<TSelf, TValue>? other)
 	{
 		if (other is null) return false;
-		if (ReferenceEquals(this, other)) return true;
+		if (ReferenceEquals(this.Value, other.Value)) return true;
 		return this.Value.Equals(other.Value);
 	}
 
@@ -43,20 +44,20 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	public static explicit operator MagicEnumCore<TSelf, TValue>(TValue value) => GetSingleMember(value);
 	
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public int CompareTo(TValue? other)
+	public int CompareTo(MagicEnumCore<TSelf, TValue>? other)
 	{
 		if (other is null) throw new ArgumentNullException(nameof(other));
-		return this.Value.CompareTo(other);
+		return this.Value.CompareTo(other.Value);
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static bool operator <(MagicEnumCore<TSelf, TValue> left, MagicEnumCore<TSelf, TValue> right)	=> left.CompareTo(right) <	0;
+	public static bool operator <	(MagicEnumCore<TSelf, TValue> left, MagicEnumCore<TSelf, TValue> right)	=> left.CompareTo(right) <	0;
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static bool operator <=(MagicEnumCore<TSelf, TValue> left, MagicEnumCore<TSelf, TValue> right)	=> left.CompareTo(right) <= 0;
+	public static bool operator <=	(MagicEnumCore<TSelf, TValue> left, MagicEnumCore<TSelf, TValue> right)	=> left.CompareTo(right) <= 0;
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static bool operator >(MagicEnumCore<TSelf, TValue> left, MagicEnumCore<TSelf, TValue> right)	=> left.CompareTo(right) >	0;
+	public static bool operator >	(MagicEnumCore<TSelf, TValue> left, MagicEnumCore<TSelf, TValue> right)	=> left.CompareTo(right) >	0;
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static bool operator >=(MagicEnumCore<TSelf, TValue> left, MagicEnumCore<TSelf, TValue> right)	=> left.CompareTo(right) >= 0;
+	public static bool operator >=	(MagicEnumCore<TSelf, TValue> left, MagicEnumCore<TSelf, TValue> right)	=> left.CompareTo(right) >= 0;
 	
 	#endregion
 
@@ -79,14 +80,13 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	public static int GetUniqueValueCount() => MembersByValues.Keys.Count;
 
 	/// <summary>
-	/// Enumerates over the members.
+	/// Get the enumerator over the member values.
 	/// </summary>
-	public static IEnumerable<TSelf> GetEnumerable() => MemberByNames.Values;
-	
-	/// <summary>
-	/// Enumerates over the values.
-	/// </summary>
-	public static IEnumerable<TValue> GetValues() => GetEnumerable().Select(member => member.Value);
+	public IEnumerator<TSelf> GetEnumerator() => MemberByNames.Values.GetEnumerator();
+	/// <inheritdoc cref="GetEnumerator"/>
+	IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
+	/// <inheritdoc cref="GetEnumerator"/>In a static context.
+	public static IEnumerator<TSelf> GetStaticEnumerator() => MemberByNames.Values.GetEnumerator();
 
 	/// <summary>
 	/// Is true if the dictionary is in a concurrent state.
@@ -139,11 +139,6 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 
 		IsInStaticBuildup = false;
 	}
-	
-	/// <summary>
-	/// Gets the last inserted value of the enum.
-	/// </summary>
-	protected static TValue GetLastInsertedValue() => MembersByValues.LastOrDefault().Key;
 
 	/// <summary>
 	/// Creates a new enum member and returns it.
@@ -206,7 +201,7 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 			return SwitchToConcurrentModeAndAddMember(memberByNames);
 
 		// Otherwise, create the new member.
-		var member = CreateMemberAndAddToDictionary(memberByNames, isInConcurrentState: IsInConcurrentState);
+		var member = CreateMemberAndAddToDictionary(memberByNames, IsInConcurrentState);
 		return member;
 
 

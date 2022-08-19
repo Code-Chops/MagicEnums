@@ -5,7 +5,7 @@ internal static class DiscoverableMembersSyntaxReceiver
 	/// <summary>
 	/// The predicate for every node that is probably an enum member invocation.
 	/// </summary>
-	internal static bool CheckIfIsProbablyEnumMemberInvocation(SyntaxNode syntaxNode, CancellationToken cancellation)
+	internal static bool CheckIfIsProbablyEnumMemberInvocation(SyntaxNode syntaxNode, CancellationToken _)
 	{
 		// Explicit enum member invocation.
 		if (syntaxNode is InvocationExpressionSyntax invocation)

@@ -48,21 +48,20 @@ public abstract record MagicEnum<TSelf, TValue> : MagicEnumCore<TSelf, TValue>
 		else
 			lastInsertedNumber = IncrementLastInsertedNumber();
 
-		var id = MagicEnumCore<TSelf, TValue>.CreateMember(lastInsertedNumber ?? GetLastInsertedValue(), name!);
+		var id = MagicEnumCore<TSelf, TValue>.CreateMember(lastInsertedNumber.Value, name!);
 		return id;
 
 
-		static Number<TValue>? IncrementLastInsertedNumber()
+		static Number<TValue> IncrementLastInsertedNumber()
 		{
 			if (LastInsertedNumber is null)
 				LastInsertedNumber = Number<TValue>.Zero;
 			else
-			{
-				// ReSharper disable once RedundantSuppressNullableWarningExpression
-				LastInsertedNumber!++;
-			}
-			
-			return LastInsertedNumber;
+#pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
+				LastInsertedNumber++;
+#pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
+
+			return LastInsertedNumber!.Value;
 		}
 	}
 
