@@ -85,8 +85,11 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	public IEnumerator<TSelf> GetEnumerator() => MemberByNames.Values.GetEnumerator();
 	/// <inheritdoc cref="GetEnumerator"/>
 	IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
-	/// <inheritdoc cref="GetEnumerator"/>In a static context.
-	public static IEnumerator<TSelf> GetStaticEnumerator() => MemberByNames.Values.GetEnumerator();
+
+	/// <summary>
+	/// Get an enumerable over the member values.
+	/// </summary>
+	public static IEnumerable<TSelf> GetEnumerable() => MemberByNames.Values;
 
 	/// <summary>
 	/// Is true if the dictionary is in a concurrent state.

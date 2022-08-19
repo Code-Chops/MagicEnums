@@ -11,8 +11,8 @@
 	</PropertyGroup>
 	
 	<PropertyGroup>
-		<Version>2.5.0</Version>
-		<PackageReleaseNotes>Added IEnumerable, IEquatable and IComparable.</PackageReleaseNotes>
+		<Version>2.5.1</Version>
+		<PackageReleaseNotes>Changed static Enumerator to Enumerable.</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>CodeChops.MagicEnums</Title>
 		<Description>
