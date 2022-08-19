@@ -80,16 +80,16 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	public static int GetUniqueValueCount() => MembersByValues.Keys.Count;
 
 	/// <summary>
-	/// Get the enumerator over the member values.
+	/// Get the enumerator over the members.
 	/// </summary>
 	public IEnumerator<TSelf> GetEnumerator() => MemberByNames.Values.GetEnumerator();
 	/// <inheritdoc cref="GetEnumerator"/>
 	IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
 
 	/// <summary>
-	/// Get an enumerable over the member values.
+	/// Get an enumerable over the members.
 	/// </summary>
-	public static IEnumerable<TSelf> GetEnumerable() => MemberByNames.Values;
+	public static IEnumerable<TSelf> GetMembers() => MemberByNames.Values;
 
 	/// <summary>
 	/// Is true if the dictionary is in a concurrent state.

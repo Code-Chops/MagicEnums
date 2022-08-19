@@ -11,8 +11,8 @@
 	</PropertyGroup>
 	
 	<PropertyGroup>
-		<Version>2.5.1</Version>
-		<PackageReleaseNotes>Changed static Enumerator to Enumerable.</PackageReleaseNotes>
+		<Version>2.5.2</Version>
+		<PackageReleaseNotes>Changed static GetEnumerable name.</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>CodeChops.MagicEnums</Title>
 		<Description>
