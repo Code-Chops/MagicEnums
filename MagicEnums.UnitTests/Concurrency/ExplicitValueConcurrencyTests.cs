@@ -6,7 +6,6 @@ public record ExplicitValueConcurrencyTests : MagicEnum<ExplicitValueConcurrency
 	/// Multiple threads should create enum options with explicit incremental values using CreateMember. The order is not guaranteed. 
 	/// </summary>
 	[Fact]
-	[SuppressMessage("ReSharper", "AccessToModifiedClosure")]
 	public async Task EnumConcurrency_WithExplicitIncrementalNumber_UsingCreateMember_ShouldBeCorrect()
 	{
 		int index;
@@ -31,7 +30,6 @@ public record ExplicitValueConcurrencyTests : MagicEnum<ExplicitValueConcurrency
 	/// Multiple threads should create enum options with explicit incremental values using GetOrCreateMember. The order is not guaranteed. 
 	/// </summary>
 	[Fact]
-	[SuppressMessage("ReSharper", "AccessToModifiedClosure")]
 	public async Task EnumConcurrency_WithExplicitIncrementalNumber_UsingGetOrCreateMember_ShouldBeCorrect()
 	{
 		int index;

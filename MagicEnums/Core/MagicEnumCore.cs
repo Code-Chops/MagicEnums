@@ -10,14 +10,14 @@ namespace CodeChops.MagicEnums.Core;
 /// </summary>
 /// <typeparam name="TSelf">The type of the enum itself. Is also the type of each member.</typeparam>
 /// <typeparam name="TValue">The type of the enum member value.</typeparam>
-public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicEnum<TValue>, IEnumerable<TSelf>, IComparable<MagicEnumCore<TSelf, TValue>>
+public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicEnum<TValue>, IEnumerable<TSelf>
 	where TSelf : MagicEnumCore<TSelf, TValue>
 	where TValue : IEquatable<TValue>, IComparable<TValue>
 {
 	/// <summary>
 	/// Returns the name of the enum.
 	/// </summary>
-	public sealed override string ToString() => $"{typeof(TSelf).Name} {{ {nameof(this.Name)} = {this.Name}, {nameof(this.Value)} = {this.Value} }}";
+	public sealed override string ToString() => this.ToEasyString(new {this.Name, this.Value});
 
 	/// <summary>
 	/// The name of the enum member.
@@ -42,22 +42,6 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	public static implicit operator TValue(MagicEnumCore<TSelf, TValue> magicEnum) => magicEnum.Value;
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static explicit operator MagicEnumCore<TSelf, TValue>(TValue value) => GetSingleMember(value);
-	
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public int CompareTo(MagicEnumCore<TSelf, TValue>? other)
-	{
-		if (other is null) throw new ArgumentNullException(nameof(other));
-		return this.Value.CompareTo(other.Value);
-	}
-
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static bool operator <	(MagicEnumCore<TSelf, TValue> left, MagicEnumCore<TSelf, TValue> right)	=> left.CompareTo(right) <	0;
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static bool operator <=	(MagicEnumCore<TSelf, TValue> left, MagicEnumCore<TSelf, TValue> right)	=> left.CompareTo(right) <= 0;
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static bool operator >	(MagicEnumCore<TSelf, TValue> left, MagicEnumCore<TSelf, TValue> right)	=> left.CompareTo(right) >	0;
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static bool operator >=	(MagicEnumCore<TSelf, TValue> left, MagicEnumCore<TSelf, TValue> right)	=> left.CompareTo(right) >= 0;
 	
 	#endregion
 
@@ -90,6 +74,11 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	/// Get an enumerable over the members.
 	/// </summary>
 	public static IEnumerable<TSelf> GetMembers() => MemberByNames.Values;
+	
+	/// <summary>
+	/// Get an enumerable over the values.
+	/// </summary>
+	public static IEnumerable<TValue> GetValues() => MemberByNames.Values.Select(member => member.Value);
 
 	/// <summary>
 	/// Is true if the dictionary is in a concurrent state.
@@ -110,26 +99,26 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	/// <summary>
 	/// A mapping of a member name to a single member.
 	/// </summary>
-	private static IDictionary<string, TSelf> MemberByNames { get; set; } = new Dictionary<string, TSelf>(StringComparer.OrdinalIgnoreCase);
+	private static IDictionary<string, TSelf> MemberByNames { get; set; } = new Dictionary<string, TSelf>(StringComparer.Ordinal);
 	
 	/// <summary>
 	/// A mapping of a member value to one or more members.
 	/// </summary>
-	private static IDictionary<TValue, IEnumerable<TSelf>> MembersByValues
+	private static IDictionary<TValue, List<TSelf>> MembersByValues
 		=> _membersByValues ??= MemberByNames
 			.GroupBy(memberByName => memberByName.Value, memberByName => memberByName.Value)
-			.ToDictionary(member => member.Key.Value, member => member.AsEnumerable());
+			.ToDictionary(member => member.Key.Value, member => member.ToList());
+	
+	/// <summary>
+	/// A mapping of a member value to one or more members. Don't change this value. Only reset it (to null).
+	/// </summary>
+	private static IDictionary<TValue, List<TSelf>>? _membersByValues;
 	
 	/// <summary>
 	/// A lock for the dictionary. 
 	/// This lock is used for switching between a concurrent and not-concurrent state (when using <see cref="Core.ConcurrencyMode.AdaptiveConcurrency"/>).
 	/// </summary>
 	private static readonly object DictionaryLock = new();
-	
-	/// <summary>
-	/// A mapping of a member value to one or more members. Don't change this value. Only reset it (to null).
-	/// </summary>
-	private static IDictionary<TValue, IEnumerable<TSelf>>? _membersByValues;
 	
 	static MagicEnumCore()
 	{
@@ -146,7 +135,7 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	/// <summary>
 	/// Creates a new enum member and returns it.
 	/// </summary>
-	/// <param name="value">The value of the new member.</param>
+	/// <param name="valueCreator">A function to retrieve the new value.</param>
 	/// <param name="name">
 	/// The name of the new member.
 	/// <para>
@@ -156,13 +145,13 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	/// </param>
 	/// <returns>The newly created member.</returns>
 	/// <exception cref="ArgumentException">When a member with the same name already exists.</exception>
-	protected static TSelf CreateMember(TValue value, [CallerMemberName] string name = null!)
-		=> CreateAndAddMember(name, value, throwWhenExists: true);
+	protected static TSelf CreateMember(Func<TValue> valueCreator, [CallerMemberName] string name = null!)
+		=> CreateAndAddMember(name, valueCreator, throwWhenExists: true);
 	
 	/// <summary>
 	/// Creates a new enum member if it does not exist and returns it. When it already exists, it returns the member with the same name.
 	/// </summary>
-	/// <param name="value">The value of the new member.</param>
+	/// <param name="valueCreator">A function to retrieve the new value.</param>
 	/// <param name="name">
 	/// The name of the member.
 	/// <para>
@@ -171,8 +160,8 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	/// </para> 
 	/// </param>
 	/// <returns>The newly created member or an existing enum member with the same name.</returns>
-	protected static TSelf GetOrCreateMember(TValue value, [CallerMemberName] string name = null!)
-		=> CreateAndAddMember(name, value, throwWhenExists: false);
+	protected static TSelf GetOrCreateMember(Func<TValue> valueCreator, [CallerMemberName] string name = null!)
+		=> CreateAndAddMember(name, valueCreator, throwWhenExists: false);
 	
 	/// <summary>
 	/// Creates a member based on <see cref="CachedUninitializedMember"/>.
@@ -191,21 +180,19 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	/// Creates a member and adds it to the dictionary.
 	/// </summary>
 	/// <param name="name">The member name.</param>
-	/// <param name="value">The member value.</param>
+	/// <param name="valueCreator">A function to retrieve the new value.</param>
 	/// <param name="throwWhenExists">Throw when a member of the same name already exists.</param>
 	/// <returns>The enum.</returns>
 	/// <exception cref="ArgumentException">When the member exists and <paramref name="throwWhenExists"/> is true.</exception>
-	private static TSelf CreateAndAddMember(string name, TValue value, bool throwWhenExists)
+	private static TSelf CreateAndAddMember(string name, Func<TValue> valueCreator, bool throwWhenExists)
 	{
+		// Copy the reference so we don't get race conditions.
 		var memberByNames = MemberByNames;
 
 		// Switch to a concurrent mode if necessary.
-		if (ConcurrencyMode == ConcurrencyMode.AdaptiveConcurrency && !IsInConcurrentState && !IsInStaticBuildup)
-			return SwitchToConcurrentModeAndAddMember(memberByNames);
-
-		// Otherwise, create the new member.
-		var member = CreateMemberAndAddToDictionary(memberByNames, IsInConcurrentState);
-		return member;
+		return ConcurrencyMode == ConcurrencyMode.AdaptiveConcurrency && !IsInConcurrentState && !IsInStaticBuildup
+			? SwitchToConcurrentModeAndAddMember(memberByNames)
+			: CreateMemberAndAddToDictionary(memberByNames, IsInConcurrentState);
 
 
 		TSelf SwitchToConcurrentModeAndAddMember(IDictionary<string, TSelf> memberByNames)
@@ -215,7 +202,7 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 				// Check if we didn't win the race.
 				// ReSharper disable once PossibleUnintendedReferenceComparison
 				if (MemberByNames != memberByNames)
-					return CreateMemberAndAddToDictionary(MemberByNames, isInConcurrentState: false);
+					return CreateMemberAndAddToDictionary(MemberByNames, isInConcurrentState: true);
 
 				// Convert to a concurrent dictionary.
 				var concurrentMemberByNames = new ConcurrentDictionary<string, TSelf>(memberByNames);
@@ -236,13 +223,16 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 				return member;
 			}
 			
-			member = MemberFactory(name, value);
+			// Create the member
+			member = MemberFactory(name, value: valueCreator());
 			
+			// Add member based on concurrent / not concurrent.
 			if (isInConcurrentState) 
 				((ConcurrentDictionary<string, TSelf>)memberByNames).TryAdd(member.Name, member);
 			else 
 				memberByNames.Add(member.Name, member);
 			
+			// Reset, so MembersByValues will be repopulated again, based on the new members.
 			_membersByValues = null!;
 	
 			return member;
@@ -311,7 +301,7 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	/// <summary>
 	/// Returns the single member that has the provided value. Throws when no member has been found.
 	/// Warning! Multiple members can have the same value. This method will throw when multiple members have this value.
-	/// Use <see cref="GetMembers"/> to retrieve multiple members.
+	/// Use <see cref="GetMembers(TValue)"/> to retrieve multiple members.
 	/// </summary>
 	/// <param name="memberValue">The value of the member to retrieve.</param>
 	/// <returns>The queried member.</returns>
@@ -333,10 +323,18 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	/// <returns>True if one or more members have been found.</returns>
 	/// <exception cref="ArgumentNullException">When value is null.</exception>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static bool TryGetMembers(TValue memberValue, out IEnumerable<TSelf> members)
-		=> memberValue is null
-			? throw new ArgumentNullException(nameof(memberValue))
-			: MembersByValues.TryGetValue(memberValue, out members!);
+	public static bool TryGetMembers(TValue memberValue, [NotNullWhen(true)] out IReadOnlyCollection<TSelf>? members)
+	{
+		if (memberValue is null) throw new ArgumentNullException(nameof(memberValue));
+		if (MembersByValues.TryGetValue(memberValue, out var membersList))
+		{
+			members = membersList;
+			return true;
+		}
+
+		members = null;
+		return false;
+	}
 
 	/// <summary>
 	/// Returns the member(s) that have the provided value. Throws when no member has been found.
