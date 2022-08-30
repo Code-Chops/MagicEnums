@@ -1,5 +1,6 @@
 ﻿namespace CodeChops.MagicEnums.UnitTests.Concurrency;
 
+// ReSharper disable AccessToModifiedClosure
 public record ImplicitFlagsValueConcurrencyTests : MagicFlagsEnum<ImplicitFlagsValueConcurrencyTests, ulong>
 {
 	/// <summary>
@@ -28,7 +29,7 @@ public record ImplicitFlagsValueConcurrencyTests : MagicFlagsEnum<ImplicitFlagsV
 		
 		ulong bitshift = 0;
 		index = 0;
-		var binarySortedValues = this.OrderBy(value => Convert.ToString((int)(ulong)value, 2));
+		var binarySortedValues = this.OrderBy(value => Convert.ToString((int)(ulong)value, 2)).ToList();
 		foreach (var value in binarySortedValues)
 		{
 			Assert.Equal(bitshift, value.Value);

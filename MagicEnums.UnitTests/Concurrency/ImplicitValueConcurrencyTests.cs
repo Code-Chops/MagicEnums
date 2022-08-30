@@ -1,5 +1,6 @@
 ﻿namespace CodeChops.MagicEnums.UnitTests.Concurrency;
 
+// ReSharper disable AccessToModifiedClosure
 public record ImplicitValueConcurrencyTests : MagicEnum<ImplicitValueConcurrencyTests, ulong>
 {
 	/// <summary>
@@ -27,7 +28,7 @@ public record ImplicitValueConcurrencyTests : MagicEnum<ImplicitValueConcurrency
 		}
 		
 		index = 0;
-		var orderedValues = this.OrderBy(value => value);
+		var orderedValues = this.OrderBy(value => value).ToList();
 		foreach (var value in orderedValues)
 		{
 			Assert.Equal(index, value.Value);

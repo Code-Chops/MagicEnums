@@ -119,7 +119,17 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	/// This lock is used for switching between a concurrent and not-concurrent state (when using <see cref="Core.ConcurrencyMode.AdaptiveConcurrency"/>).
 	/// </summary>
 	private static readonly object DictionaryLock = new();
-	
+
+	/// <summary>
+	/// A cache for retrieving uninitialized objects of a provided type. Used to create new members. The value is null when the enum is of an abstract type.
+	/// </summary>
+	private static class CachedUninitializedMember<TMember>
+		where TMember : TSelf
+	{
+		public static TMember Value => _value ?? throw new InvalidOperationException($"Cannot create a MagicEnum member of abstract type {typeof(TSelf).Name}."); 
+		private static readonly TMember? _value = typeof(TMember).IsAbstract ? null : (TMember)FormatterServices.GetUninitializedObject(typeof(TMember));
+	}
+
 	static MagicEnumCore()
 	{
 		ConcurrencyMode = typeof(TSelf).GetCustomAttributes(typeof(DisableConcurrencyAttribute), inherit: true).Any()
@@ -133,58 +143,52 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	}
 
 	/// <summary>
-	/// Creates a new enum member and returns it.
+	/// Creates a new enum member and returns it..
 	/// </summary>
-	/// <param name="valueCreator">A function to retrieve the new value.</param>
+	/// <param name="valueCreator">A function to retrieve the value for the new member.</param>
+	/// <param name="memberCreator">Provide this value in order to add enum members that have extra properties.</param>
 	/// <param name="name">
 	/// The name of the new member.
-	/// <para>
-	/// Warning: Don't provide this parameter, so the property name of the enum will automatically be used as the name of the member. 
+	/// <b>Do not provide this parameter.</b>
+	///<para>
+	/// If not provided, the name of the caller of this method will be used as the name of the member.<br/>
 	/// If provided, the enforced name will be used, and the property name the will be forgotten.
-	/// </para> 
+	/// </para>
 	/// </param>
 	/// <returns>The newly created member.</returns>
-	/// <exception cref="ArgumentException">When a member with the same name already exists.</exception>
-	protected static TSelf CreateMember(Func<TValue> valueCreator, [CallerMemberName] string name = null!)
-		=> CreateAndAddMember(name, valueCreator, throwWhenExists: true);
+	/// <exception cref="ArgumentException">When a member already exists with the same name.</exception>
+	protected static TMember CreateMember<TMember>(Func<TValue> valueCreator, Func<TMember>? memberCreator = null, [CallerMemberName] string name = null!)
+		where TMember : TSelf
+		=> CreateAndAddMember(name, valueCreator, throwWhenExists: true, memberCreator);
 	
 	/// <summary>
 	/// Creates a new enum member if it does not exist and returns it. When it already exists, it returns the member with the same name.
 	/// </summary>
-	/// <param name="valueCreator">A function to retrieve the new value.</param>
+	/// <param name="valueCreator">A function to retrieve the value for the new member.</param>
+	/// <param name="memberCreator">Provide this value in order to add enum members that have extra properties.</param>
 	/// <param name="name">
-	/// The name of the member.
-	/// <para>
-	/// Warning: Don't provide this parameter, so the property name of the enum will automatically be used as the name of the member. 
+	/// The name of the new member.
+	/// <b>Do not provide this parameter.</b>
+	///<para>
+	/// If not provided, the name of the caller of this method will be used as the name of the member.<br/>
 	/// If provided, the enforced name will be used, and the property name the will be forgotten.
-	/// </para> 
+	/// </para>
 	/// </param>
 	/// <returns>The newly created member or an existing enum member with the same name.</returns>
-	protected static TSelf GetOrCreateMember(Func<TValue> valueCreator, [CallerMemberName] string name = null!)
-		=> CreateAndAddMember(name, valueCreator, throwWhenExists: false);
+	protected static TSelf GetOrCreateMember(Func<TValue> valueCreator, Func<TSelf>? memberCreator = null, [CallerMemberName] string name = null!)
+		=> CreateAndAddMember(name, valueCreator, throwWhenExists: false, memberCreator);
 	
-	/// <summary>
-	/// Creates a member based on <see cref="CachedUninitializedMember"/>.
-	/// </summary>
-	/// <param name="name">The member name.</param>
-	/// <param name="value">The member value.</param>
-	/// <returns>The enum.</returns>
-	/// <exception cref="InvalidOperationException">When the enum is of an abstract type.</exception>
-	private static TSelf MemberFactory(string name, TValue value)
-	{
-		if (CachedUninitializedMember is null) throw new InvalidOperationException($"Cannot create a MagicEnum member of abstract type {typeof(TSelf).Name}.");
-		return CachedUninitializedMember with { Name = name, _value = value };
-	}
-
 	/// <summary>
 	/// Creates a member and adds it to the dictionary.
 	/// </summary>
 	/// <param name="name">The member name.</param>
-	/// <param name="valueCreator">A function to retrieve the new value.</param>
+	/// <param name="valueCreator">A function to retrieve the value for the new member.</param>
 	/// <param name="throwWhenExists">Throw when a member of the same name already exists.</param>
-	/// <returns>The enum.</returns>
+	/// <param name="memberCreator">Provide this value in order to add enum members that have extra properties.</param>
+	/// <returns>The newly created enum member.</returns>
 	/// <exception cref="ArgumentException">When the member exists and <paramref name="throwWhenExists"/> is true.</exception>
-	private static TSelf CreateAndAddMember(string name, Func<TValue> valueCreator, bool throwWhenExists)
+	private static TMember CreateAndAddMember<TMember>(string name, Func<TValue> valueCreator, bool throwWhenExists, Func<TMember>? memberCreator = null)
+		where TMember : TSelf
 	{
 		// Copy the reference so we don't get race conditions.
 		var memberByNames = MemberByNames;
@@ -195,7 +199,7 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 			: CreateMemberAndAddToDictionary(memberByNames, IsInConcurrentState);
 
 
-		TSelf SwitchToConcurrentModeAndAddMember(IDictionary<string, TSelf> memberByNames)
+		TMember SwitchToConcurrentModeAndAddMember(IDictionary<string, TSelf> memberByNames)
 		{
 			lock (DictionaryLock)
 			{
@@ -212,7 +216,7 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 			}
 		}
 		
-		TSelf CreateMemberAndAddToDictionary(IDictionary<string, TSelf> memberByNames, bool isInConcurrentState)
+		TMember CreateMemberAndAddToDictionary(IDictionary<string, TSelf> memberByNames, bool isInConcurrentState)
 		{
 			// Adds a new member by name.
 			if (memberByNames.TryGetValue(name, out var member))
@@ -220,29 +224,23 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 				if (throwWhenExists)
 					throw new ArgumentException($"Name '{name}' already defined in enum {typeof(TSelf).Name} (value: '{member.Value}').");
 
-				return member;
+				return (TMember)member;
 			}
 			
 			// Create the member
-			member = MemberFactory(name, value: valueCreator());
+			member = memberCreator?.Invoke() ?? CachedUninitializedMember<TMember>.Value;
+			member = member with { Name = name, Value = valueCreator() };
 			
-			// Add member based on concurrent / not concurrent.
-			if (isInConcurrentState) 
-				((ConcurrentDictionary<string, TSelf>)memberByNames).TryAdd(member.Name, member);
-			else 
-				memberByNames.Add(member.Name, member);
+			// Add the new member
+			if (isInConcurrentState) ((ConcurrentDictionary<string, TSelf>)memberByNames).TryAdd(member.Name, member);
+			else memberByNames.Add(member.Name, member);
 			
-			// Reset, so MembersByValues will be repopulated again, based on the new members.
+			// Reset the backing field of MembersByValues, in order to repopulate it, based on the new members.
 			_membersByValues = null!;
 	
-			return member;
+			return (TMember)member;
 		}
 	}
-
-	/// <summary>
-	/// Used to create new members. Is null when the enum is of an abstract type.
-	/// </summary>
-	private static readonly TSelf? CachedUninitializedMember = typeof(TSelf).IsAbstract ? null : (TSelf)FormatterServices.GetUninitializedObject(typeof(TSelf));
 
 	/// <summary>
 	/// Tries to retrieve a single member that has the provided name. 

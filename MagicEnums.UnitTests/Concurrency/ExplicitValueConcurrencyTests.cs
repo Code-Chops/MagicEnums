@@ -1,5 +1,6 @@
 ﻿namespace CodeChops.MagicEnums.UnitTests.Concurrency;
 
+// ReSharper disable AccessToModifiedClosure
 public record ExplicitValueConcurrencyTests : MagicEnum<ExplicitValueConcurrencyTests>
 {
 	/// <summary>
@@ -25,7 +26,7 @@ public record ExplicitValueConcurrencyTests : MagicEnum<ExplicitValueConcurrency
 			index++;
 		}
 	}
-
+	
 	/// <summary>
 	/// Multiple threads should create enum options with explicit incremental values using GetOrCreateMember. The order is not guaranteed. 
 	/// </summary>
@@ -48,7 +49,8 @@ public record ExplicitValueConcurrencyTests : MagicEnum<ExplicitValueConcurrency
 		}
 
 		index = 0;
-		foreach (var value in this.OrderBy(value => value))
+		var orderedValues = this.OrderBy(value => value).ToList();
+		foreach (var value in orderedValues)
 		{
 			Assert.Equal(index, value);
 			index++;
