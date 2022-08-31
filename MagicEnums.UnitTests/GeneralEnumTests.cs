@@ -5,7 +5,7 @@ public record GeneralEnumTests : MagicStringEnum<GeneralEnumTests>
 	[Fact]
 	public void Enum_WithSameNames_ShouldThrow_UsingCreateMember()
 	{
-		Assert.Throws<ArgumentException>(CreateMembersWithSameName);
+		Assert.Throws<InvalidOperationException>(CreateMembersWithSameName);
 
 		static void CreateMembersWithSameName()
 		{

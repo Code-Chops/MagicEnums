@@ -14,9 +14,6 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	where TSelf : MagicEnumCore<TSelf, TValue>
 	where TValue : IEquatable<TValue>, IComparable<TValue>
 {
-	/// <summary>
-	/// Returns the name of the enum.
-	/// </summary>
 	public sealed override string ToString() => this.ToEasyString(new {this.Name, this.Value});
 
 	/// <summary>
@@ -115,18 +112,19 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	private static IDictionary<TValue, List<TSelf>>? _membersByValues;
 	
 	/// <summary>
-	/// A lock for the dictionary. 
-	/// This lock is used for switching between a concurrent and not-concurrent state (when using <see cref="Core.ConcurrencyMode.AdaptiveConcurrency"/>).
+	/// A lock used for switching between concurrent and non-concurrent states (when using <see cref="Core.ConcurrencyMode.AdaptiveConcurrency"/>).
 	/// </summary>
 	private static readonly object DictionaryLock = new();
 
 	/// <summary>
-	/// A cache for retrieving uninitialized objects of a provided type. Used to create new members. The value is null when the enum is of an abstract type.
+	/// A cache for retrieving uninitialized objects of a provided type. Used to create new members without a provided memberCreator.
 	/// </summary>
+	/// <typeparam name="TMember">The type of the uninitialized member to create.</typeparam>
+	/// <exception cref="InvalidOperationException">When <typeparamref name="TMember"/> is abstract.</exception>
 	private static class CachedUninitializedMember<TMember>
 		where TMember : TSelf
 	{
-		public static TMember Value => _value ?? throw new InvalidOperationException($"Cannot create a MagicEnum member of abstract type {typeof(TSelf).Name}."); 
+		public static TMember Value => _value ?? throw new InvalidOperationException($"Cannot create a MagicEnum member of abstract type {typeof(TMember).Name} for enum {typeof(TSelf).Name}."); 
 		private static readonly TMember? _value = typeof(TMember).IsAbstract ? null : (TMember)FormatterServices.GetUninitializedObject(typeof(TMember));
 	}
 
@@ -141,55 +139,63 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 
 		IsInStaticBuildup = false;
 	}
-
+	
 	/// <summary>
-	/// Creates a new enum member and returns it..
+	/// Creates a new enum member and returns it.
 	/// </summary>
 	/// <param name="valueCreator">A function to retrieve the value for the new member.</param>
-	/// <param name="memberCreator">Provide this value in order to add enum members that have extra properties.</param>
+	/// <param name="memberCreator">Optional: A function to construct subtypes without parameterless constructors.</param>
 	/// <param name="name">
 	/// The name of the new member.
-	/// <b>Do not provide this parameter.</b>
+	/// <b>Do not provide this parameter!</b>
 	///<para>
 	/// If not provided, the name of the caller of this method will be used as the name of the member.<br/>
 	/// If provided, the enforced name will be used, and the property name the will be forgotten.
 	/// </para>
 	/// </param>
+	/// <typeparam name="TMember">The type of the new member (which should be the type of the enum or a subtype of it).</typeparam>
 	/// <returns>The newly created member.</returns>
-	/// <exception cref="ArgumentException">When a member already exists with the same name.</exception>
+	/// <exception cref="InvalidOperationException">When a member with the same name already exists.</exception>
+	/// <exception cref="ArgumentNullException">When the member name argument is null.</exception>
 	protected static TMember CreateMember<TMember>(Func<TValue> valueCreator, Func<TMember>? memberCreator = null, [CallerMemberName] string name = null!)
 		where TMember : TSelf
 		=> CreateAndAddMember(name, valueCreator, throwWhenExists: true, memberCreator);
-	
+
 	/// <summary>
-	/// Creates a new enum member if it does not exist and returns it. When it already exists, it returns the member with the same name.
+	/// Creates a new enum member if it does not exist and returns it. If it already exists, it returns the member with the same name.
 	/// </summary>
 	/// <param name="valueCreator">A function to retrieve the value for the new member.</param>
-	/// <param name="memberCreator">Provide this value in order to add enum members that have extra properties.</param>
+	/// <param name="memberCreator">Optional: A function to construct subtypes without parameterless constructors.</param>
 	/// <param name="name">
 	/// The name of the new member.
-	/// <b>Do not provide this parameter.</b>
+	/// <b>Do not provide this parameter!</b>
 	///<para>
 	/// If not provided, the name of the caller of this method will be used as the name of the member.<br/>
 	/// If provided, the enforced name will be used, and the property name the will be forgotten.
 	/// </para>
 	/// </param>
+	/// <typeparam name="TMember">The type of the new member (which should be the type of the enum or a subtype of it).</typeparam>
 	/// <returns>The newly created member or an existing enum member with the same name.</returns>
-	protected static TSelf GetOrCreateMember(Func<TValue> valueCreator, Func<TSelf>? memberCreator = null, [CallerMemberName] string name = null!)
+	/// <exception cref="ArgumentNullException">When the member name argument is null.</exception>
+	protected static TMember GetOrCreateMember<TMember>(Func<TValue> valueCreator, Func<TMember>? memberCreator = null, [CallerMemberName] string name = null!)
+		where TMember : TSelf
 		=> CreateAndAddMember(name, valueCreator, throwWhenExists: false, memberCreator);
 	
 	/// <summary>
 	/// Creates a member and adds it to the dictionary.
 	/// </summary>
-	/// <param name="name">The member name.</param>
+	/// <param name="name">The name of the new member.</param>
 	/// <param name="valueCreator">A function to retrieve the value for the new member.</param>
 	/// <param name="throwWhenExists">Throw when a member of the same name already exists.</param>
-	/// <param name="memberCreator">Provide this value in order to add enum members that have extra properties.</param>
+	/// <param name="memberCreator">Optional: A function to construct subtypes without parameterless constructors.</param>
 	/// <returns>The newly created enum member.</returns>
-	/// <exception cref="ArgumentException">When the member exists and <paramref name="throwWhenExists"/> is true.</exception>
+	/// <exception cref="InvalidOperationException">When a member with the name already exists and <paramref name="throwWhenExists"/> is true.</exception>
+	/// <exception cref="ArgumentNullException">When the member name argument is null.</exception>
 	private static TMember CreateAndAddMember<TMember>(string name, Func<TValue> valueCreator, bool throwWhenExists, Func<TMember>? memberCreator = null)
 		where TMember : TSelf
 	{
+		if (name is null) throw new ArgumentNullException(nameof(name));
+		
 		// Copy the reference so we don't get race conditions.
 		var memberByNames = MemberByNames;
 
@@ -222,7 +228,7 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 			if (memberByNames.TryGetValue(name, out var member))
 			{
 				if (throwWhenExists)
-					throw new ArgumentException($"Name '{name}' already defined in enum {typeof(TSelf).Name} (value: '{member.Value}').");
+					throw new InvalidOperationException($"Member with name '{name}' already defined in MagicEnum {typeof(TSelf).Name} (value: '{member.Value}').");
 
 				return (TMember)member;
 			}
@@ -243,12 +249,12 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	}
 
 	/// <summary>
-	/// Tries to retrieve a single member that has the provided name. 
+	/// Tries to retrieve a single member with the provided name. 
 	/// </summary>
 	/// <param name="memberName">The name of the member to retrieve.</param>
-	/// <param name="member">The queried member.</param>
-	/// <returns>True if a member has been found.</returns>
-	/// <exception cref="ArgumentNullException">When name is null.</exception>
+	/// <param name="member">The found member.</param>
+	/// <returns>True if a member has been found, otherwise false.</returns>
+	/// <exception cref="ArgumentNullException">When the member name argument is null.</exception>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static bool TryGetSingleMember(string memberName, [NotNullWhen(true)] out TSelf? member)
 		=> memberName is null
@@ -256,27 +262,28 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 			: MemberByNames.TryGetValue(memberName, out member);
 
 	/// <summary>
-	/// Returns a single member that has the provided name.
+	/// Returns a single member with the provided name.
+	/// <para><b>Throws when no member has been found.</b></para>
 	/// </summary>
 	/// <param name="memberName">The name of the member to retrieve.</param>
-	/// <returns>The queried member.</returns>
-	/// <exception cref="ArgumentNullException">When name is null.</exception>
+	/// <returns>The found member.</returns>
+	/// <exception cref="ArgumentNullException">When the member name argument is null.</exception>
 	/// <exception cref="KeyNotFoundException">When no member has been found.</exception>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static TSelf GetSingleMember(string memberName)
 		=> TryGetSingleMember(memberName, out var member)
 			? member
-			: throw new KeyNotFoundException($"Unable to find a member with name '{memberName}' in enum {typeof(TSelf).Name}.");
+			: throw new KeyNotFoundException($"Unable to find a member with name '{memberName}' in MagicEnum {typeof(TSelf).Name}.");
 
 	/// <summary>
-	/// Tries to return the single member that has the provided value. 
-	/// Warning! This method will throw when multiple members have this value.
-	/// Use <see cref="TryGetMembers"/> to retrieve multiple members.
+	/// Tries to return the single member with the provided value.
+	/// <para><b>Throws when multiple members have this value.</b></para>
+	/// Use <see cref="TryGetMembers"/> to try to retrieve multiple members.
 	/// </summary>
 	/// <param name="memberValue">The value of the member to retrieve.</param>
-	/// <param name="member">The queried member.</param>
-	/// <returns>True if a single member has been found.</returns>
-	/// <exception cref="ArgumentNullException">When value is null.</exception>
+	/// <param name="member">The found member.</param>
+	/// <returns>True if a single member has been found, otherwise false.</returns>
+	/// <exception cref="ArgumentNullException">When the member value argument is null.</exception>
 	/// <exception cref="InvalidOperationException">When multiple members with the same value have been found.</exception>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static bool TryGetSingleMember(TValue memberValue, [NotNullWhen(true)] out TSelf? member)
@@ -290,40 +297,44 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 		}
 
 		var membersList = members.ToList();
-		if (membersList.Count > 1) throw new InvalidOperationException($"Expected enum {typeof(TSelf).Name} to have exactly one member with value '{memberValue}', but it has {membersList.Count} members.");
+		if (membersList.Count > 1) throw new InvalidOperationException($"Expected MagicEnum {typeof(TSelf).Name} to have exactly one member with value '{memberValue}', but it has {membersList.Count} members.");
 
 		member = membersList.First();
 		return true;
 	}
 
 	/// <summary>
-	/// Returns the single member that has the provided value. Throws when no member has been found.
-	/// Warning! Multiple members can have the same value. This method will throw when multiple members have this value.
+	/// Returns the single member with the provided value. 
+	/// <para><b>
+	/// Throws when no member has been found.<br/>
+	/// Throws when multiple members are found.
+	/// </b></para>
 	/// Use <see cref="GetMembers(TValue)"/> to retrieve multiple members.
 	/// </summary>
 	/// <param name="memberValue">The value of the member to retrieve.</param>
-	/// <returns>The queried member.</returns>
-	/// <exception cref="ArgumentNullException">When value is null.</exception>
+	/// <returns>The found member.</returns>
+	/// <exception cref="ArgumentNullException">When the member value argument is null.</exception>
 	/// <exception cref="InvalidOperationException">When multiple members with the same value have been found.</exception>
 	/// <exception cref="KeyNotFoundException">When no member has been found.</exception>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static TSelf GetSingleMember(TValue memberValue)
 		=> TryGetSingleMember(memberValue, out var memberName)
 			? memberName
-			: throw new KeyNotFoundException($"Unable to find a member with value '{memberValue}' in enum {typeof(TSelf).Name}.");
+			: throw new KeyNotFoundException($"Unable to find a member with value '{memberValue}' in MagicEnum {typeof(TSelf).Name}.");
 
 	/// <summary>
-	/// Tries to return the member(s) that have the provided value. 
-	/// Use <see cref="TryGetSingleMember(TValue, out TSelf)"/> to retrieve a single member.
+	/// Tries to return the member(s) with the provided value. 
+	/// Use <see cref="TryGetSingleMember(TValue, out TSelf)"/> to try to retrieve a single member.
 	/// </summary>
 	/// <param name="memberValue">The value of the member(s) to retrieve.</param>
-	/// <param name="members">The queried member(s).</param>
+	/// <param name="members">The found member(s).</param>
 	/// <returns>True if one or more members have been found.</returns>
-	/// <exception cref="ArgumentNullException">When value is null.</exception>
+	/// <exception cref="ArgumentNullException">>When the member value argument is null</exception>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static bool TryGetMembers(TValue memberValue, [NotNullWhen(true)] out IReadOnlyCollection<TSelf>? members)
 	{
 		if (memberValue is null) throw new ArgumentNullException(nameof(memberValue));
+		
 		if (MembersByValues.TryGetValue(memberValue, out var membersList))
 		{
 			members = membersList;
@@ -335,16 +346,17 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	}
 
 	/// <summary>
-	/// Returns the member(s) that have the provided value. Throws when no member has been found.
+	/// Returns the member(s) with the provided value.
+	/// <para><b>Throws when no member has been found.</b></para>
 	/// Use <see cref="GetSingleMember(TValue)"/> to retrieve a single member.
 	/// </summary>
 	/// <param name="memberValue">The value of the member(s) to retrieve.</param>
-	/// <returns>The queried member(s).</returns>
-	/// <exception cref="ArgumentNullException">When value is null.</exception>
+	/// <returns>The found member(s).</returns>
+	/// <exception cref="ArgumentNullException">When the member value argument is null.</exception>
 	/// <exception cref="KeyNotFoundException">When no member has been found.</exception>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static IEnumerable<TSelf> GetMembers(TValue memberValue)
 		=> TryGetMembers(memberValue, out var memberName)
 			? memberName
-			: throw new KeyNotFoundException($"Unable to find a member with value '{memberValue}' in enum {typeof(TSelf).Name}.");
+			: throw new KeyNotFoundException($"Unable to find a member with value '{memberValue}' in MagicEnum {typeof(TSelf).Name}.");
 }
