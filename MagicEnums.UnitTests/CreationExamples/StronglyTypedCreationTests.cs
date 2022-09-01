@@ -7,7 +7,7 @@ public class StronglyTypedCreationTests
 	{
 		public static readonly Vehicle		Default		= CreateMember();
 		public static readonly Type.Bicycle	Bicycle		= CreateMember<Type.Bicycle>();
-		public static readonly Type.Scooter	Scooter		= GetOrCreateMember<Type.Scooter>(2);
+		public static readonly Type.Scooter	Scooter		= CreateMember<Type.Scooter>();
 		public static readonly Type.Car		FuelCar		= CreateMember(() => new Type.Car(EmitsCo2: true));
 		public static readonly Type.Car		ElectricCar	= CreateMember(() => new Type.Car(EmitsCo2: false));
 

@@ -17,8 +17,8 @@ public record GeneralEnumTests : MagicStringEnum<GeneralEnumTests>
 	[Fact]
 	public void Enum_WithSameNames_ShouldNotThrow_UsingGetOrCreateMember()
 	{
-		GetOrCreateMember("1", name: nameof(Enum));
-		GetOrCreateMember(null!, name: nameof(Enum));
+		GetOrCreateMember(name: nameof(Enum), "1");
+		GetOrCreateMember(name: nameof(Enum), null!);
 	}
 
 	[Fact]

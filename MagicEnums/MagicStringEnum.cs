@@ -42,27 +42,21 @@ public abstract record MagicStringEnum<TSelf> : MagicEnumCore<TSelf, string>
 	#region GetOrCreateMember
 	
 	// Creates or retrieves a new enum member of the same type as the enum itself.
-	/// <inheritdoc cref="GetOrCreateMember{TMember}(string, Func{TMember}?, string)"/>
-	protected static TSelf GetOrCreateMember(string? value, Func<TSelf>? memberCreator = null, [CallerMemberName] string name = null!)
-		=> GetOrCreateMember<TSelf>(value, memberCreator, name);
+	/// <inheritdoc cref="GetOrCreateMember{TMember}(string, string?, Func{TMember}?)"/>
+	protected static TSelf GetOrCreateMember(string name, string? value, Func<TSelf>? memberCreator = null)
+		=> GetOrCreateMember<TSelf>(name: name, value: value, memberCreator: memberCreator);
 
 	/// <summary>
 	/// Creates a new enum member if it does not exist and returns it. When it already exists, it returns the member with the same name.
 	/// </summary>
+	/// <param name="name">The name of the member.</param>
 	/// <param name="value">The value of the new member. Do not provide this value, in order to use the name of the member as value.</param>
 	/// <param name="memberCreator">Optional: A function to construct subtypes without parameterless constructors.</param>
-	/// <param name="name">
-	/// The name of the member.
-	/// <para>
-	/// Warning: Don't provide this parameter, so the property name of the enum will automatically be used as the name of the member. 
-	/// If provided, the enforced name will be used, and the property name the will be forgotten.
-	/// </para> 
-	/// </param>
 	/// <returns>The newly created member or an existing enum member with the same name.</returns>
 	/// <exception cref="ArgumentNullException">When the member name argument is null.</exception>
-	protected static TMember GetOrCreateMember<TMember>(string? value = null!, Func<TMember>? memberCreator = null, [CallerMemberName] string name = null!)
+	protected static TMember GetOrCreateMember<TMember>(string name, string? value = null!, Func<TMember>? memberCreator = null)
 		where TMember : TSelf
-		=> GetOrCreateMember(valueCreator: () => value ?? name, memberCreator: memberCreator, name: name);
+		=> GetOrCreateMember(name: name, valueCreator: () => value ?? name, memberCreator: memberCreator);
 
 	#endregion
 }

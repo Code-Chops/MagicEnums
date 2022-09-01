@@ -186,20 +186,13 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	/// <summary>
 	/// Creates a new enum member if it does not exist and returns it. If it already exists, it returns the member with the same name.
 	/// </summary>
+	/// <param name="name">The name of the new member.</param>
 	/// <param name="valueCreator">A function to retrieve the value for the new member.</param>
 	/// <param name="memberCreator">Optional: A function to construct subtypes without parameterless constructors.</param>
-	/// <param name="name">
-	/// The name of the new member.
-	/// <b>Do not provide this parameter!</b>
-	///<para>
-	/// If not provided, the name of the caller of this method will be used as the name of the member.<br/>
-	/// If provided, the enforced name will be used, and the property name the will be forgotten.
-	/// </para>
-	/// </param>
 	/// <typeparam name="TMember">The type of the new member (which should be the type of the enum or a subtype of it).</typeparam>
 	/// <returns>The newly created member or an existing enum member with the same name.</returns>
 	/// <exception cref="ArgumentNullException">When the member name argument is null.</exception>
-	protected static TMember GetOrCreateMember<TMember>(Func<TValue> valueCreator, Func<TMember>? memberCreator = null, [CallerMemberName] string name = null!)
+	protected static TMember GetOrCreateMember<TMember>(string name, Func<TValue> valueCreator, Func<TMember>? memberCreator = null)
 		where TMember : TSelf
 		=> CreateAndAddMember(name, valueCreator, throwWhenExists: false, memberCreator);
 	

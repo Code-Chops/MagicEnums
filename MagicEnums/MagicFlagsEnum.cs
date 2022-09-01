@@ -102,39 +102,32 @@ public abstract record MagicFlagsEnum<TSelf, TValue> : MagicEnumCore<TSelf, TVal
 	#region GetOrCreateMember
 	
 	// Creates or retrieves a new enum member of the same type as the enum itself.
-	/// <inheritdoc cref="GetOrCreateMember{TMember}(TValue, Func{TMember}?, string)"/>
-	protected static TSelf GetOrCreateMember(TValue value, Func<TSelf>? memberCreator = null, [CallerMemberName] string name = null!)
-		=> GetOrCreateMember<TSelf>(value, memberCreator, name);
+	/// <inheritdoc cref="GetOrCreateMember{TMember}(string, TValue, Func{TMember}?)"/>
+	protected static TSelf GetOrCreateMember(string name, TValue value, Func<TSelf>? memberCreator = null)
+		=> GetOrCreateMember<TSelf>(name, value, memberCreator);
 	
 	/// <summary>
 	/// Creates a new enum member with the provided integral flags and returns it, or gets an existing member of the provided name.
 	/// </summary>
+	/// <param name="name">The name of the new member.</param>
 	/// <param name="value">The value of the new member.</param>
 	/// <param name="memberCreator">Optional: A function to construct subtypes without parameterless constructors.</param>
-	/// <param name="name">
-	/// The name of the new member.
-	/// <b>Do not provide this parameter!</b>
-	///<para>
-	/// If not provided, the name of the caller of this method will be used as the name of the member.<br/>
-	/// If provided, the enforced name will be used, and the property name the will be forgotten.
-	/// </para>
-	/// </param>
 	/// <exception cref="ArgumentNullException">When the member name argument is null.</exception>
-	protected static TMember GetOrCreateMember<TMember>(TValue value, Func<TMember>? memberCreator = null, [CallerMemberName] string name = null!)
+	protected static TMember GetOrCreateMember<TMember>(string name, TValue value, Func<TMember>? memberCreator = null)
 		where TMember : TSelf
 		=> GetOrCreateMember(
+			name: name,
 			valueCreator: () => SetAndRetrieveLastInsertedNumber(() => value), 
-			memberCreator: memberCreator, 
-			name: name);
+			memberCreator: memberCreator);
 
 	// Hides the magic enum core method in order to force saving the last inserted number. 
 	/// <inheritdoc cref="MagicEnumCore{TSelf, TValue}.CreateMember{TMember}"/>
-	protected new static TMember GetOrCreateMember<TMember>(Func<TValue> valueCreator, Func<TMember>? memberCreator = null, [CallerMemberName] string name = null!)
+	protected new static TMember GetOrCreateMember<TMember>(string name, Func<TValue> valueCreator, Func<TMember>? memberCreator = null)
 		where TMember : TSelf
 		=> MagicEnumCore<TSelf, TValue>.GetOrCreateMember(
+			name: name,
 			valueCreator: () => SetAndRetrieveLastInsertedNumber(valueCreator), 
-			memberCreator: memberCreator, 
-			name: name);
+			memberCreator: memberCreator);
 	
 	#endregion
 
