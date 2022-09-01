@@ -1,14 +1,22 @@
 ﻿namespace CodeChops.MagicEnums.Core;
 
+/// <summary>
+/// Holds each uninitialized (non-abstract) enum in cache by its name. 
+/// </summary>
 [GenerateStronglyTypedId<SingletonId<Cache>>]
 public partial class Cache : MutableDictionaryEntity<string, IMagicEnum>
 {
-	protected override IReadOnlyDictionary<string, IMagicEnum> Dictionary => _dictionary;
-	private static readonly Dictionary<string, IMagicEnum> _dictionary = new();
+	public static Cache Instance { get; } = new(); 
+
+	private Cache()
+	{
+	}
+	
+	protected override Dictionary<string, IMagicEnum> Dictionary { get; } = new();
 
 	/// <summary>
 	/// Tries to add the magic enum to the cache.
 	/// </summary>
-	internal static void AddEnum(IMagicEnum magicEnum) 
-		=> _dictionary.Add(magicEnum.Name, magicEnum);
+	internal void AddEnum(IMagicEnum magicEnum) 
+		=> this.Dictionary.Add(magicEnum.Name, magicEnum);
 }

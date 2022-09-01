@@ -155,7 +155,7 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 
 		// Tries to get the current uninitialized enum, add its name, and add the enum to the cache.
 		if (CachedUninitializedMember<TSelf>.TryGetValue(out var magicEnum))
-			Cache.AddEnum(magicEnum with { Name = typeof(TSelf).Name });
+			Cache.Instance.AddEnum(magicEnum with { Name = typeof(TSelf).Name });
 		
 		IsInStaticBuildup = false;
 	}
