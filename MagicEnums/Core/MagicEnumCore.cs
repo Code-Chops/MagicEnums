@@ -152,10 +152,6 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 
 		// Forces to run the static constructor of the user-defined enum, so the Create method is called for every member (in code line order).
 		RuntimeHelpers.RunClassConstructor(typeof(TSelf).TypeHandle);
-
-		// Tries to get the current uninitialized enum, add its name, and add the enum to the cache.
-		if (CachedUninitializedMember<TSelf>.TryGetValue(out var magicEnum))
-			Cache.Instance.AddEnum(magicEnum with { Name = typeof(TSelf).Name });
 		
 		IsInStaticBuildup = false;
 	}

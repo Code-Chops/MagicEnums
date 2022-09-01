@@ -11,8 +11,8 @@
 	</PropertyGroup>
 	
 	<PropertyGroup>
-		<Version>2.8.2</Version>
-		<PackageReleaseNotes>Changed MagicEnum cache to singleton.</PackageReleaseNotes>
+		<Version>2.9.0</Version>
+		<PackageReleaseNotes>Removed MagicEnum cache as static constructors are not accessed immediately.</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>CodeChops.MagicEnums</Title>
 		<Description>
