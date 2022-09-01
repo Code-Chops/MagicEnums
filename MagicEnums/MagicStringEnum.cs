@@ -49,8 +49,8 @@ public abstract record MagicStringEnum<TSelf> : MagicEnumCore<TSelf, string>
 	/// <summary>
 	/// Creates a new enum member if it does not exist and returns it. When it already exists, it returns the member with the same name.
 	/// </summary>
-	/// <param name="name">The name of the member.</param>
-	/// <param name="value">The value of the new member. Do not provide this value, in order to use the name of the member as value.</param>
+	/// <param name="name">The name of the new member.</param>
+	/// <param name="value">The value of the new member.</param>
 	/// <param name="memberCreator">Optional: A function to construct subtypes without parameterless constructors.</param>
 	/// <returns>The newly created member or an existing enum member with the same name.</returns>
 	/// <exception cref="ArgumentNullException">When the member name argument is null.</exception>

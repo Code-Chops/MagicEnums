@@ -11,8 +11,8 @@
 	</PropertyGroup>
 	
 	<PropertyGroup>
-		<Version>2.9.1</Version>
-		<PackageReleaseNotes>Changed GetOrCreateMember so name is a required parameter.</PackageReleaseNotes>
+		<Version>2.9.2</Version>
+		<PackageReleaseNotes>Fixed comments.</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>CodeChops.MagicEnums</Title>
 		<Description>

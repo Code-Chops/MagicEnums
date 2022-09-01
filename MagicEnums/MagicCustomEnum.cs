@@ -47,7 +47,7 @@ public abstract record MagicCustomEnum<TSelf, TValue> : MagicEnumCore<TSelf, TVa
 	/// Creates a new enum member if it does not exist and returns it. If it already exists, it returns the member with the same name.
 	/// </summary>
 	/// <param name="name">The name of the new member.</param>
-	/// <param name="value">The value of the member.</param>
+	/// <param name="value">The value of the new member.</param>
 	/// <param name="memberCreator">Optional: A function to construct subtypes without parameterless constructors.</param>
 	/// <returns>The newly created member or an existing enum member with the same name.</returns>
 	protected static TMember GetOrCreateMember<TMember>(string name, TValue value, Func<TMember>? memberCreator = null) 
