@@ -62,7 +62,7 @@ public abstract record MagicStringEnum<TSelf> : MagicEnumCore<TSelf, string>
 	/// <exception cref="ArgumentNullException">When the member name argument is null.</exception>
 	protected static TMember GetOrCreateMember<TMember>(string? value = null!, Func<TMember>? memberCreator = null, [CallerMemberName] string name = null!)
 		where TMember : TSelf
-		=> GetOrCreateMember(valueCreator: () => value ?? name, memberCreator: memberCreator, name: name!);
+		=> GetOrCreateMember(valueCreator: () => value ?? name, memberCreator: memberCreator, name: name);
 
 	#endregion
 }

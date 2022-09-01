@@ -121,10 +121,26 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	/// </summary>
 	/// <typeparam name="TMember">The type of the uninitialized member to create.</typeparam>
 	/// <exception cref="InvalidOperationException">When <typeparamref name="TMember"/> is abstract.</exception>
-	private static class CachedUninitializedMember<TMember>
+	internal static class CachedUninitializedMember<TMember>
 		where TMember : TSelf
 	{
-		public static TMember Value => _value ?? throw new InvalidOperationException($"Cannot create a MagicEnum member of abstract type {typeof(TMember).Name} for enum {typeof(TSelf).Name}."); 
+		/// <summary>
+		/// Tries to get the cached uninitialized member.
+		/// </summary>
+		/// <param name="member">The cached uninitialized member</param>
+		/// <returns>True when the member is not abstract.</returns>
+		public static bool TryGetValue([NotNullWhen(true)] out TMember? member)
+		{
+			member = _value;
+			return _value is not null;
+		}
+
+		/// <summary>
+		/// Returns the cached uninitialized member. Throws when the member is of an abstract type.
+		/// </summary>
+		/// <returns>Returns the cached uninitialized member.</returns>
+		/// <exception cref="InvalidOperationException">When TMember is an abstract type.</exception>
+		public static TMember GetValue() => _value ?? throw new InvalidOperationException($"Cannot create a MagicEnum member of abstract type {typeof(TMember).Name} for enum {typeof(TSelf).Name}."); 
 		private static readonly TMember? _value = typeof(TMember).IsAbstract ? null : (TMember)FormatterServices.GetUninitializedObject(typeof(TMember));
 	}
 
@@ -137,9 +153,19 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 		// Forces to run the static constructor of the user-defined enum, so the Create method is called for every member (in code line order).
 		RuntimeHelpers.RunClassConstructor(typeof(TSelf).TypeHandle);
 
+		// Tries to get the current uninitialized enum, add its name, and add the enum to the cache.
+		if (CachedUninitializedMember<TSelf>.TryGetValue(out var magicEnum))
+			Cache.AddEnum(magicEnum with { Name = typeof(TSelf).Name });
+		
 		IsInStaticBuildup = false;
 	}
-	
+
+	protected MagicEnumCore()
+	{
+		// When instantiating the enum (not creating a member), set the name of enum.
+		this.Name = typeof(TSelf).Name;
+	}
+
 	/// <summary>
 	/// Creates a new enum member and returns it.
 	/// </summary>
@@ -234,7 +260,7 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 			}
 			
 			// Create the member
-			member = memberCreator?.Invoke() ?? CachedUninitializedMember<TMember>.Value;
+			member = memberCreator?.Invoke() ?? CachedUninitializedMember<TMember>.GetValue();
 			member = member with { Name = name, Value = valueCreator() };
 			
 			// Add the new member

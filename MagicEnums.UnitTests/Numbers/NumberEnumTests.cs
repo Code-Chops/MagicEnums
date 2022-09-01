@@ -24,7 +24,7 @@ public class NumberEnumTests
 	[Fact]
 	public void NumberEnum_ExplicitValue_HasProvidedValue()
 	{
-		Assert.Equal(6u, NumberEnumMock.GappedValue.Value);
+		Assert.Equal(6u, NumberEnumMock.NonIncrementalValue.Value);
 		Assert.Equal(7u, NumberEnumMock.NonExistingExplicitValue.Value);
 		Assert.Equal(7u, NumberEnumMock.ExistingExplicitValue.Value);
 	}
@@ -32,7 +32,7 @@ public class NumberEnumTests
 	[Fact]
 	public void NumberEnum_GetValue_WorksCorrect()
 	{
-		Assert.Equal(6u, NumberEnumMock.GetSingleMember(nameof(NumberEnumMock.GappedValue)).Value);
+		Assert.Equal(6u, NumberEnumMock.GetSingleMember(nameof(NumberEnumMock.NonIncrementalValue)).Value);
 		Assert.Equal(7u, NumberEnumMock.GetSingleMember(nameof(NumberEnumMock.NonExistingExplicitValue)).Value);
 		Assert.Equal(7u, NumberEnumMock.GetSingleMember(nameof(NumberEnumMock.ExistingExplicitValue)).Value);
 	}
@@ -40,7 +40,7 @@ public class NumberEnumTests
 	[Fact]
 	public void NumberEnum_GetName_WorksCorrect()
 	{
-		Assert.Equal(nameof(NumberEnumMock.GappedValue), NumberEnumMock.GetSingleMember(6u).Name);
+		Assert.Equal(nameof(NumberEnumMock.NonIncrementalValue), NumberEnumMock.GetSingleMember(6u).Name);
 	}
 
 	[Fact]

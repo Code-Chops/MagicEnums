@@ -5,7 +5,7 @@
 /// Use <see cref="CreateMember(TValue, Func{TSelf}, string)"/> to create a member.
 /// </summary>
 public abstract record MagicCustomEnum<TSelf, TValue> : MagicEnumCore<TSelf, TValue> 
-	where TSelf : MagicCustomEnum<TSelf, TValue> 
+	where TSelf : MagicCustomEnum<TSelf, TValue>
 	where TValue : struct, IEquatable<TValue>, IComparable<TValue>
 {
 	#region CreateMember

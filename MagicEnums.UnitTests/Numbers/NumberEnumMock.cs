@@ -18,7 +18,7 @@ internal partial record NumberEnumMock : MagicEnum<NumberEnumMock, ulong>
 	/// An explicit non-existing value with a value-gap compared to the previous implicit value <seealso cref="ImplicitValue"/>.
 	/// Should be 6.
 	/// </summary>
-	public static NumberEnumMock GappedValue { get; }				= CreateMember(6);
+	public static NumberEnumMock NonIncrementalValue { get; }		= CreateMember(6);
 
 	/// <summary>
 	/// An explicit non-existing value. Should be 7.
@@ -41,6 +41,7 @@ internal partial record NumberEnumMock : MagicEnum<NumberEnumMock, ulong>
 	/// A value that has the same name (ignoring casing) as <seealso cref="CaseSensitivity"/>.
 	/// Should be 9. This shouldn't throw.
 	/// </summary>
+	// ReSharper disable once IdentifierTypo
 	public static NumberEnumMock Casesensitivity { get; }			= CreateMember();
 
 	/// <summary>
