@@ -11,8 +11,8 @@
 	</PropertyGroup>
 	
 	<PropertyGroup>
-		<Version>2.9.2</Version>
-		<PackageReleaseNotes>Fixed comments.</PackageReleaseNotes>
+		<Version>2.9.3</Version>
+		<PackageReleaseNotes>Updated package references.</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>CodeChops.MagicEnums</Title>
 		<Description>
@@ -84,9 +84,9 @@ Flexible and extendable enums for C#:
 	</ItemGroup>
 
 	<ItemGroup Label="PackageReferences">
-		<PackageReference Include="CodeChops.DomainDrivenDesign.DomainModeling" Version="0.21.3" />
-		<PackageReference Include="CodeChops.GenericMath" Version="2.0.9" />
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.2.0" />
+		<PackageReference Include="CodeChops.DomainDrivenDesign.DomainModeling" Version="0.22.0" />
+		<PackageReference Include="CodeChops.GenericMath" Version="2.10.0" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.3.0" />
 	</ItemGroup>
 
 </Project>
