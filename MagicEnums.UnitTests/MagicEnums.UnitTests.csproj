@@ -26,7 +26,6 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="CodeChops.SourceGeneration.Utilities" Version="0.3.7" PrivateAssets="all" GeneratePathProperty="true" />
 	</ItemGroup>
 	
 </Project>

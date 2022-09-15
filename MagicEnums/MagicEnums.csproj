@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-	<PropertyGroup>
+	
+	<PropertyGroup Label="Main">
 		<AssemblyName>CodeChops.MagicEnums</AssemblyName>
 		<RootNamespace>CodeChops.MagicEnums</RootNamespace>
 		<TargetFramework>net6.0</TargetFramework>
@@ -10,9 +10,9 @@
 		<EnablePreviewFeatures>true</EnablePreviewFeatures>
 	</PropertyGroup>
 	
-	<PropertyGroup>
-		<Version>2.9.4</Version>
-		<PackageReleaseNotes>Don't emit code analysis and pdb-file.</PackageReleaseNotes>
+	<PropertyGroup Label="Package">
+		<Version>2.9.5</Version>
+		<PackageReleaseNotes>Removed unnecessary package references.</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>CodeChops.MagicEnums</Title>
 		<Description>
@@ -90,7 +90,6 @@ Flexible and extendable enums for C#:
 	<ItemGroup Label="PackageReferences">
 		<PackageReference Include="CodeChops.DomainDrivenDesign.DomainModeling" Version="0.22.0" />
 		<PackageReference Include="CodeChops.GenericMath" Version="2.10.0" />
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.3.0" PrivateAssets="All" />
 	</ItemGroup>
-
+	
 </Project>
