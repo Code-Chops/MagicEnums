@@ -10,11 +10,11 @@ namespace CodeChops.MagicEnums.Core;
 /// </summary>
 /// <typeparam name="TSelf">The type of the enum itself. Is also the type of each member.</typeparam>
 /// <typeparam name="TValue">The type of the enum member value.</typeparam>
-public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicEnum<TValue>, IEnumerable<TSelf>
+public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicEnumCore<TSelf, TValue> 
 	where TSelf : MagicEnumCore<TSelf, TValue>
 	where TValue : IEquatable<TValue>, IComparable<TValue>
 {
-	public sealed override string ToString() => this.ToEasyString(new {this.Name, this.Value});
+	public sealed override string ToString() => this.ToEasyString(new { this.Name, this.Value });
 
 	/// <summary>
 	/// The name of the enum member.

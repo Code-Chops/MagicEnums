@@ -11,8 +11,8 @@
 	</PropertyGroup>
 	
 	<PropertyGroup Label="Package">
-		<Version>2.9.5</Version>
-		<PackageReleaseNotes>Removed unnecessary package references.</PackageReleaseNotes>
+		<Version>2.9.6</Version>
+		<PackageReleaseNotes>Created IMagicEnum core static abstract interface.</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>CodeChops.MagicEnums</Title>
 		<Description>
