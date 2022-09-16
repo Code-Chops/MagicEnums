@@ -11,8 +11,8 @@
 	</PropertyGroup>
 	
 	<PropertyGroup Label="Package">
-		<Version>2.9.7</Version>
-		<PackageReleaseNotes>Expanded IMagicEnum core static abstract interface.</PackageReleaseNotes>
+		<Version>2.9.8</Version>
+		<PackageReleaseNotes>Added MagicStringEnum GetOrCreate overload.</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>CodeChops.MagicEnums</Title>
 		<Description>

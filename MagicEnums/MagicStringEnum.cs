@@ -41,6 +41,14 @@ public abstract record MagicStringEnum<TSelf> : MagicEnumCore<TSelf, string>
 	
 	#region GetOrCreateMember
 	
+	/// <summary>
+	/// Creates a new enum member if it does not exist and returns it. When it already exists, it returns the member with the same name.
+	/// </summary>
+	/// <param name="name">The name of the new member. The member value will be equal to the name.</param>
+	/// <inheritdoc cref="GetOrCreateMember{TMember}(string, string?, Func{TMember}?)"/>
+	protected static TSelf GetOrCreateMember(string name)
+		=> GetOrCreateMember<TSelf>(name: name, value: null, memberCreator: null);
+	
 	// Creates or retrieves a new enum member of the same type as the enum itself.
 	/// <inheritdoc cref="GetOrCreateMember{TMember}(string, string?, Func{TMember}?)"/>
 	protected static TSelf GetOrCreateMember(string name, string? value, Func<TSelf>? memberCreator = null)
