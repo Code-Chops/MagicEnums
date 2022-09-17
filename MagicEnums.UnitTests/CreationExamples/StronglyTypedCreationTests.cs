@@ -30,6 +30,7 @@ public class StronglyTypedCreationTests
 
 		var vehicle = (Vehicle)Vehicle.Bicycle;
 
+		// ReSharper disable once UnusedVariable
 		var speedingFineInEur = vehicle switch
 		{
 			Vehicle.Type.MotorCycle => 60,

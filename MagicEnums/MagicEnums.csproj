@@ -11,8 +11,8 @@
 	</PropertyGroup>
 	
 	<PropertyGroup Label="Package">
-		<Version>2.9.8</Version>
-		<PackageReleaseNotes>Added MagicStringEnum GetOrCreate overload.</PackageReleaseNotes>
+		<Version>2.9.9</Version>
+		<PackageReleaseNotes>Updated package references.</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>CodeChops.MagicEnums</Title>
 		<Description>
@@ -88,7 +88,7 @@ Flexible and extendable enums for C#:
 	</ItemGroup>
 
 	<ItemGroup Label="PackageReferences">
-		<PackageReference Include="CodeChops.DomainDrivenDesign.DomainModeling" Version="0.22.0" />
+		<PackageReference Include="CodeChops.DomainDrivenDesign.DomainModeling" Version="0.23.0" />
 		<PackageReference Include="CodeChops.GenericMath" Version="2.10.0" />
 	</ItemGroup>
 	
