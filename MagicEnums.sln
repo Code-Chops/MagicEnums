@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MagicEnums.SourceGeneration
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MagicEnums.UnitTests", "MagicEnums.UnitTests\MagicEnums.UnitTests.csproj", "{7FDF582C-BD1B-436A-9516-CB1DCBFC7CDC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagicEnums.Json", "MagicEnums.Json\MagicEnums.Json.csproj", "{D169D131-6C34-4EF2-94EF-5297A5B10EFC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagicEnums.UnitTests", "MagicEnums.Json.UnitTests\MagicEnums.Json.UnitTests.csproj", "{CCE6E184-2CC6-4D71-9FC5-1077ABC6537B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{7FDF582C-BD1B-436A-9516-CB1DCBFC7CDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7FDF582C-BD1B-436A-9516-CB1DCBFC7CDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7FDF582C-BD1B-436A-9516-CB1DCBFC7CDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D169D131-6C34-4EF2-94EF-5297A5B10EFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D169D131-6C34-4EF2-94EF-5297A5B10EFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D169D131-6C34-4EF2-94EF-5297A5B10EFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D169D131-6C34-4EF2-94EF-5297A5B10EFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCE6E184-2CC6-4D71-9FC5-1077ABC6537B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCE6E184-2CC6-4D71-9FC5-1077ABC6537B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCE6E184-2CC6-4D71-9FC5-1077ABC6537B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCE6E184-2CC6-4D71-9FC5-1077ABC6537B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
