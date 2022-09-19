@@ -11,8 +11,8 @@
 	</PropertyGroup>
 	
 	<PropertyGroup Label="Package">
-		<Version>2.10.0</Version>
-		<PackageReleaseNotes>Added JSON conversion package and tests.</PackageReleaseNotes>
+		<Version>2.10.1</Version>
+		<PackageReleaseNotes>Added JSON conversion package and tests 2.</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>CodeChops.MagicEnums</Title>
 		<Description>

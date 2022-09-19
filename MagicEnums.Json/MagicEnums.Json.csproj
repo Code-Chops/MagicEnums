@@ -10,9 +10,48 @@
         <EnablePreviewFeatures>true</EnablePreviewFeatures>
     </PropertyGroup>
 
+    <PropertyGroup Label="Package">
+        <Version>2.10.1</Version>
+        <PackageReleaseNotes>Added JSON conversion package and tests 2.</PackageReleaseNotes>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Title>CodeChops.MagicEnums.Json</Title>
+        <Description>Json (de)serialization for MagicEnums.
+        </Description>
+        <PackageId>CodeChops.MagicEnums.Json</PackageId>
+        <PackageProjectUrl>https://github.com/code-chops/MagicEnums</PackageProjectUrl>
+        <PackageTags>CodeChops;CodeChops.MagicEnums.Json;MagicEnums;Json;Serialization;Deserialization</PackageTags>
+        <RepositoryUrl>https://github.com/code-chops/MagicEnums</RepositoryUrl>
+        <RepositoryType>Git</RepositoryType>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <Authors>CodeChops (@Code-Chops), Max Bergman</Authors>
+        <Company>CodeChops</Company>
+        <PackageIcon>icon.png</PackageIcon>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <Copyright>Copyright (c) CodeChops $([System.DateTime]::Now.ToString(yyyy))</Copyright>
+    </PropertyGroup>
+
     <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
         <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
     </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <DebugType>none</DebugType>
+    </PropertyGroup>
+
+    <!-- Creates local nuget packages if in release mode and environment variable LocalNuGetPackagesFolder is configured -->
+    <Target Name="AddNugetPackage" AfterTargets="Pack" Condition="'$(Configuration)' == 'Release' AND '$(LocalNuGetPackagesFolder)' != null">
+        <Exec Command="$(LocalNuGetPackagesFolder)\nuget.exe add $(OutputPath)..\$(PackageId).$(PackageVersion).nupkg -source $(LocalNuGetPackagesFolder)" />
+    </Target>
+
+    <ItemGroup Label="PackageAssets">
+        <None Include="Properties\LICENSE" Pack="true" PackagePath="" />
+        <None Include="Properties\icon.png" Pack="true" Visible="true" PackagePath="" />
+    </ItemGroup>
+
+    <ItemGroup Label="InternalsVisibleTo">
+        <InternalsVisibleTo Include="$(AssemblyName).UnitTests" />
+        <InternalsVisibleTo Include="$(AssemblyName).IntegrationTests" />
+    </ItemGroup>
 
     <ItemGroup Label="ProjectReferences">
         <ProjectReference Include="..\MagicEnums.SourceGeneration\MagicEnums.SourceGeneration.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
@@ -21,6 +60,10 @@
     <ItemGroup Label="PackageReferences">
       <PackageReference Include="CodeChops.MagicEnums" Version="2.9.9" />
       <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="6.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Properties" />
     </ItemGroup>
 
 </Project>
