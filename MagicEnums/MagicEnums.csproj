@@ -11,8 +11,8 @@
 	</PropertyGroup>
 	
 	<PropertyGroup Label="Package">
-		<Version>2.10.5</Version>
-		<PackageReleaseNotes>Trying to fix source generation 4.</PackageReleaseNotes>
+		<Version>2.10.6</Version>
+		<PackageReleaseNotes>Trying to fix source generation 5.</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>CodeChops.MagicEnums</Title>
 		<Description>
