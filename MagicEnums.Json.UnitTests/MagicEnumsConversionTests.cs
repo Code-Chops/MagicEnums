@@ -1,6 +1,5 @@
 ﻿using System.Text.Json;
-using CodeChops.DomainDrivenDesign.Contracts.Converters.Identities;
-using CodeChops.DomainDrivenDesign.Contracts.Converters.MagicEnums;
+using CodeChops.DomainDrivenDesign.DomainModeling.Identities.Converters.Json.Identities;
 using CodeChops.Geometry.Space.Directions.Strict;
 using CodeChops.Geometry.Space.Directions.Strict.Definitions;
 using Xunit;

@@ -11,8 +11,8 @@
 	</PropertyGroup>
 	
 	<PropertyGroup Label="Package">
-		<Version>2.10.1</Version>
-		<PackageReleaseNotes>Added JSON conversion package and tests 2.</PackageReleaseNotes>
+		<Version>2.10.2</Version>
+		<PackageReleaseNotes>Trying to fix source generation.</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>CodeChops.MagicEnums</Title>
 		<Description>
@@ -79,17 +79,16 @@ Flexible and extendable enums for C#:
 		<InternalsVisibleTo Include="$(AssemblyName).UnitTests" />
 		<InternalsVisibleTo Include="$(AssemblyName).IntegrationTests" />
 	</ItemGroup>
+
+	<ItemGroup Label="PackageReferences">
+		<PackageReference Include="CodeChops.DomainDrivenDesign.DomainModeling" Version="0.25.15" />
+		<PackageReference Include="CodeChops.GenericMath" Version="2.10.4" />
+	</ItemGroup>
 	
 	<ItemGroup Label="ProjectReferences">
 		<ProjectReference Include="..\MagicEnums.SourceGeneration\MagicEnums.SourceGeneration.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="All" />
 		<!-- Package the generator in the analyzer directory of the nuget package -->
-		<None Include="..\MagicEnums.SourceGeneration/bin/$(Configuration)/netstandard2.0/$(AssemblyName).SourceGeneration.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-		<None Include="..\MagicEnums.SourceGeneration/bin/$(Configuration)/netstandard2.0/CodeChops.SourceGeneration.Utilities.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-	</ItemGroup>
-
-	<ItemGroup Label="PackageReferences">
-		<PackageReference Include="CodeChops.DomainDrivenDesign.DomainModeling" Version="0.23.11" />
-		<PackageReference Include="CodeChops.GenericMath" Version="2.10.4" />
+		<None Include="..\MagicEnums.SourceGeneration/bin/$(Configuration)\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers\dotnet\cs" Visible="false" />
 	</ItemGroup>
 	
 </Project>

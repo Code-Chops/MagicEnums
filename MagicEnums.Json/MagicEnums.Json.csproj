@@ -37,7 +37,11 @@
     <PropertyGroup Condition="'$(Configuration)' == 'Release'">
         <DebugType>none</DebugType>
     </PropertyGroup>
-
+    
+    <ItemGroup>
+        <Folder Include="Properties" />
+    </ItemGroup>
+    
     <!-- Creates local nuget packages if in release mode and environment variable LocalNuGetPackagesFolder is configured -->
     <Target Name="AddNugetPackage" AfterTargets="Pack" Condition="'$(Configuration)' == 'Release' AND '$(LocalNuGetPackagesFolder)' != null">
         <Exec Command="$(LocalNuGetPackagesFolder)\nuget.exe add $(OutputPath)..\$(PackageId).$(PackageVersion).nupkg -source $(LocalNuGetPackagesFolder)" />
@@ -58,12 +62,8 @@
     </ItemGroup>
 
     <ItemGroup Label="PackageReferences">
-      <PackageReference Include="CodeChops.MagicEnums" Version="2.9.9" />
+      <PackageReference Include="CodeChops.MagicEnums" Version="2.10.1" />
       <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="6.0.1" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Properties" />
     </ItemGroup>
 
 </Project>

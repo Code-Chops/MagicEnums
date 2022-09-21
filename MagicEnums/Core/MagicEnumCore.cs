@@ -14,7 +14,7 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	where TSelf : MagicEnumCore<TSelf, TValue>
 	where TValue : IEquatable<TValue>, IComparable<TValue>
 {
-	public sealed override string ToString() => this.ToEasyString(new { this.Name, this.Value });
+	public sealed override string ToString() => this.ToDisplayString(new { this.Name, this.Value });
 
 	/// <summary>
 	/// The name of the enum member.
