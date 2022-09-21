@@ -37,6 +37,10 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; analyzers; buildtransitive; compile;</IncludeAssets>
 		</PackageReference>
+		<PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="6.0.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; analyzers; buildtransitive; compile;</IncludeAssets>
+		</PackageReference>
 		<PackageReference Include="CodeChops.SourceGeneration.Utilities" Version="0.3.15" PrivateAssets="all" GeneratePathProperty="true" />
 	</ItemGroup>
 	
