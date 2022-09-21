@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup Label="Main">
-		<Version>1.0.4</Version>
 		<AssemblyName>CodeChops.MagicEnums.SourceGeneration</AssemblyName>
 		<RootNamespace>CodeChops.MagicEnums.SourceGeneration</RootNamespace>
 		<TargetFramework>netstandard2.0</TargetFramework>
@@ -30,7 +29,11 @@
 	</Target>
 
 	<ItemGroup Label="PackageReferences">
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.2.0">
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.3.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive; compile;</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive; compile;</IncludeAssets>
 		</PackageReference>
