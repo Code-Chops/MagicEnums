@@ -9,7 +9,7 @@ namespace CodeChops.MagicEnums.SourceGeneration;
 /// This discovery will only work on enums with the correct attribute <see cref="DiscoverableAttributeName"/>.
 /// </summary>
 [Generator]
-public class SourceGenerator : IIncrementalGenerator
+public class MagicEnumSourceGenerator : IIncrementalGenerator
 {
 	internal const string GenerateMethodName				= "CreateMember";
 	internal const string CoreName							= "MagicEnumCore";

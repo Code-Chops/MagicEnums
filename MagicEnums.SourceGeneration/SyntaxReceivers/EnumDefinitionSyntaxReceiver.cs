@@ -10,8 +10,8 @@ internal class EnumDefinitionSyntaxReceiver
 		if (syntaxNode is not AttributeSyntax attribute || attribute.ArgumentList is null || attribute.ArgumentList.Arguments.Count > 3) return false;
 		if (attribute.Parent?.Parent is not RecordDeclarationSyntax) return false;
 
-		var hasAttributeName = attribute.Name.HasAttributeName(SourceGenerator.DiscoverableAttributeName, cancellationToken)
-			|| attribute.Name.HasAttributeName(SourceGenerator.MemberAttributeName, cancellationToken);
+		var hasAttributeName = attribute.Name.HasAttributeName(MagicEnumSourceGenerator.DiscoverableAttributeName, cancellationToken)
+			|| attribute.Name.HasAttributeName(MagicEnumSourceGenerator.MemberAttributeName, cancellationToken);
 
 		return hasAttributeName;
 	}
@@ -28,11 +28,11 @@ internal class EnumDefinitionSyntaxReceiver
 
 		if (type.IsStatic || !type.IsRecord || !typeDeclaration.Modifiers.Any(m =>  m.IsKind(SyntaxKind.PartialKeyword))) return null;
 
-		if (!type.IsOrInheritsClass(type => type.IsType(SourceGenerator.CoreName, SourceGenerator.CoreNamespace, isGenericType: true), out var baseClass)) return null;
+		if (!type.IsOrInheritsClass(type => type.IsType(MagicEnumSourceGenerator.CoreName, MagicEnumSourceGenerator.CoreNamespace, isGenericType: true), out var baseClass)) return null;
 		if (!baseClass.IsGeneric(typeParameterCount: 2, out var genericTypeArgument)) return null;
 
-		var hasDiscoverableAttribute = type.HasAttribute(SourceGenerator.DiscoverableAttributeName, SourceGenerator.AttributeNamespace, out var discoverableAttribute);
-		var hasAttributeMembers = type.HasAttributes(SourceGenerator.MemberAttributeName, SourceGenerator.AttributeNamespace, out var attributeMemberDataList);
+		var hasDiscoverableAttribute = type.HasAttribute(MagicEnumSourceGenerator.DiscoverableAttributeName, MagicEnumSourceGenerator.AttributeNamespace, out var discoverableAttribute);
+		var hasAttributeMembers = type.HasAttributes(MagicEnumSourceGenerator.MemberAttributeName, MagicEnumSourceGenerator.AttributeNamespace, out var attributeMemberDataList);
 
 		if (!hasDiscoverableAttribute && !hasAttributeMembers) return null;
 

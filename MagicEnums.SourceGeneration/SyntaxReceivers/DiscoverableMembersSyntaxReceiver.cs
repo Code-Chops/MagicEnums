@@ -14,7 +14,7 @@ internal static class DiscoverableMembersSyntaxReceiver
 			if (argumentCount > 2) return false;
 
 			if (invocation.Expression is not MemberAccessExpressionSyntax memberAccess) return false;
-			if (memberAccess.Name.Identifier.ValueText != SourceGenerator.GenerateMethodName) return false;
+			if (memberAccess.Name.Identifier.ValueText != MagicEnumSourceGenerator.GenerateMethodName) return false;
 			if (memberAccess.Expression is not MemberAccessExpressionSyntax childMemberAccess) return false;
 			if (childMemberAccess.Expression is not IdentifierNameSyntax) return false;
 
@@ -41,7 +41,7 @@ internal static class DiscoverableMembersSyntaxReceiver
 		{
 			var argumentCount = invocation.ArgumentList.Arguments.Count;
 			if (invocation.Expression is not MemberAccessExpressionSyntax memberAccess) return null;
-			if (memberAccess.Name.Identifier.ValueText != SourceGenerator.GenerateMethodName) return null;
+			if (memberAccess.Name.Identifier.ValueText != MagicEnumSourceGenerator.GenerateMethodName) return null;
 			if (memberAccess.Expression is not MemberAccessExpressionSyntax childMemberAccess) return null;
 			if (childMemberAccess.Expression is not IdentifierNameSyntax identifier) return null;
 

@@ -69,7 +69,7 @@ using CodeChops.MagicEnums;
 /// </summary>
 {definition.AccessModifier}static class {definition.Name}Extensions
 {{
-	public static {definition.Name} {SourceGenerator.GenerateMethodName}(this {definition.Name} member, {definition.ValueTypeName}? value = null, string? comment = null) => member;
+	public static {definition.Name} {MagicEnumSourceGenerator.GenerateMethodName}(this {definition.Name} member, {definition.ValueTypeName}? value = null, string? comment = null) => member;
 }}
 
 #nullable restore");
