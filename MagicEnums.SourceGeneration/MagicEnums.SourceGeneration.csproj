@@ -31,15 +31,19 @@
 	<ItemGroup Label="PackageReferences">
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.2.0">
 			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; analyzers; buildtransitive; compile;</IncludeAssets>
+			<IncludeAssets>build; native; contentfiles; analyzers; buildtransitive; compile;</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3">
 			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; analyzers; buildtransitive; compile;</IncludeAssets>
+			<IncludeAssets>build; native; contentfiles; analyzers; buildtransitive; compile;</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="6.0.0">
 			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; analyzers; buildtransitive; compile;</IncludeAssets>
+			<IncludeAssets>build; native; contentfiles; analyzers; buildtransitive; compile;</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="System.Collections.Immutable" Version="5.0.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>build; native; contentfiles; analyzers; buildtransitive; compile;</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="CodeChops.SourceGeneration.Utilities" Version="0.3.15" PrivateAssets="all" GeneratePathProperty="true" />
 	</ItemGroup>

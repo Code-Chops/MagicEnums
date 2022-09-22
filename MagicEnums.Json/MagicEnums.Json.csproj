@@ -11,8 +11,8 @@
     </PropertyGroup>
 
     <PropertyGroup Label="Package">
-        <Version>2.10.1</Version>
-        <PackageReleaseNotes>Added JSON conversion package and tests 2.</PackageReleaseNotes>
+        <Version>2.10.2</Version>
+        <PackageReleaseNotes>Added JSON conversion package and tests 3.</PackageReleaseNotes>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Title>CodeChops.MagicEnums.Json</Title>
         <Description>Json (de)serialization for MagicEnums.
@@ -62,7 +62,7 @@
     </ItemGroup>
 
     <ItemGroup Label="PackageReferences">
-      <PackageReference Include="CodeChops.MagicEnums" Version="2.10.1" />
+      <PackageReference Include="CodeChops.MagicEnums" Version="2.10.8" />
       <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="6.0.1" />
     </ItemGroup>
 
