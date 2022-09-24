@@ -1,12 +1,8 @@
 ﻿namespace CodeChops.MagicEnums.Core;
 
-public interface IMember<out TValue>
-	where TValue : IEquatable<TValue>, IComparable<TValue>
+public interface IMember<out TValue> : IMember, IId<TValue>
+	where TValue : IEquatable<TValue>, IComparable<TValue>, IConvertible
 {
-	/// <summary>
-	/// The value of the enum member.
-	/// </summary>
-	TValue Value { get; }
 }
 
 public interface IMember

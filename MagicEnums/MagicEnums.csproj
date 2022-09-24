@@ -11,8 +11,8 @@
 	</PropertyGroup>
 	
 	<PropertyGroup Label="Package">
-		<Version>2.10.8</Version>
-		<PackageReleaseNotes>Changed source generator name to MagicEnumSourceGenerator.</PackageReleaseNotes>
+		<Version>2.10.9</Version>
+		<PackageReleaseNotes>Updated Identities package reference.</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>CodeChops.MagicEnums</Title>
 		<Description>
@@ -87,7 +87,7 @@ Flexible and extendable enums for C#:
 	</ItemGroup>
 
 	<ItemGroup Label="PackageReferences">
-		<PackageReference Include="CodeChops.DomainDrivenDesign.DomainModeling" Version="0.25.15" />
+		<PackageReference Include="CodeChops.DomainDrivenDesign.DomainModeling" Version="0.28.2" />
 		<PackageReference Include="CodeChops.GenericMath" Version="2.10.4" />
 	</ItemGroup>
 	

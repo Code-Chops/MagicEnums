@@ -10,7 +10,7 @@ public record GeneralEnumTests : MagicStringEnum<GeneralEnumTests>
 		static void CreateMembersWithSameName()
 		{
 			CreateMember("1", name: nameof(Enum));
-			CreateMember(null!, name: nameof(Enum));
+			CreateMember("2", name: nameof(Enum));
 		}
 	}
 	
@@ -18,7 +18,7 @@ public record GeneralEnumTests : MagicStringEnum<GeneralEnumTests>
 	public void Enum_WithSameNames_ShouldNotThrow_UsingGetOrCreateMember()
 	{
 		GetOrCreateMember(name: nameof(Enum), "1");
-		GetOrCreateMember(name: nameof(Enum), null!);
+		GetOrCreateMember(name: nameof(Enum), "2");
 	}
 
 	[Fact]
@@ -27,6 +27,6 @@ public record GeneralEnumTests : MagicStringEnum<GeneralEnumTests>
 		// ReSharper disable once ExplicitCallerInfoArgument
 		CreateMember("1", name: "Name1");
 		// ReSharper disable once ExplicitCallerInfoArgument
-		CreateMember(null!, name: "Name2");
+		CreateMember("1", name: "Name2");
 	}
 }
