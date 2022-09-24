@@ -1,7 +1,7 @@
 ﻿namespace CodeChops.MagicEnums.Core;
 
 public interface IMember<out TValue> : IMember, IId<TValue>
-	where TValue : IEquatable<TValue>, IComparable<TValue>, IConvertible
+	where TValue : IEquatable<TValue>, IComparable<TValue>
 {
 }
 

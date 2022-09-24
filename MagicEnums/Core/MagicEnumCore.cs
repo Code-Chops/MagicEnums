@@ -12,7 +12,7 @@ namespace CodeChops.MagicEnums.Core;
 /// <typeparam name="TValue">The type of the enum member value.</typeparam>
 public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicEnumCore<TSelf, TValue> 
 	where TSelf : MagicEnumCore<TSelf, TValue>
-	where TValue : IEquatable<TValue>, IComparable<TValue>, IConvertible
+	where TValue : IEquatable<TValue>, IComparable<TValue>
 {
 	public sealed override string ToString() => this.ToDisplayString(new { this.Name, this.Value });
 

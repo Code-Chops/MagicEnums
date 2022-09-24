@@ -11,8 +11,8 @@
 	</PropertyGroup>
 	
 	<PropertyGroup Label="Package">
-		<Version>2.10.10</Version>
-		<PackageReleaseNotes>Fixed source generation.</PackageReleaseNotes>
+		<Version>2.10.11</Version>
+		<PackageReleaseNotes>Removed IConvertible constraint on ID.</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>CodeChops.MagicEnums</Title>
 		<Description>
@@ -87,7 +87,7 @@ Flexible and extendable enums for C#:
 	</ItemGroup>
 
 	<ItemGroup Label="PackageReferences">
-		<PackageReference Include="CodeChops.DomainDrivenDesign.DomainModeling" Version="0.28.2" />
+		<PackageReference Include="CodeChops.DomainDrivenDesign.DomainModeling" Version="0.28.3" />
 		<PackageReference Include="CodeChops.GenericMath" Version="2.10.4" />
 	</ItemGroup>
 	
