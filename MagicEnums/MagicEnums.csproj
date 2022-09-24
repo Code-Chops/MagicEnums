@@ -11,8 +11,8 @@
 	</PropertyGroup>
 	
 	<PropertyGroup Label="Package">
-		<Version>2.10.9</Version>
-		<PackageReleaseNotes>Updated Identities package reference.</PackageReleaseNotes>
+		<Version>2.10.10</Version>
+		<PackageReleaseNotes>Fixed source generation.</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>CodeChops.MagicEnums</Title>
 		<Description>
