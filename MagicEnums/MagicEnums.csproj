@@ -11,8 +11,8 @@
 	</PropertyGroup>
 	
 	<PropertyGroup Label="Package">
-		<Version>2.10.11</Version>
-		<PackageReleaseNotes>Updated DomainModeling package reference.</PackageReleaseNotes>
+		<Version>2.10.12</Version>
+		<PackageReleaseNotes>Updated DomainModeling package reference 2.</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>CodeChops.MagicEnums</Title>
 		<Description>

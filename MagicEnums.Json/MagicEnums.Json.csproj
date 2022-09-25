@@ -11,12 +11,11 @@
     </PropertyGroup>
 
     <PropertyGroup Label="Package">
-        <Version>2.10.2</Version>
-        <PackageReleaseNotes>Added JSON conversion package and tests 3.</PackageReleaseNotes>
+        <Version>2.10.12</Version>
+        <PackageReleaseNotes>Updated MagicEnums package reference.</PackageReleaseNotes>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Title>CodeChops.MagicEnums.Json</Title>
-        <Description>Json (de)serialization for MagicEnums.
-        </Description>
+        <Description>Json (de)serialization for MagicEnums.</Description>
         <PackageId>CodeChops.MagicEnums.Json</PackageId>
         <PackageProjectUrl>https://github.com/code-chops/MagicEnums</PackageProjectUrl>
         <PackageTags>CodeChops;CodeChops.MagicEnums.Json;MagicEnums;Json;Serialization;Deserialization</PackageTags>
@@ -62,7 +61,7 @@
     </ItemGroup>
 
     <ItemGroup Label="PackageReferences">
-      <PackageReference Include="CodeChops.MagicEnums" Version="2.10.11" />
+      <PackageReference Include="CodeChops.MagicEnums" Version="2.10.12" />
       <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="6.0.1" />
     </ItemGroup>
 
