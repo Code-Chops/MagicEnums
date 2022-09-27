@@ -11,7 +11,7 @@
     </PropertyGroup>
 
     <PropertyGroup Label="Package">
-        <Version>2.10.13</Version>
+        <Version>2.10.14</Version>
         <PackageReleaseNotes>Made classes internal or sealed and updated packages. Added serialization registration extension.</PackageReleaseNotes>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Title>CodeChops.MagicEnums.Json</Title>
@@ -61,8 +61,8 @@
     </ItemGroup>
 
     <ItemGroup Label="PackageReferences">
-      <PackageReference Include="CodeChops.DomainDrivenDesign.DomainModeling" Version="0.29.1" />
-      <PackageReference Include="CodeChops.MagicEnums" Version="2.10.13" />
+      <PackageReference Include="CodeChops.DomainDrivenDesign.DomainModeling" Version="0.29.2" />
+      <PackageReference Include="CodeChops.MagicEnums" Version="2.10.14" />
       <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="6.0.1" />
     </ItemGroup>
 

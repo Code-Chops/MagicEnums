@@ -11,8 +11,8 @@
 	</PropertyGroup>
 	
 	<PropertyGroup Label="Package">
-		<Version>2.10.13</Version>
-		<PackageReleaseNotes>Made classes internal or sealed and updated packages. Added serialization registration extension.</PackageReleaseNotes>
+		<Version>2.10.14</Version>
+		<PackageReleaseNotes>Updated packages.</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>CodeChops.MagicEnums</Title>
 		<Description>
@@ -87,7 +87,7 @@ Flexible and extendable enums for C#:
 	</ItemGroup>
 
 	<ItemGroup Label="PackageReferences">
-		<PackageReference Include="CodeChops.DomainDrivenDesign.DomainModeling" Version="0.29.1" />
+		<PackageReference Include="CodeChops.DomainDrivenDesign.DomainModeling" Version="0.29.2" />
 		<PackageReference Include="CodeChops.GenericMath" Version="2.10.6" />
 	</ItemGroup>
 	
