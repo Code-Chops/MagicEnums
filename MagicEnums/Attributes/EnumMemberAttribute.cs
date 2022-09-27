@@ -4,7 +4,7 @@
 /// Generates a magic enum member.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = true)]
-public class EnumMember : Attribute
+public sealed class EnumMember : Attribute
 {
 	public string Name { get; }
 	public object? Value { get; }

@@ -6,7 +6,7 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace CodeChops.MagicEnums.Json;
 
-public class MagicEnumJsonConverter<TMagicEnum> : JsonConverter<TMagicEnum>
+internal sealed class MagicEnumJsonConverter<TMagicEnum> : JsonConverter<TMagicEnum>
 	where TMagicEnum : IMagicEnum
 {
 	public override bool CanConvert(Type typeToConvert) 

@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace CodeChops.MagicEnums.Json;
 
-public class MagicEnumJsonConverterFactory : JsonConverterFactory
+public sealed class MagicEnumJsonConverterFactory : JsonConverterFactory
 {
 	public override bool CanConvert(Type typeToConvert) 
 		=> typeToConvert.IsAssignableTo(typeof(IMagicEnum));
