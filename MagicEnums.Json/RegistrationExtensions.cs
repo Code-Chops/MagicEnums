@@ -1,5 +1,4 @@
-﻿using CodeChops.DomainDrivenDesign.DomainModeling.Serialization;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace CodeChops.MagicEnums.Json;
 

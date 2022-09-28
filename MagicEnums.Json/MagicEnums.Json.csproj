@@ -11,8 +11,8 @@
     </PropertyGroup>
 
     <PropertyGroup Label="Package">
-        <Version>2.10.14</Version>
-        <PackageReleaseNotes>Made classes internal or sealed and updated packages. Added serialization registration extension.</PackageReleaseNotes>
+        <Version>2.11.0</Version>
+        <PackageReleaseNotes>Updated MagicEnums package reference.</PackageReleaseNotes>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Title>CodeChops.MagicEnums.Json</Title>
         <Description>Json (de)serialization for MagicEnums.</Description>

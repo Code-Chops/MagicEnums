@@ -43,7 +43,7 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	#endregion
 
 	/// <summary>
-	/// The default value of the enum.
+	/// Get the default value of the enum.
 	/// </summary>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static TValue? GetDefaultValue() => default;
@@ -53,7 +53,7 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	/// </summary>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static int GetMemberCount() => MemberByNames.Keys.Count;
-
+	
 	/// <summary>
 	/// Get the unique member value count.
 	/// </summary>
@@ -71,7 +71,7 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	/// Get an enumerable over the members.
 	/// </summary>
 	public static IEnumerable<TSelf> GetMembers() => MemberByNames.Values;
-	
+
 	/// <summary>
 	/// Get an enumerable over the values.
 	/// </summary>
@@ -293,7 +293,7 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	/// <summary>
 	/// Tries to return the single member with the provided value.
 	/// <para><b>Throws when multiple members have this value.</b></para>
-	/// Use <see cref="TryGetMembers"/> to try to retrieve multiple members.
+	/// Use <see cref="TryGetMembers(TValue, out IReadOnlyCollection{TSelf}?)"/> to try to retrieve multiple members.
 	/// </summary>
 	/// <param name="memberValue">The value of the member to retrieve.</param>
 	/// <param name="member">The found member.</param>
@@ -317,7 +317,7 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 		member = membersList.First();
 		return true;
 	}
-
+	
 	/// <summary>
 	/// Returns the single member with the provided value. 
 	/// <para><b>
@@ -336,7 +336,7 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 		=> TryGetSingleMember(memberValue, out var memberName)
 			? memberName
 			: throw new KeyNotFoundException($"Unable to find a member with value '{memberValue}' in MagicEnum {typeof(TSelf).Name}.");
-
+	
 	/// <summary>
 	/// Tries to return the member(s) with the provided value. 
 	/// Use <see cref="TryGetSingleMember(TValue, out TSelf)"/> to try to retrieve a single member.
@@ -374,4 +374,72 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 		=> TryGetMembers(memberValue, out var memberName)
 			? memberName
 			: throw new KeyNotFoundException($"Unable to find a member with value '{memberValue}' in MagicEnum {typeof(TSelf).Name}.");
+
+	
+	#region ForwardInstancesMethodsToStatic 
+
+	/// <inheritdoc cref="GetDefaultValue"/>
+	TValue? IMagicEnum<TValue>.GetDefaultValue() => GetDefaultValue();
+	
+	/// <inheritdoc cref="GetMemberCount"/>
+	int IMagicEnum<TValue>.GetMemberCount() => GetMemberCount();
+	
+	/// <inheritdoc cref="GetUniqueValueCount"/>
+	int IMagicEnum<TValue>.GetUniqueValueCount() => GetUniqueValueCount();
+	
+	/// <inheritdoc cref="GetMembers()"/>
+	IEnumerable<IMagicEnum<TValue>> IMagicEnum<TValue>.GetMembers() => GetMembers();
+	
+	/// <inheritdoc cref="GetValues()"/>
+	IEnumerable<TValue> IMagicEnum<TValue>.GetValues() => GetValues();
+	
+	/// <inheritdoc cref="TryGetSingleMember(string, out TSelf)"/>
+	public bool TryGetSingleMember(string memberName, [NotNullWhen(true)] out IMagicEnum<TValue>? member)
+	{
+		if (!TryGetSingleMember(memberName, out TSelf? foundMember))
+		{
+			member = null;
+			return false;
+		}
+
+		member = foundMember;
+		return true;
+	}
+	
+	/// <inheritdoc cref="GetSingleMember(string)"/>
+	IMagicEnum<TValue> IMagicEnum<TValue>.GetSingleMember(string memberName) => GetSingleMember(memberName);
+	
+	/// <inheritdoc cref="TryGetSingleMember(TValue, out TSelf?)"/>
+	public bool TryGetSingleMember(TValue memberValue, [NotNullWhen(true)] out IMagicEnum<TValue>? member)
+	{
+		if (!TryGetSingleMember(memberValue, out TSelf? foundMember))
+		{
+			member = null;
+			return false;
+		}
+
+		member = foundMember;
+		return true;
+	}
+	
+	/// <inheritdoc cref="GetSingleMember(TValue)"/>
+	IMagicEnum<TValue> IMagicEnum<TValue>.GetSingleMember(TValue memberValue) => GetSingleMember(memberValue);
+	
+	/// <inheritdoc cref="TryGetMembers(TValue, out IReadOnlyCollection{TSelf}?)"/>
+	public bool TryGetMembers(TValue memberValue, [NotNullWhen(true)] out IReadOnlyCollection<IMagicEnum<TValue>>? members)
+	{
+		if (!TryGetMembers(memberValue, out IReadOnlyCollection<TSelf>? foundMembers))
+		{
+			members = null;
+			return false;
+		}
+
+		members = foundMembers;
+		return true;
+	}
+
+	/// <inheritdoc cref="GetMembers(TValue)"/>
+	IEnumerable<IMagicEnum<TValue>> IMagicEnum<TValue>.GetMembers(TValue memberValue) => GetMembers(memberValue);
+
+	#endregion
 }

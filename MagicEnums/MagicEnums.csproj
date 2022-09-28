@@ -11,8 +11,8 @@
 	</PropertyGroup>
 	
 	<PropertyGroup Label="Package">
-		<Version>2.10.14</Version>
-		<PackageReleaseNotes>Updated packages.</PackageReleaseNotes>
+		<Version>2.11.0</Version>
+		<PackageReleaseNotes>Added instance methods to static methods forwarding.</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>CodeChops.MagicEnums</Title>
 		<Description>
@@ -87,7 +87,8 @@ Flexible and extendable enums for C#:
 	</ItemGroup>
 
 	<ItemGroup Label="PackageReferences">
-		<PackageReference Include="CodeChops.DomainDrivenDesign.DomainModeling" Version="0.29.2" />
+		<PackageReference Include="BeaKona.AutoInterfaceGenerator" Version="1.0.29" PrivateAssets="all" />
+		<PackageReference Include="CodeChops.DomainDrivenDesign.DomainModeling" Version="0.29.3" />
 		<PackageReference Include="CodeChops.GenericMath" Version="2.10.6" />
 	</ItemGroup>
 	
