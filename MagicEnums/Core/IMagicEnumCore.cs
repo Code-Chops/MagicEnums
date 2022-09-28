@@ -3,7 +3,7 @@
 namespace CodeChops.MagicEnums.Core;
 
 public interface IMagicEnumCore<TSelf, TValue> : IMagicEnum<TValue>, IEnumerable<TSelf>
-	where TSelf : MagicEnumCore<TSelf, TValue>
+	where TSelf : IMagicEnumCore<TSelf, TValue>
 	where TValue : IEquatable<TValue>, IComparable<TValue>
 {
 	public new static abstract TValue? GetDefaultValue();

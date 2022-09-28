@@ -11,8 +11,8 @@
 	</PropertyGroup>
 	
 	<PropertyGroup Label="Package">
-		<Version>2.11.0</Version>
-		<PackageReleaseNotes>Added instance methods to static methods forwarding.</PackageReleaseNotes>
+		<Version>2.11.1</Version>
+		<PackageReleaseNotes>Changed IMagicEnumCore generic type constraint.</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>CodeChops.MagicEnums</Title>
 		<Description>
