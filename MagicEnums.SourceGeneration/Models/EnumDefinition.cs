@@ -1,6 +1,6 @@
 ﻿namespace CodeChops.MagicEnums.SourceGeneration.Models;
 
-public record EnumDefinition : IEnumEntity
+internal sealed record EnumDefinition
 {
 	public string Name { get; }
 	public string? Namespace { get; }

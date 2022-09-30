@@ -6,6 +6,13 @@ namespace CodeChops.MagicEnums.Json;
 
 public sealed class MagicEnumJsonConverterFactory : JsonConverterFactory
 {
+	private List<IMagicEnum> MagicEnums { get; }
+	
+	public MagicEnumJsonConverterFactory(IEnumerable<IMagicEnum>? magicEnums = null)
+	{
+		this.MagicEnums = magicEnums?.ToList() ?? new List<IMagicEnum>();
+	}
+
 	public override bool CanConvert(Type typeToConvert) 
 		=> typeToConvert.IsAssignableTo(typeof(IMagicEnum));
 
@@ -19,12 +26,5 @@ public sealed class MagicEnumJsonConverterFactory : JsonConverterFactory
 			culture: null)!;
 
 		return converter;
-	}
-	
-	private List<IMagicEnum> MagicEnums { get; }
-
-	public MagicEnumJsonConverterFactory(IEnumerable<IMagicEnum>? magicEnums = null)
-	{
-		this.MagicEnums = magicEnums?.ToList() ?? new List<IMagicEnum>();
 	}
 }

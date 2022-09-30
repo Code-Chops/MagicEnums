@@ -84,7 +84,9 @@ public abstract record MagicFlagsEnum<TSelf, TValue> : MagicEnumCore<TSelf, TVal
 	protected static TMember CreateMember<TMember>(Func<TMember>? memberCreator = null, TValue? value = null, [CallerMemberName] string name = null!)
 		where TMember : TSelf 
 		=> CreateMember(
-			valueCreator: value is null ? GetBitShiftedLastInsertedNumber : () => value.Value, 
+			valueCreator: value is null 
+				? GetBitShiftedLastInsertedNumber 
+				: () => value.Value, 
 			memberCreator: memberCreator,
 			name: name);
 

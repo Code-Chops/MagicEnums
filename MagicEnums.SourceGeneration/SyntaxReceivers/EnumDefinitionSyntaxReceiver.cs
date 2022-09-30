@@ -1,6 +1,6 @@
 ﻿namespace CodeChops.MagicEnums.SourceGeneration.SyntaxReceivers;
 
-internal class EnumDefinitionSyntaxReceiver
+internal sealed class EnumDefinitionSyntaxReceiver
 {
 	/// <summary>
 	/// The predicate for every node that is probably an enum definition which has discoverable members or attributes.

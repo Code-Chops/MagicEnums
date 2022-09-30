@@ -1,8 +1,18 @@
 ﻿// ReSharper disable MemberHidesStaticFromOuterClass
+
+using Xunit.Abstractions;
+
 namespace CodeChops.MagicEnums.UnitTests.CreationExamples;
 
 public class StronglyTypedCreationTests
 {
+	private ITestOutputHelper TestOutputHelper { get; }
+
+	public StronglyTypedCreationTests(ITestOutputHelper testOutputHelper)
+	{
+		this.TestOutputHelper = testOutputHelper;
+	}
+
 	public record Vehicle(int WheelCount) : MagicEnum<Vehicle>
 	{
 		public static readonly Vehicle			Default		= CreateMember();
@@ -30,12 +40,13 @@ public class StronglyTypedCreationTests
 
 		var vehicle = (Vehicle)Vehicle.Bicycle;
 
-		// ReSharper disable once UnusedVariable
 		var speedingFineInEur = vehicle switch
 		{
 			Vehicle.Type.MotorCycle => 60,
 			Vehicle.Type.Car		=> 100,
 			_						=> 0,
 		};
+
+		this.TestOutputHelper.WriteLine(speedingFineInEur.ToString());
 	}
 }

@@ -61,8 +61,8 @@
     </ItemGroup>
 
     <ItemGroup Label="PackageReferences">
-      <PackageReference Include="CodeChops.DomainDrivenDesign.DomainModeling" Version="0.29.2" />
-      <PackageReference Include="CodeChops.MagicEnums" Version="2.10.14" />
+      <PackageReference Include="CodeChops.DomainDrivenDesign.DomainModeling" Version="0.29.4" />
+      <PackageReference Include="CodeChops.MagicEnums" Version="3.0.0" />
       <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="6.0.1" />
     </ItemGroup>
 

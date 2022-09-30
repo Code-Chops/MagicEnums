@@ -11,8 +11,8 @@
 	</PropertyGroup>
 	
 	<PropertyGroup Label="Package">
-		<Version>2.11.2</Version>
-		<PackageReleaseNotes>Updated domainmodeling package.</PackageReleaseNotes>
+		<Version>3.0.0</Version>
+		<PackageReleaseNotes>Small enhancements. Removed non-static forwarding interface.</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>CodeChops.MagicEnums</Title>
 		<Description>
@@ -85,17 +85,16 @@ Flexible and extendable enums for C#:
 		<InternalsVisibleTo Include="$(AssemblyName).UnitTests" />
 		<InternalsVisibleTo Include="$(AssemblyName).IntegrationTests" />
 	</ItemGroup>
-
-	<ItemGroup Label="PackageReferences">
-		<PackageReference Include="BeaKona.AutoInterfaceGenerator" Version="1.0.29" PrivateAssets="all" />
-		<PackageReference Include="CodeChops.DomainDrivenDesign.DomainModeling" Version="0.29.4" />
-		<PackageReference Include="CodeChops.GenericMath" Version="2.10.6" />
-	</ItemGroup>
 	
 	<ItemGroup Label="ProjectReferences">
 		<ProjectReference Include="..\MagicEnums.SourceGeneration\MagicEnums.SourceGeneration.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 		<!-- Package the generator in the analyzer directory of the nuget package -->
 		<None Include="..\MagicEnums.SourceGeneration/bin/$(Configuration)\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers\dotnet\cs" Visible="false" />
+	</ItemGroup>
+
+	<ItemGroup Label="PackageReferences">
+		<PackageReference Include="CodeChops.DomainDrivenDesign.DomainModeling" Version="0.29.4" />
+		<PackageReference Include="CodeChops.GenericMath" Version="2.10.6" />
 	</ItemGroup>
 	
 </Project>

@@ -1,6 +1,6 @@
 ﻿namespace CodeChops.MagicEnums.SourceGeneration.Models;
 
-public enum DiscoverabilityMode
+internal enum DiscoverabilityMode
 {
 	None,
 	Explicit,

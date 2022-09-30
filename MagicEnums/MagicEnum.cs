@@ -82,7 +82,9 @@ public abstract record MagicEnum<TSelf, TValue> : MagicEnumCore<TSelf, TValue>
 	protected static TMember CreateMember<TMember>(Func<TMember>? memberCreator = null, TValue? value = null, [CallerMemberName] string name = null!)
 		where TMember : TSelf 
 		=> CreateMember(
-			valueCreator: value is null ? GetIncrementedLastInsertedNumber : () => value.Value,
+			valueCreator: value is null 
+				? GetIncrementedLastInsertedNumber 
+				: () => value.Value,
 			memberCreator: memberCreator,
 			name: name);
 

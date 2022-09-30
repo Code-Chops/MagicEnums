@@ -1,6 +1,6 @@
 ﻿namespace CodeChops.MagicEnums.SourceGeneration.SourceBuilders;
 
-public static class EnumSourceBuilder
+internal static class EnumSourceBuilder
 {
 	/// <summary>
 	/// Creates a partial record of the enum definition which includes the discovered enum members. It also generates an extension class for the explicit enum definitions.

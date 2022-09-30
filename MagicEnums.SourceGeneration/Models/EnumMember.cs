@@ -1,6 +1,6 @@
 ﻿namespace CodeChops.MagicEnums.SourceGeneration.Models;
 
-public record EnumMember : IEnumEntity
+internal record EnumMember
 {
 	public string Name { get; }
 	public object? Value { get; }
@@ -16,9 +16,7 @@ public record EnumMember : IEnumEntity
 	public EnumMember(AttributeData data)
 	{
 		if (!data.TryGetArguments(out var argumentsByName))
-		{
 			throw new Exception($"Could not retrieve attribute parameters of attribute {data.AttributeClass?.Name}.");
-		}
 
 		this.Name = (string)argumentsByName![nameof(this.Name)].Value!;
 

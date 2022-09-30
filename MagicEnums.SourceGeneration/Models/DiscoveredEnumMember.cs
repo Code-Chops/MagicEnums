@@ -1,6 +1,6 @@
 ﻿namespace CodeChops.MagicEnums.SourceGeneration.Models;
 
-public record DiscoveredEnumMember : EnumMember
+internal sealed record DiscoveredEnumMember : EnumMember
 {
 	public string EnumName { get; }
 	public DiscoverabilityMode DiscoverabilityMode { get; }
