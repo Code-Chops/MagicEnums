@@ -11,7 +11,7 @@
     </PropertyGroup>
 
     <PropertyGroup Label="Package">
-        <Version>2.11.2</Version>
+        <Version>3.0.1</Version>
         <PackageReleaseNotes>Updated MagicEnums package reference.</PackageReleaseNotes>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Title>CodeChops.MagicEnums.Json</Title>
@@ -61,8 +61,8 @@
     </ItemGroup>
 
     <ItemGroup Label="PackageReferences">
-      <PackageReference Include="CodeChops.DomainDrivenDesign.DomainModeling" Version="0.29.4" />
-      <PackageReference Include="CodeChops.MagicEnums" Version="3.0.0" />
+      <PackageReference Include="CodeChops.DomainDrivenDesign.DomainModeling" Version="1.0.0" />
+      <PackageReference Include="CodeChops.MagicEnums" Version="3.0.1" />
       <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="6.0.1" />
     </ItemGroup>
 
