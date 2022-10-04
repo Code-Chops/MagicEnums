@@ -11,8 +11,8 @@
 	</PropertyGroup>
 	
 	<PropertyGroup Label="Package">
-		<Version>3.0.1</Version>
-		<PackageReleaseNotes>Updated package references.</PackageReleaseNotes>
+		<Version>3.0.2</Version>
+		<PackageReleaseNotes>Re-added ForwardInstancesMethodsToStatic.</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>CodeChops.MagicEnums</Title>
 		<Description>
