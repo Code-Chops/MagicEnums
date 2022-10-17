@@ -15,7 +15,7 @@ public class MagicEnumsConversionTests
 	
 	public MagicEnumsConversionTests()
 	{
-		var magicEnums = new IMagicEnum[] { new MagicEnumMock1(), new MagicEnumMock2() }.Concat(StrictDirectionEnum<int>.GetValues().Select(value => value.UninitializedInstance));
+		var magicEnums = new IMagicEnum[] { new MagicEnumMock1(), new MagicEnumMock2() }.Concat(StrictDirectionEnum<int>.GetDiscoveredObjects());
 		
 		this.JsonSerializerOptions = new()
 		{
