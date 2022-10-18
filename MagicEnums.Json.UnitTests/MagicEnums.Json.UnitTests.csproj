@@ -20,8 +20,8 @@
 	</ItemGroup>
 
 	<ItemGroup Label="PackageReferences">
-		<PackageReference Include="CodeChops.DomainDrivenDesign.Contracts" Version="0.12.18" />
-		<PackageReference Include="CodeChops.Geometry" Version="3.1.0" />
+		<PackageReference Include="CodeChops.DomainDrivenDesign.Contracts" Version="0.12.21" />
+		<PackageReference Include="CodeChops.Geometry" Version="3.2.5" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.2" />
 		<PackageReference Include="xunit" Version="2.4.2" />
 		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
