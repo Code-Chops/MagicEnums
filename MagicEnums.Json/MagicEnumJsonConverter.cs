@@ -18,7 +18,7 @@ internal sealed class MagicEnumJsonConverter<TMagicEnum> : JsonConverter<TMagicE
 
 	public MagicEnumJsonConverter(IEnumerable<IMagicEnum> magicEnums)
 	{
-		this.EnumsByName = magicEnums.ToImmutableDictionary(GetEnumName);	
+		this.EnumsByName = magicEnums.ToImmutableDictionary(e => e.GetType().GetSimpleName());	
 	}
 
 	public override TMagicEnum? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
@@ -27,7 +27,7 @@ internal sealed class MagicEnumJsonConverter<TMagicEnum> : JsonConverter<TMagicE
 		if (reader.TokenType == JsonTokenType.Null) return default;
 
 		if (reader.TokenType != JsonTokenType.String) throw new JsonException($"Unexpected token found in JSON: {reader.TokenType}. Expected: {JsonTokenType.String}.");
-		
+
 		var enumIdentifier = reader.GetString() ?? throw new JsonException($"Unable to retrieve enum identifier when trying to deserialize {typeToConvert.Name}.");
 		var delimiterIndex = enumIdentifier.IndexOf(EnumDelimiter);
 		if (delimiterIndex == -1) throw new JsonException($"No MagicEnum identifier delimiter ('{EnumDelimiter}') found in {enumIdentifier}.");
@@ -50,36 +50,24 @@ internal sealed class MagicEnumJsonConverter<TMagicEnum> : JsonConverter<TMagicE
 				if (getSingleMemberMethod is null)
 					throw new JsonException($"Error while deserializing JSON for {typeToConvert.Name}. Unable to find the concrete MagicEnum. Did you inject the wrong enum {enumName}?");
 			}
-			
+
 			GetSingleMemberMethodCache.Set(enumName, getSingleMemberMethod);
 		}
-		
+
 		var magicEnum = (TMagicEnum)getSingleMemberMethod!.Invoke(obj: null, parameters: new object?[] { enumMemberName })!;
 		return magicEnum;
 
 
 		static MethodInfo? RetrieveGetSingleMemberMethod(Type type)
 		{
-			var method = type
-				.GetMethods(bindingAttr: BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)
-				.SingleOrDefault(method => method.Name == nameof(MagicEnumDummy.GetSingleMember) && method.GetParameters().Any(parameter => parameter.ParameterType == typeof(string)));
+			var method = type.GetMethods(bindingAttr: BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy).SingleOrDefault(method => method.Name == nameof(MagicEnumDummy.GetSingleMember) && method.GetParameters().Any(parameter => parameter.ParameterType == typeof(string)));
 
 			return method;
 		}
 	}
-	
-	private static string GetEnumName(IMagicEnum magicEnum)
-	{
-		var name = magicEnum.GetType().Name;
-		var indexOfLessThan = name.IndexOf('`');
-		
-		return indexOfLessThan == -1
-			? name
-			: name[..indexOfLessThan];
-	}
 
 	public override void Write(Utf8JsonWriter writer, TMagicEnum magicEnum, JsonSerializerOptions options) 
-		=> writer.WriteStringValue($"{GetEnumName(magicEnum)}{EnumDelimiter}{magicEnum.Name}");
+		=> writer.WriteStringValue($"{magicEnum.GetType().GetSimpleName()}{EnumDelimiter}{magicEnum.Name}");
 
 	// ReSharper disable once ClassNeverInstantiated.Local
 	private record MagicEnumDummy : MagicEnum<MagicEnumDummy>;

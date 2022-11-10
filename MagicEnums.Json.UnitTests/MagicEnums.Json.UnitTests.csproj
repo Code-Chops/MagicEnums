@@ -3,8 +3,8 @@
 	<PropertyGroup Label="Main">
 		<AssemblyName>CodeChops.MagicEnums.Json.UnitTests</AssemblyName>
 		<RootNamespace>CodeChops.MagicEnums.Json.UnitTests</RootNamespace>
-		<TargetFramework>net6.0</TargetFramework>
-		<LangVersion>10</LangVersion>
+		<TargetFramework>net7.0</TargetFramework>
+		<LangVersion>11</LangVersion>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<EnablePreviewFeatures>true</EnablePreviewFeatures>
@@ -20,9 +20,9 @@
 	</ItemGroup>
 
 	<ItemGroup Label="PackageReferences">
-		<PackageReference Include="CodeChops.DomainDrivenDesign.Contracts" Version="0.12.21" />
-		<PackageReference Include="CodeChops.Geometry" Version="3.2.5" />
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.2" />
+		<PackageReference Include="CodeChops.DomainDrivenDesign.Contracts" Version="0.13.2" />
+		<PackageReference Include="CodeChops.Geometry" Version="3.2.7" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.0" />
 		<PackageReference Include="xunit" Version="2.4.2" />
 		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
 			<PrivateAssets>all</PrivateAssets>

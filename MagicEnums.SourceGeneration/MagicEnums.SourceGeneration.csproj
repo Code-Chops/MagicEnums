@@ -4,7 +4,7 @@
 		<AssemblyName>CodeChops.MagicEnums.SourceGeneration</AssemblyName>
 		<RootNamespace>CodeChops.MagicEnums.SourceGeneration</RootNamespace>
 		<TargetFramework>netstandard2.0</TargetFramework>
-		<LangVersion>10</LangVersion>
+		<LangVersion>11</LangVersion>
 		<AnalysisLevel>latest</AnalysisLevel>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
@@ -13,7 +13,7 @@
 		<IncludeBuildOutput>false</IncludeBuildOutput>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 	</PropertyGroup>
-	
+
 	<ItemGroup Label="BuildProperties">
 		<CompilerVisibleProperty Include="RootNamespace" />
 	</ItemGroup>
@@ -47,5 +47,5 @@
 		</PackageReference>
 		<PackageReference Include="CodeChops.SourceGeneration.Utilities" Version="0.4.0" PrivateAssets="all" GeneratePathProperty="true" />
 	</ItemGroup>
-	
+
 </Project>
