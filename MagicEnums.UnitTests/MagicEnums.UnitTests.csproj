@@ -7,7 +7,6 @@
 		<LangVersion>11</LangVersion>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<EnablePreviewFeatures>true</EnablePreviewFeatures>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)' == 'Debug'">

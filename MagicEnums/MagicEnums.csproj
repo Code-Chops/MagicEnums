@@ -7,12 +7,11 @@
 		<LangVersion>11</LangVersion>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<EnablePreviewFeatures>true</EnablePreviewFeatures>
 	</PropertyGroup>
 	
 	<PropertyGroup Label="Package">
-		<Version>3.1.0</Version>
-		<PackageReleaseNotes>Updated to C# 11 and .NET 7 and updated packages.</PackageReleaseNotes>
+		<Version>3.1.1</Version>
+		<PackageReleaseNotes>Updated packages and removed Enable Preview Features.</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>CodeChops.MagicEnums</Title>
 		<Description>
@@ -93,8 +92,8 @@ Flexible and extendable enums for C#:
 	</ItemGroup>
 
 	<ItemGroup Label="PackageReferences">
-		<PackageReference Include="CodeChops.DomainDrivenDesign.DomainModeling" Version="1.3.3" />
-		<PackageReference Include="CodeChops.GenericMath" Version="3.2.0" />
+		<PackageReference Include="CodeChops.DomainDrivenDesign.DomainModeling" Version="1.4.4" />
+		<PackageReference Include="CodeChops.GenericMath" Version="3.2.1" />
 	</ItemGroup>
 	
 </Project>

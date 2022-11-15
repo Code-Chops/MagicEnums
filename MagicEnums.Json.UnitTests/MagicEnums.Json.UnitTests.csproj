@@ -7,7 +7,6 @@
 		<LangVersion>11</LangVersion>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<EnablePreviewFeatures>true</EnablePreviewFeatures>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)' == 'Debug'">
@@ -21,7 +20,7 @@
 
 	<ItemGroup Label="PackageReferences">
 		<PackageReference Include="CodeChops.DomainDrivenDesign.Contracts" Version="0.13.2" />
-		<PackageReference Include="CodeChops.Geometry" Version="3.2.7" />
+		<PackageReference Include="CodeChops.Geometry" Version="3.3.1" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.0" />
 		<PackageReference Include="xunit" Version="2.4.2" />
 		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
