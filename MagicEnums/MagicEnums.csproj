@@ -10,8 +10,8 @@
 	</PropertyGroup>
 	
 	<PropertyGroup Label="Package">
-		<Version>3.1.1</Version>
-		<PackageReleaseNotes>Updated packages and removed Enable Preview Features.</PackageReleaseNotes>
+		<Version>3.1.2</Version>
+		<PackageReleaseNotes>Updated packages.</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>CodeChops.MagicEnums</Title>
 		<Description>
