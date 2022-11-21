@@ -12,7 +12,7 @@ public class EntityWithMagicEnumMock : Entity
 
 public record EntityContract(int Age, MagicEnumWrapperContractMock Wrapper) : Contract;
 
-public record EntityAdapter : Adapter<EntityContract, EntityWithMagicEnumMock>
+public record EntityAdapter : Adapter<EntityWithMagicEnumMock, EntityContract>
 {
 	protected override Type GetDomainObjectType() => typeof(EntityWithMagicEnumMock);
 	protected override EntityWithMagicEnumMock ConvertContractToDomainObject(Contract contract)
