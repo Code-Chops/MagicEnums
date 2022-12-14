@@ -57,7 +57,7 @@ Besides the default .NET enum behaviour, MagicEnums offer more features than the
   - **Inheritance** is supported. This way enums can also be extended in other assemblies.
   - **Partial enums** are supported.
   - **Custom methods and properties** can be added to the enums.
-- *Different types of enums are supported*:
+- **Different types of enums are supported**:
   - [Number enums](#Number-enums) (including `decimal`)
   - [Flags enums](#Flags-enums)
   - [String enums](#String-enums)
