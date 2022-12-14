@@ -1,5 +1,4 @@
 ﻿// ReSharper disable MemberHidesStaticFromOuterClass
-
 using Xunit.Abstractions;
 
 namespace CodeChops.MagicEnums.UnitTests;

@@ -66,7 +66,8 @@ internal sealed class EnumDefinitionSyntaxReceiver
 			discoverabilityMode: discoverabilityMode,
 			filePath: filePath,
 			accessModifier: typeDeclaration.Modifiers.ToFullString(),
-			attributeMembers: attributeMembers.ToList());
+			attributeMembers: attributeMembers.ToList(),
+			isNumberEnum: valueType?.IsNumeric(seeThroughNullable: false) ?? true);
 
 		return definition;
 	}

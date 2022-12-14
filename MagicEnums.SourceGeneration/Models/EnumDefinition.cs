@@ -11,9 +11,12 @@ internal sealed record EnumDefinition
 	public string AccessModifier { get; }
 	public List<EnumMember> AttributeMembers { get; }
 	public bool IsStruct { get; }
+	public bool IsNumberEnum { get; }
 
+	public bool IsStringEnum => this is { ValueTypeName: "String", ValueTypeNamespace: "System" };
+	
 	public EnumDefinition(INamedTypeSymbol type, string valueTypeNameIncludingGenerics, string? valueTypeNamespace, DiscoverabilityMode discoverabilityMode, 
-		string filePath, string accessModifier, IEnumerable<EnumMember> attributeMembers)
+		string filePath, string accessModifier, IEnumerable<EnumMember> attributeMembers, bool isNumberEnum)
 		: this(
 			name: type.Name, 
 			enumNamespace: type.ContainingNamespace.IsGlobalNamespace 
@@ -25,12 +28,13 @@ internal sealed record EnumDefinition
 			filePath: filePath, 
 			accessModifier: accessModifier, 
 			attributeMembers: attributeMembers, 
-			isStruct: type.TypeKind == TypeKind.Struct)
+			isStruct: type.TypeKind == TypeKind.Struct,
+			isNumberEnum)
 	{
 	}
 
 	public EnumDefinition(string name, string? enumNamespace, string valueTypeNameIncludingGenerics, string? valueTypeNamespace, DiscoverabilityMode discoverabilityMode, 
-		string filePath, string accessModifier, IEnumerable<EnumMember> attributeMembers, bool isStruct)
+		string filePath, string accessModifier, IEnumerable<EnumMember> attributeMembers, bool isStruct, bool isNumberEnum)
 	{
 		this.Name = name;
 		this.Namespace = enumNamespace;
@@ -44,5 +48,6 @@ internal sealed record EnumDefinition
 
 		this.AttributeMembers = attributeMembers as List<EnumMember> ?? attributeMembers.ToList();
 		this.IsStruct = isStruct;
+		this.IsNumberEnum = isNumberEnum;
 	}
 }

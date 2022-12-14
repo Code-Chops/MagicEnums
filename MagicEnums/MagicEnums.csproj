@@ -10,8 +10,8 @@
 	</PropertyGroup>
 	
 	<PropertyGroup Label="Package">
-		<Version>3.2.0</Version>
-		<PackageReleaseNotes>Updated packages. Added README.md. Fixed whitespaces. Renamed `implicitDiscoverability` to `implicitly`. Fixed argument swap with ExplicitDiscoverability. Moved statics to solution folder.</PackageReleaseNotes>
+		<Version>3.3.0</Version>
+		<PackageReleaseNotes>Updated README.md. Source generator now implicitly enumerates. Enhanced value in comments.</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>CodeChops.MagicEnums</Title>
 		<Description>
