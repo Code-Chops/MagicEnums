@@ -18,6 +18,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 		icon.png = icon.png
 		LICENSE = LICENSE
 		README.md = README.md
+		MagicEnums-ExplicitDiscoverability (arguments).gif = MagicEnums-ExplicitDiscoverability (arguments).gif
+		MagicEnums-ExplicitDiscoverability.gif = MagicEnums-ExplicitDiscoverability.gif
+		MagicEnums-ImplicitDiscoverability.gif = MagicEnums-ImplicitDiscoverability.gif
 	EndProjectSection
 EndProject
 Global
