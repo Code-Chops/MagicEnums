@@ -276,10 +276,10 @@ This ensures that enum members that are not used anymore are deleted. The member
 - A member value and/or comment can be provided.
 
 #### Example without arguments
-![alt text](MagicEnums-ExplicitDiscoverability.gif)
+![Explicit discoverability usage example without arguments](MagicEnums-ExplicitDiscoverability.gif)
 
 #### Example with arguments
-![alt text](MagicEnums-ExplicitDiscoverability(arguments).gif)
+![Explicit discoverability usage example with arguments](MagicEnums-ExplicitDiscoverability(arguments).gif)
 
 It generates the following code:
 ```csharp
@@ -324,7 +324,7 @@ public static class PaymentMethodExtensions
 - No member value or comment can be provided.
 
 #### Example
-![alt text](MagicEnums-ImplicitDiscoverability.gif)
+![Implicit discoverability usage example](MagicEnums-ImplicitDiscoverability.gif)
 
 It generates the following code:
 ```csharp
