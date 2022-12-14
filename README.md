@@ -71,17 +71,17 @@ Besides the default .NET enum behaviour, MagicEnums offer more features than the
 ## API
 | Method                  | Description                                                                                                                      | Accessibility |
 |-------------------------|----------------------------------------------------------------------------------------------------------------------------------|---------------|
-| `CreateMember()`        | Creates a new enum member and returns it.                                                                                        | `protected`   |
-| `GetEnumerator()`       | Gets an enumerator over the enum members.                                                                                        | `public`      |
-| `GetMembers()`          | Gets an enumerable over:<br/>- All enum members, or<br/>- Members of a specific value: **Throws when no member has been found.** | `public`      | 
-| `GetValues()`           | Gets an enumerable over the member values.                                                                                       | `public`      |
-| `TryGetMembers()`       | Tries to get member(s) by value.                                                                                                 | `public`      |
-| `TryGetSingleMember()`  | Tries to get a single member by name / value.<br/>**Throws when multiple members of the same value have been found.**            | `public`      |
-| `GetSingleMember()`     | Gets a single member by name / value.<br/>**Throws when not found or multiple members have been found.**                         | `public`      |
-| `GetUniqueValueCount()` | Gets the unique member value count.                                                                                              | `public`      |
-| `GetMemberCount()`      | Gets the member count.                                                                                                           | `public`      |
-| `GetDefaultValue()`     | Gets the default value of the enum.                                                                                              | `public`      |
-| `GetOrCreateMember()`   | Creates a member or gets one if a member already exists.                                                                         | `protected`   |
+| `CreateMember`        | Creates a new enum member and returns it.                                                                                        | `protected`   |
+| `GetEnumerator`       | Gets an enumerator over the enum members.                                                                                        | `public`      |
+| `GetMembers`          | Gets an enumerable over:<br/>- All enum members, or<br/>- Members of a specific value: **Throws when no member has been found.** | `public`      | 
+| `GetValues`           | Gets an enumerable over the member values.                                                                                       | `public`      |
+| `TryGetMembers`       | Tries to get member(s) by value.                                                                                                 | `public`      |
+| `TryGetSingleMember`  | Tries to get a single member by name / value.<br/>**Throws when multiple members of the same value have been found.**            | `public`      |
+| `GetSingleMember`     | Gets a single member by name / value.<br/>**Throws when not found or multiple members have been found.**                         | `public`      |
+| `GetUniqueValueCount` | Gets the unique member value count.                                                                                              | `public`      |
+| `GetMemberCount`      | Gets the member count.                                                                                                           | `public`      |
+| `GetDefaultValue`     | Gets the default value of the enum.                                                                                              | `public`      |
+| `GetOrCreateMember`   | Creates a member or gets one if a member already exists.                                                                         | `protected`   |
 
 ## Enum types
 
