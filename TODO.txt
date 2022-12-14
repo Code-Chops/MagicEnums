@@ -1,4 +1,0 @@
--Multiple enums with the same in one project will cause problems. Fix this.
--Accessibility is only public. 
-	*Use source generators to duplicate the MagicEnum classes and change their accessibility: https://andrewlock.net/creating-a-source-generator-part-6-saving-source-generator-output-in-source-control/
-	*Or generate access to the internal members of the not-inherited MagicEnum api. Generic attributes is perfect for that.
