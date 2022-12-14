@@ -4,18 +4,22 @@
 /// Add this attribute to the enum record to make the enum members auto-discoverable. Which means that the members are automatically added to the enum member while referencing them.
 /// <list type="bullet">
 /// <item>Explicit discoverability: 
-/// <para>This method has extra parameters to add a value and a comment to the enum member. Usage: <code>Invoking {Enum}.{Member}.CreateMember(...)</code></para></item>
+/// <para>This method has extra parameters to add a value and a comment to the enum member.</para>
+/// Usage: <code>Invoking {Enum}.{Member}.CreateMember(...)</code>
+/// </item>
 /// <item>Implicit discoverability: 
-/// <para>Disabled by default. Usage: <code>Invoking {Enum}.{NewMember}</code></para></item>
+/// <para>Disabled by default.</para>
+/// Usage: <code>Invoking {Enum}.{NewMember}</code>
+/// </item>
 /// </list>
 /// </summary>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
 public sealed class DiscoverEnumMembers : Attribute
 {
-	public bool ImplicitDiscoverability { get; }
+	public bool Implicitly { get; }
 
-	public DiscoverEnumMembers(bool implicitDiscoverability = false)
+	public DiscoverEnumMembers(bool implicitly = false)
 	{
-		this.ImplicitDiscoverability = implicitDiscoverability;
+		this.Implicitly = implicitly;
 	}
 }

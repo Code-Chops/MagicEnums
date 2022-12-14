@@ -1,14 +1,14 @@
 ﻿namespace CodeChops.MagicEnums.UnitTests.SourceGeneration.ImplicitDiscoverability;
 
-public class ImplicitDiscoverabilityTests
+public class ImplicitTests
 {
 	[Fact]
-	public void ImplicitDiscoverability_Members_ShouldBeCreated()
+	public void Implicit_Members_ShouldBeCreated()
 	{
 		var a = ImplicitDiscoverableEnumMock.NewMemberA;
 		var b = ImplicitDiscoverableEnumMock.NewMemberB.CreateMember();
 
-		Assert.True(a is not null);
-		Assert.True(b is not null);
+		Assert.Equal(0, a);
+		Assert.Equal(1, b);
 	}
 }

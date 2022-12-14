@@ -3,7 +3,7 @@
 public class InternalEnumTests
 {
 	[Fact]
-	public void ImplicitDiscoverability_Members_ShouldBeCreated()
+	public void Implicit_Members_ShouldBeCreated()
 	{
 		var internalEnum = new InternalEnumMock();
 

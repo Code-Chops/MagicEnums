@@ -2,7 +2,7 @@
 
 using Xunit.Abstractions;
 
-namespace CodeChops.MagicEnums.UnitTests.CreationExamples;
+namespace CodeChops.MagicEnums.UnitTests;
 
 public class StronglyTypedCreationTests
 {
@@ -15,11 +15,10 @@ public class StronglyTypedCreationTests
 
 	public record Vehicle(int WheelCount) : MagicEnum<Vehicle>
 	{
-		public static readonly Vehicle			Default		= CreateMember();
 		public static readonly Type.Bicycle		Bicycle		= CreateMember<Type.Bicycle>();
 		public static readonly Type.MotorCycle	MotorCycle	= CreateMember<Type.MotorCycle>();
-		public static readonly Type.Car			FuelCar		= CreateMember(() => new Type.Car(EmitsCo2: true));
-		public static readonly Type.Car			ElectricCar	= CreateMember(() => new Type.Car(EmitsCo2: false));
+		public static readonly Type.Car			FuelCar		= CreateMember<Type.Car>(() => new(EmitsCo2: true));
+		public static readonly Type.Car			ElectricCar	= CreateMember<Type.Car>(() => new(EmitsCo2: false));
 		
 		public static class Type
 		{
@@ -32,9 +31,8 @@ public class StronglyTypedCreationTests
 	[Fact]
 	public void Test()
 	{
-		Assert.IsType<Vehicle>(Vehicle.Default);
 		Assert.IsType<Vehicle.Type.Bicycle>(Vehicle.Bicycle);
-		Assert.Equal(2, Vehicle.MotorCycle.Value);
+		Assert.Equal(1, Vehicle.MotorCycle.Value);
 		Assert.False(Vehicle.ElectricCar.EmitsCo2);
 		Assert.Equal(4, Vehicle.FuelCar.WheelCount);
 

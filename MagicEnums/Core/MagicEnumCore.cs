@@ -60,7 +60,7 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	public static int GetUniqueValueCount() => MembersByValues.Keys.Count;
 
 	/// <summary>
-	/// Get the enumerator over the members.
+	/// Get an enumerator over the members.
 	/// </summary>
 	public IEnumerator<TSelf> GetEnumerator() => MemberByNames.Values.GetEnumerator();
 	/// <inheritdoc cref="GetEnumerator"/>
@@ -79,7 +79,7 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	/// <summary>
 	/// Is true if the dictionary is in a concurrent state.
 	/// </summary>
-	protected static bool IsInConcurrentState => MemberByNames is ConcurrentDictionary<string, TSelf>;
+	private protected static bool IsInConcurrentState => MemberByNames is ConcurrentDictionary<string, TSelf>;
 	
 	/// <summary>
 	/// Is true of the enum is in a static creation. The enum does not have to be concurrent during this period.

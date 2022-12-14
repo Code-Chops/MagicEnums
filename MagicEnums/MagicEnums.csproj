@@ -10,8 +10,8 @@
 	</PropertyGroup>
 	
 	<PropertyGroup Label="Package">
-		<Version>3.1.4</Version>
-		<PackageReleaseNotes>Updated packages 2.</PackageReleaseNotes>
+		<Version>3.2.0</Version>
+		<PackageReleaseNotes>Updated packages. Added README.md. Fixed whitespaces. Renamed `implicitDiscoverability` to `implicitly`. Fixed argument swap with ExplicitDiscoverability. Moved statics to solution folder.</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>CodeChops.MagicEnums</Title>
 		<Description>
@@ -32,7 +32,7 @@ Flexible and extendable enums for C#:
 		* Use {Enum}.{Member}.CreateMember(...) to create a source generated enum-member on the fly;
 		* A member value (and comment) can be provided;
 	- Implicitly:
-		* Is enabled by adding the DiscoverEnumMembers-attribute with implicitDiscoverability = true;
+		* Is enabled by adding the DiscoverEnumMembers-attribute with implicit = true;
 		* Use {Enum}.{Member} to create a source generated enum-member on the fly;
 			
 * Enum members can be added at runtime, if necessary;
@@ -55,6 +55,7 @@ Flexible and extendable enums for C#:
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<Copyright>Copyright (c) CodeChops $([System.DateTime]::Now.ToString(yyyy))</Copyright>
 		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<NoWarn>
 			CS1591, <!-- Missing XML comment for publicly visible type or member -->
 			CS1573, <!-- Parameter has no matching param tag in the XML comment -->
@@ -69,16 +70,17 @@ Flexible and extendable enums for C#:
 	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
 		<DebugType>none</DebugType>
 	</PropertyGroup>
+
+	<ItemGroup Label="PackageAssets">
+		<None Include="..\LICENSE" Pack="true" PackagePath="" />
+		<None Include="..\icon.png" Pack="true" Visible="true" PackagePath="" />
+		<None Include="..\README.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
 	
 	<!-- Creates local nuget packages if in release mode and environment variable LocalNuGetPackagesFolder is configured -->
 	<Target Name="AddNugetPackage" AfterTargets="Pack" Condition="'$(Configuration)' == 'Release' AND '$(LocalNuGetPackagesFolder)' != null">
 		<Exec Command="$(LocalNuGetPackagesFolder)\nuget.exe add $(OutputPath)..\$(PackageId).$(PackageVersion).nupkg -source $(LocalNuGetPackagesFolder)" />
 	</Target>
-	
-	<ItemGroup Label="PackageAssets">
-		<None Include="Properties\LICENSE" Pack="true" PackagePath="" />
-		<None Include="Properties\icon.png" Pack="true" Visible="true" PackagePath="" />
-	</ItemGroup>
 
 	<ItemGroup Label="InternalsVisibleTo">
 		<InternalsVisibleTo Include="$(AssemblyName).UnitTests" />
@@ -92,8 +94,7 @@ Flexible and extendable enums for C#:
 	</ItemGroup>
 
 	<ItemGroup Label="PackageReferences">
-		<PackageReference Include="CodeChops.DomainDrivenDesign.DomainModeling" Version="1.5.0" />
-		<PackageReference Include="CodeChops.GenericMath" Version="3.2.2" />
+		<PackageReference Include="CodeChops.DomainDrivenDesign.DomainModeling" Version="1.6.3" />
+		<PackageReference Include="CodeChops.GenericMath" Version="3.3.2" />
 	</ItemGroup>
-	
 </Project>

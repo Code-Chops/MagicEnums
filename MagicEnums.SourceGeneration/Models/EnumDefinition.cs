@@ -40,7 +40,7 @@ internal sealed record EnumDefinition
 
 		this.DiscoverabilityMode = discoverabilityMode;
 		this.FilePath = filePath;
-		this.AccessModifier = accessModifier.Replace("partial ", "").Replace("static ", "");
+		this.AccessModifier = accessModifier.Replace("partial ", "").Replace("static ", "").Trim();
 
 		this.AttributeMembers = attributeMembers as List<EnumMember> ?? attributeMembers.ToList();
 		this.IsStruct = isStruct;

@@ -23,26 +23,35 @@ internal sealed class EnumDefinitionSyntaxReceiver
 	internal static EnumDefinition? GetEnumDefinition(GeneratorSyntaxContext context, CancellationToken cancellationToken)
 	{
 		var attributeSyntax = (AttributeSyntax)context.Node;
-		if (attributeSyntax.Parent?.Parent is not RecordDeclarationSyntax typeDeclaration) return null;
-		if (context.SemanticModel.GetDeclaredSymbol(typeDeclaration, cancellationToken) is not { } type) return null;
+		
+		if (attributeSyntax.Parent?.Parent is not RecordDeclarationSyntax typeDeclaration) 
+			return null;
+		
+		if (context.SemanticModel.GetDeclaredSymbol(typeDeclaration, cancellationToken) is not { } type) 
+			return null;
 
-		if (type.IsStatic || !type.IsRecord || !typeDeclaration.Modifiers.Any(m =>  m.IsKind(SyntaxKind.PartialKeyword))) return null;
+		if (type.IsStatic || !type.IsRecord || !typeDeclaration.Modifiers.Any(m =>  m.IsKind(SyntaxKind.PartialKeyword)))
+			return null;
 
-		if (!type.IsOrInheritsClass(type => type.IsType(MagicEnumSourceGenerator.CoreName, MagicEnumSourceGenerator.CoreNamespace, isGenericType: true), out var baseClass)) return null;
-		if (!baseClass.IsGeneric(typeParameterCount: 2, out var genericTypeArgument)) return null;
+		if (!type.IsOrInheritsClass(type => type.IsType(MagicEnumSourceGenerator.CoreName, MagicEnumSourceGenerator.CoreNamespace, isGenericType: true), out var baseClass)) 
+			return null;
+		
+		if (!baseClass.IsGeneric(typeParameterCount: 2, out var genericTypeArgument))
+			return null;
 
 		var hasDiscoverableAttribute = type.HasAttribute(MagicEnumSourceGenerator.DiscoverableAttributeName, MagicEnumSourceGenerator.AttributeNamespace, out var discoverableAttribute);
-		var hasAttributeMembers = type.HasAttributes(MagicEnumSourceGenerator.MemberAttributeName, MagicEnumSourceGenerator.AttributeNamespace, out var attributeMemberDataList);
+		var hasAttributeMembers = type.HasAttributes(MagicEnumSourceGenerator.MemberAttributeName, MagicEnumSourceGenerator.AttributeNamespace, out var attributeMemberDataList, expectedGenericTypeParamCount: 0);
 
-		if (!hasDiscoverableAttribute && !hasAttributeMembers) return null;
+		if (!hasDiscoverableAttribute && !hasAttributeMembers) 
+			return null;
 
 		var attributeMembers = attributeMemberDataList.Select(data => new EnumMember(data));
 
-		var hasImplicitDiscoverability = discoverableAttribute?.ConstructorArguments.FirstOrDefault().Value is true;
+		var isImplicit = discoverableAttribute?.ConstructorArguments.FirstOrDefault().Value is true;
 
 		var discoverabilityMode = DiscoverabilityMode.None;
 		
-		if (hasDiscoverableAttribute) discoverabilityMode = hasImplicitDiscoverability ? DiscoverabilityMode.Implicit : DiscoverabilityMode.Explicit;
+		if (hasDiscoverableAttribute) discoverabilityMode = isImplicit ? DiscoverabilityMode.Implicit : DiscoverabilityMode.Explicit;
 
 		var filePath = typeDeclaration.SyntaxTree.FilePath;
 

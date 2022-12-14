@@ -13,6 +13,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagicEnums.Json", "MagicEnu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagicEnums.UnitTests", "MagicEnums.Json.UnitTests\MagicEnums.Json.UnitTests.csproj", "{CCE6E184-2CC6-4D71-9FC5-1077ABC6537B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{E71B5A55-B2B3-40AE-9E5E-D5F5A865C4A0}"
+	ProjectSection(SolutionItems) = preProject
+		icon.png = icon.png
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

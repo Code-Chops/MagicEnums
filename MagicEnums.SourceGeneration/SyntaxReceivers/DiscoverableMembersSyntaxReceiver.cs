@@ -49,19 +49,27 @@ internal static class DiscoverableMembersSyntaxReceiver
 			var memberName = childMemberAccess.Name.Identifier.ValueText;
 
 			string? memberValue = null;
-			if (argumentCount >= 1)
-			{
-				if (invocation.ArgumentList.Arguments[0].Expression is not LiteralExpressionSyntax memberValueLiteral) return null;
-				memberValue = memberValueLiteral.Token.ValueText;
-			}
-
 			string? memberComment = null;
-			if (argumentCount == 2)
+			if (argumentCount > 0)
 			{
-				if (invocation.ArgumentList.Arguments[1].Expression is not LiteralExpressionSyntax commentLiteral) return null;
-				memberComment = commentLiteral.Token.ValueText;
-			}
+				var firstArgument = invocation.ArgumentList.Arguments[0];
+				if (firstArgument.Expression is not LiteralExpressionSyntax memberValueLiteral) return null;
+				
+				var firstArgumentIsComment = firstArgument.NameColon?.Name.Identifier.ValueText == "comment";
 
+				memberValue = memberValueLiteral.Token.ValueText;
+
+				if (argumentCount == 2)
+				{
+					var secondArgument = invocation.ArgumentList.Arguments[1];
+					if (secondArgument.Expression is not LiteralExpressionSyntax commentLiteral) return null;
+					memberComment = commentLiteral.Token.ValueText;
+				}
+				
+				if (firstArgumentIsComment)
+					(memberValue, memberComment) = (memberComment, memberValue);
+			}
+			
 			var filePath = invocation.SyntaxTree.FilePath;
 			var startLinePosition = invocation.SyntaxTree.GetLineSpan(memberAccess.Span, cancellationToken).StartLinePosition;
 
