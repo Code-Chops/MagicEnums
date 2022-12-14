@@ -215,10 +215,10 @@ This ensures that enum members that are not used anymore are deleted. The member
 - A member value and/or comment can be provided.
 
 #### Example without arguments
-![alt text](raw.githubusercontent.com/Code-Chops/MagicEnums/MagicEnums – ExplicitDiscoverability.gif)
+[alt text](https://raw.githubusercontent.com/Code-Chops/MagicEnums/MagicEnums – ExplicitDiscoverability.gif)
 
 #### Example with arguments
-![alt text](raw.githubusercontent.com/Code-Chops/MagicEnums/MagicEnums – ExplicitDiscoverability (arguments).gif)
+[alt text](https://raw.githubusercontent.com/Code-Chops/MagicEnums/MagicEnums – ExplicitDiscoverability (arguments).gif)
 
 ### Implicit
 - Is enabled by adding the `DiscoverEnumMembers`-attribute with `implicit` set to `true`;
@@ -226,7 +226,7 @@ This ensures that enum members that are not used anymore are deleted. The member
 - No member value or comment can be provided.
 
 #### Example
-![alt text](raw.githubusercontent.com/Code-Chops/MagicEnums/MagicEnums – ImplicitDiscoverability.gif)
+[alt text](https://raw.githubusercontent.com/Code-Chops/MagicEnums/MagicEnums – ImplicitDiscoverability.gif)
 
 ## Optimization
 Generally your enum does not dynamically add members at runtime. If this is the case, the attribute `DisableConcurrency` can be placed on the enum. It disables concurrency and therefore optimises memory usage and speed.
