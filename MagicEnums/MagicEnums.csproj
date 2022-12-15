@@ -10,8 +10,8 @@
 	</PropertyGroup>
 	
 	<PropertyGroup Label="Package">
-		<Version>3.3.0</Version>
-		<PackageReleaseNotes>Updated README.md. Source generator now implicitly enumerates. Enhanced value in comments.</PackageReleaseNotes>
+		<Version>3.3.1</Version>
+		<PackageReleaseNotes>Remove source generated discoverable extension method when attribute has not been placed.</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>CodeChops.MagicEnums</Title>
 		<Description>

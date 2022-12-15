@@ -64,7 +64,9 @@ internal static class EnumSourceBuilder
 		code.AppendLine(GetUsings);
 		code.AppendLine(GetNamespaceDeclaration);
 		code.AppendLine(GetEnum, trimEnd: true);
-		code.AppendLine(GetExtensions, trimEnd: true);
+		
+		if (definition.DiscoverabilityMode != DiscoverabilityMode.None)
+			code.AppendLine(GetExtensions, trimEnd: true);
 		
 		code.AppendLine(@"
 #nullable restore");
