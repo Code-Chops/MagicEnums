@@ -177,8 +177,6 @@ public record ErrorCode : MagicStringEnum<ErrorCode>
 }
 ```
 
-In this example 3 members are created whereby their value equals their name.
-
 ## Custom enums
 Custom enums can also be created. They offer a way to create an enum of any type that you prefer:
 - Can be created by implementing `MagicCustomEnum<TSelf, TValue>`.
