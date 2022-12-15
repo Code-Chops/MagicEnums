@@ -199,7 +199,7 @@ var message = level.Name switch
     _                       => throw new UnreachableException($"This should not occur.")
 };
 ```
-> In this example, the enum from the [default usage example](#Default-usage) is used.
+> In this example, the enum from the [default usage example](#Simple-enum) is used.
 
 Another way is to define the types in an inner class and use them as the type of an enum member:
 ```csharp
@@ -210,7 +210,7 @@ var speedingFineInEur = vehicle switch
     _                       => 0,
 };
 ```
-> In this example, the enum from the [extended usage example](#Extended-usage) is used.
+> In this example, the enum from the [extended usage example](#Extended-enum) is used.
 
 # Member generation
 Members can be generated automatically, this way members don't have to be manually defined in the enum.
