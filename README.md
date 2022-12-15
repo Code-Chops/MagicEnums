@@ -4,20 +4,22 @@ Fast, customizable, and extendable enums for C# with a clean API, see [advantage
 
 ## Basic examples
 
-### Default usage
+### Simple enum
 ```csharp
-using CodeChops.MagicEnums;
+/* This is a simple example of how to create an int enum with explicit and implicit values. */
 
-public record Level : MagicEnum<Level> // Default: int.
+public record Level : MagicEnum<Level>
 {
-    public static readonly Level Low    = CreateMember();   // Default: 0
-    public static readonly Level Medium = CreateMember(1);  // Explicit: 1	
-    public static readonly Level High   = CreateMember();   // Implicit: 2
+    public static readonly Level Low    = CreateMember();  // 0
+    public static readonly Level Medium = CreateMember(1); // 1	
+    public static readonly Level High   = CreateMember();  // 2
 }
 ```
 
-### Extended usage
+### Extended enum
 ```csharp
+/* This is an example of enum mebers with extra properties. */
+
 public record Vehicle(int WheelCount) : MagicEnum<Vehicle>
 {
     public static readonly Type.Bicycle    Bicycle     = CreateMember<Type.Bicycle>();
@@ -49,7 +51,7 @@ Magic enums behave like the default .NET enum implementation:
 - The value of members can be omitted (when using the default numeric enums). If omitted, it automatically increments the value of each member.
 - Members, member names or member values can easily be enumerated.
 - `Flag` enums are supported.
-- **Strongly typed** enum members, so pattern matching can be used.
+- Strongly typed enum members, so pattern matching can be used.
 
 ### Advantages
 Besides the default .NET enum behaviour, MagicEnums offer more features than the default .NET enum implementation:
@@ -66,9 +68,17 @@ Besides the default .NET enum behaviour, MagicEnums offer more features than the
 - **Members with the same value can be looked up easily**. Something which is not supported in default C# enums.
 - **Optimized**, and therefore fast member registration and lookup, including a fast `ToString`. For extra optimization, see [optimization](#Optimization).
 - Serialization to/from **JSON** is supported.
-- **Members can be auto-discovered**. This removes the need to keep track of used/unused enum-members. See [auto member discoverability](#Auto-member-discoverability).
+- **Members can be auto-discovered**. This removes the need to keep track of used/unused enum-members. See [auto member discoverability](#Member-discoverability).
 
-## API
+## Usage
+1. Add the package `CodeChops.MagicEnums`. 
+2. Add a (global) using to namespace `CodeChops.MagicEnums`.
+3. Create a record which implements one of the [enum types](#Enum-types).
+4. Add members:
+   - By creating `static readonly` members that call `CreateMember()`.
+   - And/or use [member generation](#Member-generation).
+
+### API
 | Method                | Description                                                                                                                         |
 |-----------------------|-------------------------------------------------------------------------------------------------------------------------------------|
 | `CreateMember`*       | Creates a new enum member and returns it.                                                                                           |
@@ -93,12 +103,10 @@ Number enums (default) have a numeric type as value.
 - If `TNumber` is omitted, `int` will be used as type: `MagicEnum<TSelf>`.
 - `TNumber` can be of any type that are also supported by the default .NET implementation: `byte`, `sbyte`, `short`, `ushort`, `int`, `uint`, `long`, or `ulong`.
 - Unlike the default C# .NET implementation, `decimal` is also supported.
-- **Implicit and explicit value declaration** are supported, see the example below.
-
-#### Example
+- Implicit and explicit value declaration are supported, see the example below.
 
 ```csharp
-using CodeChops.MagicEnums;
+/* This example shows an int enum with implicit and explicit value declarations. */
 
 public record StarRating : MagicEnum<StarRating>
 {
@@ -110,12 +118,13 @@ public record StarRating : MagicEnum<StarRating>
 }
 ```
 
-The example creates an enum with an int as member value.
+The example creates an enum with an `int` as member value.
 The value of the first member is explicitly defined.
 Other values are being incremented automatically, because they are defined implicitly.
 
+#### Example
 ```csharp
-using CodeChops.MagicEnums;
+/* This example shows the usage of a `decimal` as member value. */
 
 public record EurUsdRate : MagicEnum<EurUsdRate, decimal>
 {
@@ -126,12 +135,15 @@ public record EurUsdRate : MagicEnum<EurUsdRate, decimal>
 }
 ```
 
-This example shows the usage of a `decimal` as member value.
-
 ### Flags enums
+Flag enums are supported just like in the default .NET implementation. Implicit value declaration is also support. See the example below.
+Flags enums offer extra methods:
+- `GetUniqueFlags()`: Gets the unique flags of the provided value.
+- `HasFlag()`: Returns `true` if a specific enum member contains the provided flag.
 
+#### Example
 ```csharp
-using CodeChops.MagicEnums;
+/* This example shows the usage of a flags enum. Note that member 'ReadAndWrite' flags both 'Read' and 'Write'. */
 
 public record Permission : MagicFlagsEnum<Permission>
 {
@@ -141,11 +153,6 @@ public record Permission : MagicFlagsEnum<Permission>
     public static readonly Permission ReadAndWrite  = CreateMember(Read | Write);
 }
 ```
-
-This example shows the usage of a flags enum. Note that member *ReadAndWrite* flags both *Read* and *Write*.
-Flags enums offer extra methods:
-- `GetUniqueFlags()`: Gets the unique flags of the provided value.
-- `HasFlag()`: Returns `true` if a specific enum member contains the provided flag.
 
 ### String enums
 Sometimes you only need an enumeration of `strings` (for example: names). In this case the underlying numeric value is not important. Magic string enums helps you achieving this:
@@ -158,6 +165,8 @@ Sometimes you only need an enumeration of `strings` (for example: names). In thi
 #### Example
 
 ```csharp
+/* This example shows the creation of a string enum. The value of the members are equal to the name of the members. */
+
 using CodeChops.MagicEnums;
 
 public record ErrorCode : MagicStringEnum<ErrorCode>
@@ -227,7 +236,7 @@ using System;
 using System;
 using CodeChops.MagicEnums;
 
-namespace CodeChops.MagicEnums.UnitTests.SourceGeneration.AttributeMembers;
+namespace Test;
 
 /// <summary>
 /// <list type="bullet">
@@ -255,20 +264,10 @@ public partial record class Level
     public static Level High { get; }   = CreateMember(2);
 }
 
-
-/// <summary>
-/// Call this method in order to create discovered enum members while invoking them (on the fly). So enum members are automatically deleted when not being used.
-/// </summary>
-public static class LevelExtensions
-{
-    public static Level CreateMember(this Level member, Int32? value = null, string? comment = null) 
-        => member;
-}
-
 #nullable restore
 ```
 
-### Discoverability
+### Member discoverability
 Enum member discoverability makes it possible to create an enum member the moment you reference it in your IDE.
 This ensures that enum members that are not used anymore are deleted. The members are automatically generated using C# source generators.
 
@@ -292,7 +291,7 @@ using System;
 using System;
 using CodeChops.MagicEnums;
 
-namespace CodeChops.MagicEnums.UnitTests.SourceGeneration.AttributeMembers;
+namespace Test;
 
 /// <summary>
 /// <list type="bullet">
@@ -337,7 +336,7 @@ using System;
 using System;
 using CodeChops.MagicEnums;
 
-namespace CodeChops.MagicEnums.UnitTests.SourceGeneration.AttributeMembers;
+namespace Test;
 
 /// <summary>
 /// <para><em>Do not rename!</em></para>
