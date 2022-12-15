@@ -93,7 +93,7 @@ Besides the default .NET enum behaviour, MagicEnums offer more features than the
 | `GetDefaultValue`     | Gets the default value of the enum.                                                                                                 |
 | `GetOrCreateMember`*  | Creates a member or gets one if a member already exists.                                                                            |
 
-> The methods are `pubic`, except for the ones marked with *, they are `protected`.
+> The methods are `public`, except for the ones marked with *, they are `protected`.
 
 # Enum types
 
