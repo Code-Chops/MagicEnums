@@ -1,6 +1,6 @@
 # Magic Enums
 
-Fast, customizable, and extendable enums for C# with a clean API, see [advantages](#Advantages).
+Fast, customizable, and extendable enums for C# with a clean API. See [advantages](#Advantages).
 
 # Basic examples
 
@@ -55,6 +55,7 @@ Magic enums behave like the default .NET enum implementation:
 
 ## Advantages
 Besides the default .NET enum behaviour, MagicEnums offer more features than the default .NET enum implementation:
+- Fast and optimized: does **not use reflection**.
 - Extendability:
   - **Inheritance** is supported. This way enums can also be extended in other assemblies.
   - **Partial enums** are supported.
