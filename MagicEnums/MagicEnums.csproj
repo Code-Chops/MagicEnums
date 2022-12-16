@@ -10,39 +10,11 @@
 	</PropertyGroup>
 	
 	<PropertyGroup Label="Package">
-		<Version>3.3.1</Version>
+		<Version>3.3.2</Version>
 		<PackageReleaseNotes>Remove source generated discoverable extension method when attribute has not been placed.</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>CodeChops.MagicEnums</Title>
-		<Description>
-Flexible and extendable enums for C#:
-* It is possible to use other member values than integral types. For example: 
-	- Strings that automatically represent their member name:
-		* This prohibits incorrect usage of integral values when they are not needed;
-		* It removes the need to keep track of (incremental) integral values;
-	- Custom defined types, for example see StrictDirectionModes: https://github.com/Code-Chops/Geometry/;
-
-* Inheritance and/or partial records can be used to extend your enums: 
-	- Enums can now be extended in multiple projects;
-	- Custom methods can be added to enums, if necessary;
-
-* Enum-members can be auto-discovered. This removes the need to keep track of used/unused enum-members:
-	- Explicitly:
-		* Is enabled by adding the DiscoverEnumMembers-attribute;
-		* Use {Enum}.{Member}.CreateMember(...) to create a source generated enum-member on the fly;
-		* A member value (and comment) can be provided;
-	- Implicitly:
-		* Is enabled by adding the DiscoverEnumMembers-attribute with implicit = true;
-		* Use {Enum}.{Member} to create a source generated enum-member on the fly;
-			
-* Enum members can be added at runtime, if necessary;
-
-* Has the same functionality as the default .NET enum:
-	- Members can be found by using their name or value;
-	- Multiple members with the same value can even be looked up: This is not supported in default C# enums;
-
-* Optimized, and therefore fast member registration / lookup;
-		</Description>
+		<Description>Fast, customizable, and extendable enums for C# with a clean API.</Description>
 		<PackageId>CodeChops.MagicEnums</PackageId>
 		<PackageProjectUrl>https://github.com/code-chops/MagicEnums</PackageProjectUrl>
 		<PackageTags>CodeChops;CodeChops.MagicEnums;CodeChops.MagicEnum;MagicEnums;MagicEnum;Magic enums;Magic enum;Smart enums;Smart enum;Better enums;Better enum;</PackageTags>
