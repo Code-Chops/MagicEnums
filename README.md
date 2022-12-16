@@ -143,8 +143,8 @@ Flags enums offer extra methods:
 
 ### Example
 ```csharp
-// This example shows the usage of a flags enum. 
-// Note that member 'ReadAndWrite' flags both 'Read' and 'Write'.
+/* This example shows the usage of a flags enum. 
+   Note that member 'ReadAndWrite' flags both 'Read' and 'Write'. */
 
 public record Permission : MagicFlagsEnum<Permission>
 {
@@ -166,7 +166,8 @@ Sometimes you only need an enumeration of `strings` (for example: names). In thi
 ### Example
 
 ```csharp
-/* This example shows the creation of a string enum. The value of the members are equal to the name of the members. */
+/* This example shows the creation of a string enum. 
+   The value of the members are equal to the name of the members. */
 
 using CodeChops.MagicEnums;
 
