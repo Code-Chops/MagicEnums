@@ -106,7 +106,7 @@ Number enums (default) have a numeric type as value.
 - Implicit and explicit value declaration are supported, see the example below.
 
 ```csharp
-/* This example shows an int enum with implicit and explicit value declarations. */
+/* This example shows an int enum with implicit and explicit values. */
 
 public record StarRating : MagicEnum<StarRating>
 {
@@ -143,7 +143,8 @@ Flags enums offer extra methods:
 
 ### Example
 ```csharp
-/* This example shows the usage of a flags enum. Note that member 'ReadAndWrite' flags both 'Read' and 'Write'. */
+// This example shows the usage of a flags enum. 
+// Note that member 'ReadAndWrite' flags both 'Read' and 'Write'.
 
 public record Permission : MagicFlagsEnum<Permission>
 {
