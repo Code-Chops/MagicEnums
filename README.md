@@ -214,11 +214,10 @@ var speedingFineInEur = vehicle switch
 > In this example, the enum from the [extended usage example](#Extended-enum) is used.
 
 # Member generation
-Members can be generated automatically, this way members don't have to be manually defined in the enum.
+Aside from defining members using `CreateMember`, members can be generated automatically using C# source generators. 
 
 ## Attributes
-Members can be generated using the `EnumMember` attribute. The `value`and a comment can be provided. 
-The members are automatically generated using C# source generators.
+Members can be generated using the `EnumMember` attribute. A `value` and a comment can be provided. This method uses a different syntax than the default `CreateMember` syntax and offers no advantages over it.
 
 ### Example
 ```csharp
@@ -269,8 +268,8 @@ public partial record class Level
 ```
 
 ## Member discoverability
-Enum member discoverability makes it possible to create an enum member the moment you reference it in your IDE.
-This ensures that enum members that are not used anymore are deleted. The members are automatically generated using C# source generators.
+Enum member discoverability makes it possible to automatically generate an enum member the moment you reference it in your IDE.
+This ensures that enum members that are not used anymore are deleted.
 
 ### Explicit discoverability
 - Is enabled by adding the `DiscoverEnumMembers`-attribute on the enum.
