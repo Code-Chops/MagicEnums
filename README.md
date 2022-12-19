@@ -184,9 +184,9 @@ public record ErrorCode : MagicStringEnum<ErrorCode>
 Custom enums can also be created. They offer a way to create an enum of any type that you prefer:
 - Can be created by implementing `MagicCustomEnum<TSelf, TValue>`.
 - `TValue` should implement `IEquatable` and `IComparable`.
-- A custom value type can easily be generated using the [Value object generator](https://github.com/Code-Chops/DomainModeling/#Value-Object-Generator) which is included in the [Domain Modeling-package](https://github.com/Code-Chops/DomainModeling/).
+- A custom value type can easily be generated using the [Value object generator](https://github.com/Code-Chops/DomainModeling/#Value-Object-Generator) which is included in the [Domain Modeling-library](https://github.com/Code-Chops/DomainModeling/).
 - Two dogfooding examples of the usage custom enums:
-  - See [Strict direction modes](https://github.com/Code-Chops/Geometry/#Strict-direction-modes) in the [Geometry-package](https://github.com/Code-Chops/Geometry). It contains enums that have a `2D-point` as member value.
+  - See [Strict direction modes](https://github.com/Code-Chops/Geometry/#Strict-direction-modes) in the [Geometry library](https://github.com/Code-Chops/Geometry). It contains enums that have a `2D-point` as member value.
   - See [Implementation discovery](https://github.com/Code-Chops/ImplementationDiscovery), which automatically creates an enum of every implementation of a specific `base class` / `interface`. Each member contains its (uninitialized) instance as value.
 
 # Pattern matching

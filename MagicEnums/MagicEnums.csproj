@@ -10,7 +10,7 @@
 	</PropertyGroup>
 	
 	<PropertyGroup Label="Package">
-		<Version>3.3.2</Version>
+		<Version>3.3.3</Version>
 		<PackageReleaseNotes>Remove source generated discoverable extension method when attribute has not been placed.</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>CodeChops.MagicEnums</Title>
@@ -66,7 +66,7 @@
 	</ItemGroup>
 
 	<ItemGroup Label="PackageReferences">
-		<PackageReference Include="CodeChops.DomainDrivenDesign.DomainModeling" Version="1.6.3" />
+		<PackageReference Include="CodeChops.DomainDrivenDesign.DomainModeling" Version="1.6.7" />
 		<PackageReference Include="CodeChops.GenericMath" Version="3.3.2" />
 	</ItemGroup>
 </Project>
