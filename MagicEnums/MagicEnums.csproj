@@ -10,8 +10,8 @@
 	</PropertyGroup>
 	
 	<PropertyGroup Label="Package">
-		<Version>3.3.5</Version>
-		<PackageReleaseNotes>Added RunClassConstructor to core methods.</PackageReleaseNotes>
+		<Version>3.3.4</Version>
+		<PackageReleaseNotes>Updated packages references.</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>CodeChops.MagicEnums</Title>
 		<Description>Fast, customizable, and extendable enums for C# with a clean API.</Description>

@@ -51,53 +51,30 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	/// Get the member count.
 	/// </summary>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static int GetMemberCount()
-	{
-		RunClassConstructor();
-		
-		return MemberByNames.Keys.Count;
-	}
-
+	public static int GetMemberCount() => MemberByNames.Keys.Count;
+	
 	/// <summary>
 	/// Get the unique member value count.
 	/// </summary>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static int GetUniqueValueCount()
-	{
-		RunClassConstructor();
-		
-		return MembersByValues.Keys.Count;
-	}
+	public static int GetUniqueValueCount() => MembersByValues.Keys.Count;
 
 	/// <summary>
 	/// Get an enumerator over the members.
 	/// </summary>
-	public IEnumerator<TSelf> GetEnumerator()
-	{
-		RunClassConstructor();
-		return MemberByNames.Values.GetEnumerator();
-	}
-
+	public IEnumerator<TSelf> GetEnumerator() => MemberByNames.Values.GetEnumerator();
 	/// <inheritdoc cref="GetEnumerator"/>
 	IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
 
 	/// <summary>
 	/// Get an enumerable over the members.
 	/// </summary>
-	public static IEnumerable<TSelf> GetMembers()
-	{
-		RunClassConstructor();
-		return MemberByNames.Values;
-	}
+	public static IEnumerable<TSelf> GetMembers() => MemberByNames.Values;
 
 	/// <summary>
 	/// Get an enumerable over the values.
 	/// </summary>
-	public static IEnumerable<TValue> GetValues()
-	{
-		RunClassConstructor();
-		return MemberByNames.Values.Select(member => member.Value);
-	}
+	public static IEnumerable<TValue> GetValues() => MemberByNames.Values.Select(member => member.Value);
 
 	/// <summary>
 	/// Is true if the dictionary is in a concurrent state.
@@ -172,7 +149,8 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 			? ConcurrencyMode.NeverConcurrent
 			: ConcurrencyMode.AdaptiveConcurrency;
 
-		RunClassConstructor();
+		// Forces to run the static constructor of the user-defined enum, so the Create method is called for every member (in code line order).
+		RuntimeHelpers.RunClassConstructor(typeof(TSelf).TypeHandle);
 		
 		IsInStaticBuildup = false;
 	}
@@ -231,8 +209,6 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 		where TMember : TSelf
 	{
 		if (name is null) throw new ArgumentNullException(nameof(name));
-		
-		RunClassConstructor();
 		
 		// Copy the reference so we don't get race conditions.
 		var memberByNames = MemberByNames;
@@ -295,13 +271,9 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	/// <exception cref="ArgumentNullException">When the member name argument is null.</exception>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static bool TryGetSingleMember(string memberName, [NotNullWhen(true)] out TSelf? member)
-	{
-		RunClassConstructor();
-		
-		return memberName is null 
-			? throw new ArgumentNullException(memberName) 
+		=> memberName is null
+			? throw new ArgumentNullException(memberName)
 			: MemberByNames.TryGetValue(memberName, out member);
-	}
 
 	/// <summary>
 	/// Returns a single member with the provided name.
@@ -332,8 +304,6 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	{
 		if (memberValue is null) throw new ArgumentNullException(nameof(memberValue));
 
-		RunClassConstructor();
-		
 		if (!MembersByValues.TryGetValue(memberValue, out var members))
 		{
 			member = default;
@@ -378,8 +348,6 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	public static bool TryGetMembers(TValue memberValue, [NotNullWhen(true)] out IReadOnlyCollection<TSelf>? members)
 	{
 		if (memberValue is null) throw new ArgumentNullException(nameof(memberValue));
-
-		RunClassConstructor();
 		
 		if (MembersByValues.TryGetValue(memberValue, out var membersList))
 		{
@@ -473,14 +441,4 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	IEnumerable<IMagicEnum<TValue>> IMagicEnum<TValue>.GetMembers(TValue memberValue) => GetMembers(memberValue);
 
 	#endregion
-
-	/// <summary>
-	/// Forces to run the static constructor of the user-defined enum if it hasn't been done yet.
-	/// This makes sure that the Create method is called for every member (in code line order).
-	/// </summary>
-	private static void RunClassConstructor()
-	{
-		if (MemberByNames.Keys.Count == 0)
-			RuntimeHelpers.RunClassConstructor(typeof(TSelf).TypeHandle);
-	}
 }
