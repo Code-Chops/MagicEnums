@@ -21,12 +21,12 @@ internal record NumberEnumMock : MagicEnum<NumberEnumMock, ulong>
 	public static NumberEnumMock NonIncrementalValue { get; }		= CreateMember(6);
 
 	/// <summary>
-	/// An explicit non-existing value. Should be 7.
+	/// An explicit value. Should be 7.
 	/// </summary>
-	public static NumberEnumMock NonExistingExplicitValue { get; }	= CreateMember(7);
+	public static NumberEnumMock ExplicitValue { get; }				= CreateMember(7);
 
 	/// <summary>
-	/// An explicit already-existing value <seealso cref="NonExistingExplicitValue"/>.
+	/// An explicit already-existing value <seealso cref="ExplicitValue"/>.
 	/// Should be 7.
 	/// </summary>
 	public static NumberEnumMock ExistingExplicitValue { get; }		= CreateMember(7);

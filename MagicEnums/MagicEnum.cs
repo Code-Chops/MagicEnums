@@ -14,15 +14,15 @@ public abstract record MagicEnum<TSelf> : MagicEnum<TSelf, int>
 /// <typeparam name="TValue">The integral type.</typeparam>
 public abstract record MagicEnum<TSelf, TValue> : MagicEnumCore<TSelf, TValue>
 	where TSelf : MagicEnum<TSelf, TValue>
-	where TValue : struct, IComparable<TValue>, IEquatable<TValue>, IConvertible
+	where TValue : struct, INumber<TValue>
 {
 	#region LastInsertedNumber
-	
+
 	/// <summary>
-	/// The value of the latest inserted enum member (starts with -1).
+	/// The value of the latest inserted enum member (starts with null).
 	/// Used for auto-incrementing the value of a new member when no value has been provided (implicit value).
 	/// </summary>
-	private static Number<TValue>? LastInsertedNumber { get; set; }
+	private static TValue? LastInsertedNumber { get; set; }
 	
 	/// <summary>
 	/// Locks the retrieval and incrementation of the last inserted number.
@@ -39,21 +39,21 @@ public abstract record MagicEnum<TSelf, TValue> : MagicEnumCore<TSelf, TValue>
 			lock (LockLastInsertedNumber)
 			{
 				LastInsertedNumber = valueCreator();
-				return LastInsertedNumber.Value;
+				return (TValue)LastInsertedNumber;
 			}
 		}
 		
 		LastInsertedNumber = valueCreator();
-		return LastInsertedNumber.Value;
+		return (TValue)LastInsertedNumber;
 	}
 	
 	/// <summary>
 	/// Increments the last inserted enum value and returns it.
 	/// </summary>
 	private static TValue GetIncrementedLastInsertedNumber() => LastInsertedNumber is null
-		? Number<TValue>.Zero
-		: Calculator<TValue>.Increment(LastInsertedNumber.Value);
-	
+		? TValue.Zero
+		: (TValue)LastInsertedNumber + TValue.One;
+
 	#endregion
 	
 	#region CreateMember
@@ -83,7 +83,7 @@ public abstract record MagicEnum<TSelf, TValue> : MagicEnumCore<TSelf, TValue>
 		where TMember : TSelf 
 		=> CreateMember(
 			valueCreator: value is null 
-				? GetIncrementedLastInsertedNumber 
+				? GetIncrementedLastInsertedNumber
 				: () => value.Value,
 			memberCreator: memberCreator,
 			name: name);

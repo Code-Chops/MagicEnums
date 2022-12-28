@@ -14,15 +14,15 @@ public abstract record MagicFlagsEnum<TSelf> : MagicFlagsEnum<TSelf, int>
 /// <typeparam name="TValue">The integral type.</typeparam>
 public abstract record MagicFlagsEnum<TSelf, TValue> : MagicEnumCore<TSelf, TValue>
 	where TSelf : MagicFlagsEnum<TSelf, TValue>
-	where TValue : struct, IComparable<TValue>, IEquatable<TValue>, IConvertible
+	where TValue : struct, INumber<TValue>
 {
 	#region LastInsertedNumber
 
 	/// <summary>
-	/// The value of the latest inserted enum member (starts with 0).
+	/// The value of the latest inserted enum member (starts with null).
 	/// Used for incremental bit-shifting the flags of a new member when no flags has been provided (implicit flags).
 	/// </summary>
-	private static Number<TValue>? LastInsertedNumber { get; set; }
+	private static TValue? LastInsertedNumber { get; set; }
 	
 	/// <summary>
 	/// Locks the retrieval and incrementation of the last number.
@@ -39,22 +39,26 @@ public abstract record MagicFlagsEnum<TSelf, TValue> : MagicEnumCore<TSelf, TVal
 			lock (LockLastInsertedNumber)
 			{
 				LastInsertedNumber = valueCreator();
-				return LastInsertedNumber.Value;
+				return (TValue)LastInsertedNumber;
 			}
 		}
 		
 		LastInsertedNumber = valueCreator();
-		return LastInsertedNumber.Value;
+		return (TValue)LastInsertedNumber;
 	}
-	
+
 	/// <summary>
 	/// Bit shifts the last inserted enum value and returns it.
 	/// </summary>
 	private static TValue GetBitShiftedLastInsertedNumber()
 	{
-		if (LastInsertedNumber is null) return Number<TValue>.Zero;
-		if (LastInsertedNumber == Number<TValue>.Zero) return Calculator<TValue>.Increment(LastInsertedNumber.Value);
-		return Calculator<TValue>.LeftShift(LastInsertedNumber.Value, 1);
+		if (LastInsertedNumber is null) 
+			return TValue.Zero;
+		
+		if (LastInsertedNumber == TValue.Zero) 
+			return TValue.One;
+		
+		return (TValue)LastInsertedNumber * (TValue.One + TValue.One);
 	}
 	
 	#endregion
@@ -84,9 +88,7 @@ public abstract record MagicFlagsEnum<TSelf, TValue> : MagicEnumCore<TSelf, TVal
 	protected static TMember CreateMember<TMember>(Func<TMember>? memberCreator = null, TValue? value = null, [CallerMemberName] string name = null!)
 		where TMember : TSelf 
 		=> CreateMember(
-			valueCreator: value is null 
-				? GetBitShiftedLastInsertedNumber 
-				: () => value.Value, 
+			valueCreator: GetBitShiftedLastInsertedNumber,
 			memberCreator: memberCreator,
 			name: name);
 

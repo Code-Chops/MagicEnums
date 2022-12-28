@@ -10,8 +10,8 @@
 	</PropertyGroup>
 	
 	<PropertyGroup Label="Package">
-		<Version>3.3.4</Version>
-		<PackageReleaseNotes>Updated packages references.</PackageReleaseNotes>
+		<Version>3.3.7</Version>
+		<PackageReleaseNotes>Removed GenericMath dependency.</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>CodeChops.MagicEnums</Title>
 		<Description>Fast, customizable, and extendable enums for C# with a clean API.</Description>
@@ -66,7 +66,6 @@
 	</ItemGroup>
 
 	<ItemGroup Label="PackageReferences">
-		<PackageReference Include="CodeChops.DomainDrivenDesign.DomainModeling" Version="1.6.8" />
-		<PackageReference Include="CodeChops.GenericMath" Version="3.3.2" />
+		<PackageReference Include="CodeChops.DomainDrivenDesign.DomainModeling" Version="1.7.1" />
 	</ItemGroup>
 </Project>

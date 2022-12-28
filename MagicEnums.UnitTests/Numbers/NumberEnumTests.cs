@@ -25,7 +25,7 @@ public class NumberEnumTests
 	public void NumberEnum_ExplicitValue_HasProvidedValue()
 	{
 		Assert.Equal(6u, NumberEnumMock.NonIncrementalValue.Value);
-		Assert.Equal(7u, NumberEnumMock.NonExistingExplicitValue.Value);
+		Assert.Equal(7u, NumberEnumMock.ExplicitValue.Value);
 		Assert.Equal(7u, NumberEnumMock.ExistingExplicitValue.Value);
 	}
 
@@ -33,7 +33,7 @@ public class NumberEnumTests
 	public void NumberEnum_GetValue_WorksCorrect()
 	{
 		Assert.Equal(6u, NumberEnumMock.GetSingleMember(nameof(NumberEnumMock.NonIncrementalValue)).Value);
-		Assert.Equal(7u, NumberEnumMock.GetSingleMember(nameof(NumberEnumMock.NonExistingExplicitValue)).Value);
+		Assert.Equal(7u, NumberEnumMock.GetSingleMember(nameof(NumberEnumMock.ExplicitValue)).Value);
 		Assert.Equal(7u, NumberEnumMock.GetSingleMember(nameof(NumberEnumMock.ExistingExplicitValue)).Value);
 	}
 
@@ -64,14 +64,14 @@ public class NumberEnumTests
 	[Fact]
 	public void NumberEnum_CorrectEquals()
 	{
-		Assert.True(NumberEnumMock.InitialImplicitValue			== NumberEnumMock.InitialImplicitValue.Value);
-		Assert.True(NumberEnumMock.InitialImplicitValue			!= NumberEnumMock.ImplicitValue);
-		Assert.True(NumberEnumMock.InitialImplicitValue.Value	!= NumberEnumMock.ImplicitValue.Value);
-		Assert.True(NumberEnumMock.NonExistingExplicitValue		== NumberEnumMock.ExistingExplicitValue);
-
 		Assert.Equal(NumberEnumMock.InitialImplicitValue,			NumberEnumMock.InitialImplicitValue.Value);
 		Assert.NotEqual(NumberEnumMock.InitialImplicitValue,		NumberEnumMock.ImplicitValue);
 		Assert.NotEqual(NumberEnumMock.InitialImplicitValue.Value,	NumberEnumMock.ImplicitValue.Value);
-		Assert.Equal(NumberEnumMock.NonExistingExplicitValue.Value, NumberEnumMock.ExistingExplicitValue.Value);
+		Assert.Equal(NumberEnumMock.ExplicitValue.Value,			NumberEnumMock.ExistingExplicitValue.Value);
+
+		Assert.True(NumberEnumMock.InitialImplicitValue			== NumberEnumMock.InitialImplicitValue.Value);
+		Assert.True(NumberEnumMock.InitialImplicitValue			!= NumberEnumMock.ImplicitValue);
+		Assert.True(NumberEnumMock.InitialImplicitValue.Value	!= NumberEnumMock.ImplicitValue.Value);
+		Assert.True(NumberEnumMock.ExplicitValue				== NumberEnumMock.ExistingExplicitValue);
 	}
 }
