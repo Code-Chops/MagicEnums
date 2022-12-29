@@ -14,7 +14,7 @@ public abstract record MagicFlagsEnum<TSelf> : MagicFlagsEnum<TSelf, int>
 /// <typeparam name="TValue">The integral type.</typeparam>
 public abstract record MagicFlagsEnum<TSelf, TValue> : MagicEnumCore<TSelf, TValue>
 	where TSelf : MagicFlagsEnum<TSelf, TValue>
-	where TValue : struct, INumber<TValue>
+	where TValue : struct, INumber<TValue>, IShiftOperators<TValue, int, TValue>
 {
 	#region LastInsertedNumber
 
@@ -58,7 +58,7 @@ public abstract record MagicFlagsEnum<TSelf, TValue> : MagicEnumCore<TSelf, TVal
 		if (LastInsertedNumber == TValue.Zero) 
 			return TValue.One;
 		
-		return (TValue)LastInsertedNumber * (TValue.One + TValue.One);
+		return LastInsertedNumber.Value << 1;
 	}
 	
 	#endregion
