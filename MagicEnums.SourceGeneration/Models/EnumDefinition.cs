@@ -12,7 +12,8 @@ internal sealed record EnumDefinition
 	public List<EnumMember> AttributeMembers { get; }
 	public bool IsStruct { get; }
 	public bool IsNumberEnum { get; }
-
+	public bool HasComments { get; }
+	
 	public bool IsStringEnum => this is { ValueTypeName: "String", ValueTypeNamespace: "System" };
 	
 	public EnumDefinition(INamedTypeSymbol type, string valueTypeNameIncludingGenerics, string? valueTypeNamespace, DiscoverabilityMode discoverabilityMode, 
@@ -29,12 +30,13 @@ internal sealed record EnumDefinition
 			accessModifier: accessModifier, 
 			attributeMembers: attributeMembers, 
 			isStruct: type.TypeKind == TypeKind.Struct,
-			isNumberEnum)
+			isNumberEnum,
+			hasComments: !String.IsNullOrWhiteSpace(type.GetDocumentationCommentXml()))
 	{
 	}
 
 	public EnumDefinition(string name, string? enumNamespace, string valueTypeNameIncludingGenerics, string? valueTypeNamespace, DiscoverabilityMode discoverabilityMode, 
-		string filePath, string accessModifier, IEnumerable<EnumMember> attributeMembers, bool isStruct, bool isNumberEnum)
+		string filePath, string accessModifier, IEnumerable<EnumMember> attributeMembers, bool isStruct, bool isNumberEnum, bool hasComments)
 	{
 		this.Name = name;
 		this.Namespace = enumNamespace;
@@ -49,5 +51,6 @@ internal sealed record EnumDefinition
 		this.AttributeMembers = attributeMembers as List<EnumMember> ?? attributeMembers.ToList();
 		this.IsStruct = isStruct;
 		this.IsNumberEnum = isNumberEnum;
+		this.HasComments = hasComments;
 	}
 }

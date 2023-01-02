@@ -111,31 +111,34 @@ internal static class EnumSourceBuilder
 
 			var code = new StringBuilder();
 
-			// Create the comments on the enum record.
-			code.Append($@"
+			var previousValue = -1m;
+			if (!definition.HasComments)
+			{
+				// Create the comments on the enum record.
+				code.Append($@"
 /// <summary>");
 
-			if (definition.IsStringEnum)
-				code.Append(@"
+				if (definition.IsStringEnum)
+					code.Append(@"
 /// <para><em>Do not rename!</em></para>");
 			
-			code.Append(@"
+				code.Append(@"
 /// <list type=""bullet"">");
 
-			var previousValue = -1m;
-			foreach (var member in members)
-			{
-				var outlineSpaces = new String(' ', longestMemberNameLength - member.Name.Length);
+				foreach (var member in members)
+				{
+					var outlineSpaces = new String(' ', longestMemberNameLength - member.Name.Length);
 
-				code.Append($@"
+					code.Append($@"
 /// <item><c><![CDATA[ {member.Name}{outlineSpaces} = {member.Value ?? (definition.IsStringEnum ? $"\"{member.Name}\"" : previousValue + 1)} ]]></c></item>");
 
-				previousValue = definition.IsNumberEnum && Decimal.TryParse(member.Value?.ToString(), out var previous) ? previous : 0;
-			}
+					previousValue = definition.IsNumberEnum && Decimal.TryParse(member.Value?.ToString(), out var previous) ? previous : 0;
+				}
 
-			code.Append($@"
+				code.Append($@"
 /// </list>
 /// </summary>");
+			}
 
 			// Define the enum record.
 			code.Append($@"

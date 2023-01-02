@@ -10,8 +10,8 @@
 	</PropertyGroup>
 	
 	<PropertyGroup Label="Package">
-		<Version>3.3.9</Version>
-		<PackageReleaseNotes>Updated package references.</PackageReleaseNotes>
+		<Version>3.4.0</Version>
+		<PackageReleaseNotes>Don't create enum comments when they already exist.</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>CodeChops.MagicEnums</Title>
 		<Description>Fast, customizable, and extendable enums for C# with a clean API.</Description>
