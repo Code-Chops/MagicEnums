@@ -3,4 +3,4 @@ global using System.Runtime.Serialization;
 global using System.Diagnostics.CodeAnalysis;
 
 global using CodeChops.MagicEnums.Core;
-global using CodeChops.DomainDrivenDesign.DomainModeling.Identities;
+global using CodeChops.DomainModeling.Identities;

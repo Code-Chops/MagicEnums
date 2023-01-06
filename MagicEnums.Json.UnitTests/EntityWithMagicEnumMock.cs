@@ -1,4 +1,4 @@
-﻿using CodeChops.DomainDrivenDesign.Contracts;
+﻿using CodeChops.Contracts;
 
 namespace CodeChops.MagicEnums.Json.UnitTests;
 

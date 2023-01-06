@@ -1,5 +1,5 @@
 ﻿using System.Text.Json;
-using CodeChops.DomainDrivenDesign.DomainModeling.Identities.Serialization.Json;
+using CodeChops.DomainModeling.Identities.Serialization.Json;
 using CodeChops.Geometry.Space.Directions.Strict;
 using CodeChops.Geometry.Space.Directions.Strict.Definitions;
 using Xunit;
