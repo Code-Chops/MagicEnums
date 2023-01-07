@@ -10,8 +10,8 @@
 	</PropertyGroup>
 	
 	<PropertyGroup Label="Package">
-		<Version>3.5.0</Version>
-		<PackageReleaseNotes>Removed ForwardInstanceMethodsToStatic as it obsolete now: ImplementationDiscovery generates it.</PackageReleaseNotes>
+		<Version>3.4.4</Version>
+		<PackageReleaseNotes>Updated package references.</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>CodeChops.MagicEnums</Title>
 		<Description>Fast, customizable, and extendable enums for C# with a clean API.</Description>
