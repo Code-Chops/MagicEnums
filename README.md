@@ -1,6 +1,6 @@
 # Magic Enums
 
-Fast, customizable, and extendable enums for C# with a clean API. See [advantages](#Advantages).
+Customizable, and extendable enums for C# with a clean API. See [advantages](#Advantages).
 
 # Basic examples
 
