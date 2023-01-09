@@ -2,6 +2,8 @@
 
 Customizable, and extendable enums for C# with a clean API. See [advantages](#Advantages).
 
+> Check out [CodeChops projects](https://www.CodeChops.nl/projects) for more projects.
+
 # Basic examples
 
 ## Simple enum
