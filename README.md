@@ -38,6 +38,8 @@ public record Vehicle(int WheelCount) : MagicEnum<Vehicle>
 }
 ``` 
 
+> Another usage example in the [Currency.cs file](https://github.com/Code-Chops/FoodChops/blob/main/FoodChops.Domain/Amounts/Currency.cs) of the [FoodChops application](https://foodchops.azurewebsites.net/).
+
 # Functionality
 > **Terminology used in this documentation:**
 > - An `enum` has one or multiple members.
