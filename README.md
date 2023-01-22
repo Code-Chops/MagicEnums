@@ -1,6 +1,8 @@
 # Magic Enums
 
-Fast, customizable, and extendable enums for C# with a clean API. See [advantages](#Advantages).
+Customizable, and extendable enums for C# with a clean API. See [advantages](#Advantages).
+
+> Check out [CodeChops projects](https://www.CodeChops.nl/projects) for more projects.
 
 # Basic examples
 
@@ -35,6 +37,8 @@ public record Vehicle(int WheelCount) : MagicEnum<Vehicle>
     } 
 }
 ``` 
+
+> Another usage example in the [Currency.cs file](https://github.com/Code-Chops/FoodChops/blob/main/FoodChops.Domain/Amounts/Currency.cs) of the [FoodChops application](https://foodchops.azurewebsites.net/).
 
 # Functionality
 > **Terminology used in this documentation:**
