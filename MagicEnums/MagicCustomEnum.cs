@@ -6,7 +6,7 @@
 /// </summary>
 public abstract record MagicCustomEnum<TSelf, TValue> : MagicEnumCore<TSelf, TValue> 
 	where TSelf : MagicCustomEnum<TSelf, TValue>
-	where TValue : IEquatable<TValue>, IComparable<TValue>
+	where TValue : IEquatable<TValue?>, IComparable<TValue?>
 {
 	#region CreateMember
 	

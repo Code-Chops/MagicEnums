@@ -1,7 +1,7 @@
 ﻿namespace CodeChops.MagicEnums.Core;
 
 /// <inheritdoc cref="IMember"/>
-public interface IMember<out TValue> : IMember, IId<TValue>
+public interface IMember<out TValue> : IMember
 	where TValue : IEquatable<TValue>, IComparable<TValue>
 {
 }
