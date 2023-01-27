@@ -4,6 +4,7 @@
 public interface IMember<out TValue> : IMember
 	where TValue : IEquatable<TValue>, IComparable<TValue>
 {
+	TValue Value { get; }
 }
 
 /// <summary>
