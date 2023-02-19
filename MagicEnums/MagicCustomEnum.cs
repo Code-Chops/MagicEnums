@@ -23,7 +23,7 @@ public abstract record MagicCustomEnum<TSelf, TValue> : MagicEnumCore<TSelf, TVa
 	/// <param name="name">
 	/// The name of the new member.
 	/// <b>Do not provide this parameter!</b>
-	///<para>
+	/// <para>
 	/// If not provided, the name of the caller of this method will be used as the name of the member.<br/>
 	/// If provided, the enforced name will be used, and the property name the will be forgotten.
 	/// </para>

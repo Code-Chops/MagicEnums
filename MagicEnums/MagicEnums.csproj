@@ -10,7 +10,7 @@
 	</PropertyGroup>
 	
 	<PropertyGroup Label="Package">
-		<Version>3.8.0</Version>
+		<Version>3.8.1</Version>
 		<PackageReleaseNotes>Updated packages.</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>CodeChops.MagicEnums</Title>
@@ -66,6 +66,6 @@
 	</ItemGroup>
 
 	<ItemGroup Label="PackageReferences">
-		<PackageReference Include="CodeChops.DomainModeling" Version="2.8.0" />
+		<PackageReference Include="CodeChops.DomainModeling" Version="2.8.3" />
 	</ItemGroup>
 </Project>
