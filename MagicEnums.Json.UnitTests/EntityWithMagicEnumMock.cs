@@ -12,10 +12,9 @@ public record EntityContract(int Age, MagicEnumWrapperContractMock Wrapper) : Co
 
 public record EntityAdapter : Adapter<EntityWithMagicEnumMock, EntityContract>
 {
-	protected override Type GetDomainObjectType() => typeof(EntityWithMagicEnumMock);
-	protected override object ConvertContractToObject(Contract contract)
-		=> contract is EntityContract(var age, var wrapper) ? new EntityWithMagicEnumMock() { Id = SingletonId<EntityWithMagicEnumMock>.Instance, Age = age, Wrapper = wrapper} : null!;
+	public override EntityWithMagicEnumMock ConvertToObject(EntityContract contract)
+		=> new() { Id = SingletonId<EntityWithMagicEnumMock>.Instance, Age = contract.Age, Wrapper = contract.Wrapper};
 
-	protected override EntityContract ConvertObjectToContract(object domainObject)
-		=> domainObject is EntityWithMagicEnumMock entity ? new EntityContract(entity.Age, entity.Wrapper) : null!;
+	public override EntityContract ConvertToContract(EntityWithMagicEnumMock entity) 
+		=> new(entity.Age, entity.Wrapper);
 }

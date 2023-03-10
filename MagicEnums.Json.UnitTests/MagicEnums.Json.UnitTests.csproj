@@ -19,7 +19,7 @@
 	</ItemGroup>
 
 	<ItemGroup Label="PackageReferences">
-		<PackageReference Include="CodeChops.Contracts" Version="0.18.0" />
+		<PackageReference Include="CodeChops.Contracts" Version="0.23.0" />
 		<PackageReference Include="CodeChops.Geometry" Version="4.9.0" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
 		<PackageReference Include="xunit" Version="2.4.2" />

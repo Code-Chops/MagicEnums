@@ -1,6 +1,6 @@
 ﻿namespace CodeChops.MagicEnums.Core;
 
-public interface IMagicEnumCore<TSelf, TValue> : IMagicEnum<TValue>, IId<TSelf, TValue>, IEnumerable<TSelf>
+public interface IMagicEnumCore<TSelf, TValue> : IMagicEnum<TValue>, IEnumerable<TSelf>
 	where TSelf : MagicEnumCore<TSelf, TValue>
 	where TValue : IEquatable<TValue?>, IComparable<TValue?>
 {
