@@ -10,8 +10,8 @@
     </PropertyGroup>
 
     <PropertyGroup Label="Package">
-        <Version>3.9.0</Version>
-        <PackageReleaseNotes>Updated MagicEnum-package.</PackageReleaseNotes>
+        <Version>3.9.1</Version>
+        <PackageReleaseNotes>Updated Geometry-package.</PackageReleaseNotes>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Title>CodeChops.MagicEnums.Json</Title>
         <Description>Json (de)serialization for MagicEnums.</Description>
