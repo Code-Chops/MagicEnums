@@ -27,15 +27,15 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	{
 		if (other is null) return false;
 		if (ReferenceEquals(this.Value, other.Value)) return true;
-		return this.Value.Equals(other.Value);
+		return this.Value?.Equals(other.Value) ?? other.Value is null;
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public override int GetHashCode()
-		=> this.Value.GetHashCode();
+		=> this.Value!.GetHashCode();
 	
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static implicit operator TValue(MagicEnumCore<TSelf, TValue> magicEnum) => magicEnum.Value;
+	public static implicit operator TValue?(MagicEnumCore<TSelf, TValue> magicEnum) => magicEnum.Value;
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static explicit operator MagicEnumCore<TSelf, TValue>(TValue value) => GetSingleMember(value);
 	
@@ -74,7 +74,7 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	/// <summary>
 	/// Get an enumerable over the values.
 	/// </summary>
-	public static IEnumerable<TValue> GetValues() => MemberByNames.Values.Select(member => member.Value);
+	public static IEnumerable<TValue> GetValues() => MemberByNames.Values.Where(member => member.Value is not null).Select(member => member.Value!);
 
 	/// <summary>
 	/// Is true if the dictionary is in a concurrent state.
@@ -102,8 +102,9 @@ public abstract record MagicEnumCore<TSelf, TValue> : Id<TSelf, TValue>, IMagicE
 	/// </summary>
 	private static IDictionary<TValue, List<TSelf>> MembersByValues
 		=> _membersByValues ??= MemberByNames
+			.Where(memberByName => memberByName.Value.Value is not null)
 			.GroupBy(memberByName => memberByName.Value, memberByName => memberByName.Value)
-			.ToDictionary(member => member.Key.Value, member => member.ToList());
+			.ToDictionary(member => member.Key.Value!, member => member.ToList());
 	
 	/// <summary>
 	/// A mapping of a member value to one or more members. Don't change this value. Only reset it (to null).

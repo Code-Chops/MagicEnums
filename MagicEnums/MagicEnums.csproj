@@ -10,8 +10,8 @@
 	</PropertyGroup>
 	
 	<PropertyGroup Label="Package">
-		<Version>3.8.3</Version>
-		<PackageReleaseNotes>Updated packages 3.</PackageReleaseNotes>
+		<Version>3.9.0</Version>
+		<PackageReleaseNotes>Updated packages 4.</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>CodeChops.MagicEnums</Title>
 		<Description>Fast, customizable, and extendable enums for C# with a clean API.</Description>
@@ -66,6 +66,6 @@
 	</ItemGroup>
 
 	<ItemGroup Label="PackageReferences">
-		<PackageReference Include="CodeChops.DomainModeling" Version="2.10.5" />
+		<PackageReference Include="CodeChops.DomainModeling" Version="2.15.0" />
 	</ItemGroup>
 </Project>

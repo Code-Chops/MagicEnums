@@ -3,7 +3,7 @@
 internal record EnumMember
 {
 	public string Name { get; }
-	public object? Value { get; }
+	public object? Value { get; set; }
 	public string? Comment { get; }
 
 	public EnumMember(string name, object? value = null, string? comment = null)

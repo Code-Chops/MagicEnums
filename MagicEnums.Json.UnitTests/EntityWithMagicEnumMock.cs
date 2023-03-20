@@ -1,4 +1,5 @@
 ﻿using CodeChops.Contracts;
+using CodeChops.Contracts.Adapters;
 
 namespace CodeChops.MagicEnums.Json.UnitTests;
 
@@ -13,7 +14,7 @@ public record EntityContract(int Age, MagicEnumWrapperContractMock Wrapper) : Co
 public record EntityAdapter : Adapter<EntityWithMagicEnumMock, EntityContract>
 {
 	public override EntityWithMagicEnumMock ConvertToObject(EntityContract contract)
-		=> new() { Id = SingletonId<EntityWithMagicEnumMock>.Instance, Age = contract.Age, Wrapper = contract.Wrapper};
+		=> new() { Id = SingletonId<EntityWithMagicEnumMock>.Default, Age = contract.Age, Wrapper = contract.Wrapper};
 
 	public override EntityContract ConvertToContract(EntityWithMagicEnumMock entity) 
 		=> new(entity.Age, entity.Wrapper);

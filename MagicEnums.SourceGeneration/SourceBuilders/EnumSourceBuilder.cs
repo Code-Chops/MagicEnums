@@ -8,7 +8,8 @@ internal static class EnumSourceBuilder
 	public static void CreateSource(SourceProductionContext context, ImmutableArray<DiscoveredEnumMember> allDiscoveredMembers, 
 		Dictionary<string, EnumDefinition> enumDefinitionsByName, AnalyzerConfigOptionsProvider configOptionsProvider)
 	{
-		if (enumDefinitionsByName.Count == 0) return;
+		if (enumDefinitionsByName.Count == 0) 
+			return;
 
 		// Get the discovered members and their definition.
 		// Exclude the members that have no definition, or the members that are discovered while their definition doesn't allow it.
@@ -31,14 +32,14 @@ internal static class EnumSourceBuilder
 		}
 	}
 
-	private static string CreateEnumSource(EnumDefinition definition, List<DiscoveredEnumMember> relevantDiscoveredMembers)
+	private static string CreateEnumSource(EnumDefinition definition, List<DiscoveredEnumMember> discoveredMembers)
 	{
 		var code = new StringBuilder();
 
 		// Place the members that are discovered in the enum definition file itself first. The order can be relevant because the value of enum members can be implicitly incremental.
 		// Do a distinct on the file path and line position so the members will be deduplicated while typing their invocation.
 		// Also do a distinct on the member name.		
-		relevantDiscoveredMembers = relevantDiscoveredMembers
+		discoveredMembers = discoveredMembers
 			.OrderByDescending(member => member.FilePath == definition.FilePath)
 			.GroupBy(member => (member.FilePath, member.LinePosition))
 			.Select(group => group.First())
@@ -47,9 +48,21 @@ internal static class EnumSourceBuilder
 			.ToList();
 
 		var members = definition.AttributeMembers
-			.Concat(relevantDiscoveredMembers)
+			.Concat(discoveredMembers)
 			.ToList();
 
+		if (definition.IsNumberEnum)
+		{
+			decimal previousValue = -1;
+			foreach (var member in members)
+			{
+				if (member.Value is null)
+					member.Value = ++previousValue;
+
+				Decimal.TryParse(member.Value?.ToString(), out previousValue);
+			}
+		}
+		
 		// Is used for correct enum member outlining.
 		var longestMemberNameLength = members
 			.Select(member => member.Name)
@@ -110,8 +123,7 @@ internal static class EnumSourceBuilder
 			if (!members.Any()) return null;
 
 			var code = new StringBuilder();
-
-			var previousValue = -1m;
+			
 			if (!definition.HasComments)
 			{
 				// Create the comments on the enum record.
@@ -130,9 +142,7 @@ internal static class EnumSourceBuilder
 					var outlineSpaces = new String(' ', longestMemberNameLength - member.Name.Length);
 
 					code.Append($@"
-/// <item><c><![CDATA[ {member.Name}{outlineSpaces} = {member.Value ?? (definition.IsStringEnum ? $"\"{member.Name}\"" : previousValue + 1)} ]]></c></item>");
-
-					previousValue = definition.IsNumberEnum && Decimal.TryParse(member.Value?.ToString(), out var previous) ? previous : 0;
+/// <item><c><![CDATA[ {member.Name}{outlineSpaces} = {member.Value} ]]></c></item>");
 				}
 
 				code.Append($@"
@@ -144,12 +154,10 @@ internal static class EnumSourceBuilder
 			code.Append($@"
 {definition.AccessModifier} partial record {(definition.IsStruct ? "struct " : "class")} {definition.Name}
 {{");
-
-			previousValue = -1m;
+			
 			// Add the discovered members to the enum record.
 			foreach (var member in members)
 			{
-				var value = member.Value ?? (definition.IsStringEnum ? $"\"{member.Name}\"" : previousValue + 1);
 				// Create the comment on the enum member.
 				if (member.Value is not null || member.Comment is not null || definition.IsStringEnum || definition.IsNumberEnum)
 				{
@@ -169,7 +177,7 @@ internal static class EnumSourceBuilder
 					if (member.Value is not null || definition.IsNumberEnum || definition.IsStringEnum)
 					{
 						code.Append($@"
-	/// <para><c><![CDATA[ (value: {value}) ]]></c></para>");
+	/// <para><c><![CDATA[ (value: {member.Value}) ]]></c></para>");
 					}
 
 					code.Append($@"
@@ -179,9 +187,8 @@ internal static class EnumSourceBuilder
 				// Create the enum member itself.
 				var outlineSpaces = new string(' ', longestMemberNameLength - member.Name.Length);
 				code.Append(@$"
-	public static {definition.Name} {member.Name} {{ get; }} {outlineSpaces}= CreateMember({value});
+	public static {definition.Name} {member.Name} {{ get; }} {outlineSpaces}= CreateMember({member.Value});
 ");
-				previousValue = definition.IsNumberEnum && Decimal.TryParse(member.Value?.ToString(), out var previous) ? previous : 0;
 			}
 
 			code.TrimEnd().Append($@"
