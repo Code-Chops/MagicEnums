@@ -1,4 +1,5 @@
-﻿using CodeChops.MagicEnums.SourceGeneration.SourceBuilders;
+﻿using System.Diagnostics;
+using CodeChops.MagicEnums.SourceGeneration.SourceBuilders;
 using CodeChops.MagicEnums.SourceGeneration.SyntaxReceivers;
 
 namespace CodeChops.MagicEnums.SourceGeneration;
@@ -43,7 +44,7 @@ public class MagicEnumSourceGenerator : IIncrementalGenerator
 		context.RegisterSourceOutput(
 			source: enumDefinitions,
 			action: AddEnumDefinitions!);
-		
+
 
 		void AddEnumDefinitions(SourceProductionContext context, ImmutableArray<EnumDefinition> enumDefinitions)
 		{

@@ -40,11 +40,6 @@
         <Folder Include="Properties" />
     </ItemGroup>
 
-    <!-- Creates local nuget packages if in release mode and environment variable LocalNuGetPackagesFolder is configured -->
-    <Target Name="AddNugetPackage" AfterTargets="Pack" Condition="'$(Configuration)' == 'Release' AND '$(LocalNuGetPackagesFolder)' != null">
-        <Exec Command="$(LocalNuGetPackagesFolder)\nuget.exe add $(OutputPath)..\$(PackageId).$(PackageVersion).nupkg -source $(LocalNuGetPackagesFolder)" />
-    </Target>
-
     <ItemGroup Label="PackageAssets">
         <None Include="Properties\LICENSE" Pack="true" PackagePath="" />
         <None Include="Properties\icon.png" Pack="true" Visible="true" PackagePath="" />

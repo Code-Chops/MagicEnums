@@ -10,8 +10,8 @@
 	</PropertyGroup>
 
 	<PropertyGroup Label="Package">
-		<Version>3.9.1</Version>
-		<PackageReleaseNotes>Updated packages 5.</PackageReleaseNotes>
+		<Version>3.9.2</Version>
+		<PackageReleaseNotes>Fixed implicit conversion.</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>CodeChops.MagicEnums</Title>
 		<Description>Fast, customizable, and extendable enums for C# with a clean API.</Description>
@@ -48,11 +48,6 @@
 		<None Include="..\icon.png" Pack="true" Visible="true" PackagePath="" />
 		<None Include="..\README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
-
-	<!-- Creates local nuget packages if in release mode and environment variable LocalNuGetPackagesFolder is configured -->
-	<Target Name="AddNugetPackage" AfterTargets="Pack" Condition="'$(Configuration)' == 'Release' AND '$(LocalNuGetPackagesFolder)' != null">
-		<Exec Command="$(LocalNuGetPackagesFolder)\nuget.exe add $(OutputPath)..\$(PackageId).$(PackageVersion).nupkg -source $(LocalNuGetPackagesFolder)" />
-	</Target>
 
 	<ItemGroup Label="InternalsVisibleTo">
 		<InternalsVisibleTo Include="$(AssemblyName).UnitTests" />
