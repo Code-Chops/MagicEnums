@@ -3,8 +3,8 @@
 	<PropertyGroup Label="Main">
 		<AssemblyName>CodeChops.MagicEnums.Json.UnitTests</AssemblyName>
 		<RootNamespace>CodeChops.MagicEnums.Json.UnitTests</RootNamespace>
-		<TargetFramework>net8.0</TargetFramework>
-		<LangVersion>12</LangVersion>
+		<TargetFramework>net9.0</TargetFramework>
+		<LangVersion>13</LangVersion>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
@@ -19,8 +19,8 @@
 	</ItemGroup>
 
 	<ItemGroup Label="PackageReferences">
-		<PackageReference Include="CodeChops.Contracts" Version="0.26.1" />
-		<PackageReference Include="CodeChops.Geometry" Version="4.10.0" />
+		<PackageReference Include="CodeChops.Contracts" Version="0.26.2" />
+		<PackageReference Include="CodeChops.Geometry" Version="4.10.1" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
 		<PackageReference Include="xunit" Version="2.9.2" />
 		<PackageReference Include="xunit.runner.visualstudio" Version="2.8.2">

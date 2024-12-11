@@ -3,14 +3,14 @@
 	<PropertyGroup Label="Main">
 		<AssemblyName>CodeChops.MagicEnums</AssemblyName>
 		<RootNamespace>CodeChops.MagicEnums</RootNamespace>
-		<TargetFramework>net8.0</TargetFramework>
-		<LangVersion>12</LangVersion>
+		<TargetFramework>net9.0</TargetFramework>
+		<LangVersion>13</LangVersion>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 
 	<PropertyGroup Label="Package">
-		<Version>3.9.2</Version>
+		<Version>3.9.3-alpha</Version>
 		<PackageReleaseNotes>Fixed implicit conversion.</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Title>CodeChops.MagicEnums</Title>
@@ -54,13 +54,13 @@
 		<InternalsVisibleTo Include="$(AssemblyName).IntegrationTests" />
 	</ItemGroup>
 
-	<ItemGroup Label="ProjectReferences">
+<!--	<ItemGroup Label="ProjectReferences">
 		<ProjectReference Include="..\MagicEnums.SourceGeneration\MagicEnums.SourceGeneration.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-		<!-- Package the generator in the analyzer directory of the nuget package -->
+		&lt;!&ndash; Package the generator in the analyzer directory of the nuget package &ndash;&gt;
 		<None Include="..\MagicEnums.SourceGeneration/bin/$(Configuration)\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers\dotnet\cs" Visible="false" />
-	</ItemGroup>
+	</ItemGroup>-->
 
 	<ItemGroup Label="PackageReferences">
-		<PackageReference Include="CodeChops.DomainModeling" Version="2.17.8" />
+		<PackageReference Include="CodeChops.DomainModeling" Version="2.18.4" />
 	</ItemGroup>
 </Project>

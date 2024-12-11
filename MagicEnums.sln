@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MagicEnums.UnitTests", "Mag
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagicEnums.Json", "MagicEnums.Json\MagicEnums.Json.csproj", "{D169D131-6C34-4EF2-94EF-5297A5B10EFC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagicEnums.UnitTests", "MagicEnums.Json.UnitTests\MagicEnums.Json.UnitTests.csproj", "{CCE6E184-2CC6-4D71-9FC5-1077ABC6537B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagicEnums.Json.UnitTests", "MagicEnums.Json.UnitTests\MagicEnums.Json.UnitTests.csproj", "{CCE6E184-2CC6-4D71-9FC5-1077ABC6537B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{E71B5A55-B2B3-40AE-9E5E-D5F5A865C4A0}"
 	ProjectSection(SolutionItems) = preProject
