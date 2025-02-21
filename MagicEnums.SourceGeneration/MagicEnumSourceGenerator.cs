@@ -12,7 +12,7 @@ namespace CodeChops.MagicEnums.SourceGeneration;
 [Generator]
 public class MagicEnumSourceGenerator : IIncrementalGenerator
 {
-	internal const string GenerateMethodName				= "CreateMember";
+    internal const string GenerateMethodName				= "CreateMember";
 	internal const string CoreName							= "MagicEnumCore";
 	internal const string CoreNamespace						= "CodeChops.MagicEnums.Core";
 	internal const string AttributeNamespace				= "CodeChops.MagicEnums.Attributes";

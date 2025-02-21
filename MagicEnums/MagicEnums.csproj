@@ -1,66 +1,61 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup Label="Main">
-		<AssemblyName>CodeChops.MagicEnums</AssemblyName>
-		<RootNamespace>CodeChops.MagicEnums</RootNamespace>
-		<TargetFramework>net9.0</TargetFramework>
-		<LangVersion>13</LangVersion>
-		<Nullable>enable</Nullable>
-		<ImplicitUsings>enable</ImplicitUsings>
-	</PropertyGroup>
+  <PropertyGroup Label="Main">
+    <AssemblyName>CodeChops.MagicEnums</AssemblyName>
+    <RootNamespace>CodeChops.MagicEnums</RootNamespace>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>13</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
 
-	<PropertyGroup Label="Package">
-		<Version>3.9.3-alpha</Version>
-		<PackageReleaseNotes>Fixed implicit conversion.</PackageReleaseNotes>
-		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<Title>CodeChops.MagicEnums</Title>
-		<Description>Fast, customizable, and extendable enums for C# with a clean API.</Description>
-		<PackageId>CodeChops.MagicEnums</PackageId>
-		<PackageProjectUrl>https://github.com/code-chops/MagicEnums</PackageProjectUrl>
-		<PackageTags>CodeChops;CodeChops.MagicEnums;CodeChops.MagicEnum;MagicEnums;MagicEnum;Magic enums;Magic enum;Smart enums;Smart enum;Better enums;Better enum;</PackageTags>
-		<RepositoryUrl>https://github.com/code-chops/MagicEnums</RepositoryUrl>
-		<RepositoryType>Git</RepositoryType>
-		<PublishRepositoryUrl>true</PublishRepositoryUrl>
-		<Authors>CodeChops (@Code-Chops), Max Bergman</Authors>
-		<Company>CodeChops</Company>
-		<PackageIcon>icon.png</PackageIcon>
-		<PackageLicenseFile>LICENSE</PackageLicenseFile>
-		<Copyright>Copyright (c) CodeChops $([System.DateTime]::Now.ToString(yyyy))</Copyright>
-		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<NoWarn>
-			CS1591, <!-- Missing XML comment for publicly visible type or member -->
-			CS1573, <!-- Parameter has no matching param tag in the XML comment -->
-			CS1712, <!-- Type parameter has no matching typeparam tag in the XML comment (but other type parameters do) -->
-		</NoWarn>
-	</PropertyGroup>
+  <PropertyGroup Label="Package">
+    <Version>4.0.0</Version>
+    <PackageReleaseNotes>Removed source generation and now using Architect.DomainModeling. Updated packages.</PackageReleaseNotes>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Title>CodeChops.MagicEnums</Title>
+    <Description>Fast, customizable, and extendable enums for C# with a clean API.</Description>
+    <PackageId>CodeChops.MagicEnums</PackageId>
+    <PackageProjectUrl>https://github.com/code-chops/MagicEnums</PackageProjectUrl>
+    <PackageTags>CodeChops;CodeChops.MagicEnums;CodeChops.MagicEnum;MagicEnums;MagicEnum;Magic enums;Magic enum;Smart enums;Smart enum;Better enums;Better enum;</PackageTags>
+    <RepositoryUrl>https://github.com/code-chops/MagicEnums</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <Authors>CodeChops (@Code-Chops), Max Bergman</Authors>
+    <Company>CodeChops</Company>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <Copyright>Copyright (c) CodeChops $([System.DateTime]::Now.ToString(yyyy))</Copyright>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <NoWarn>
+      CS1591, <!-- Missing XML comment for publicly visible type or member -->
+      CS1573, <!-- Parameter has no matching param tag in the XML comment -->
+      CS1712, <!-- Type parameter has no matching typeparam tag in the XML comment (but other type parameters do) -->
+    </NoWarn>
+  </PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
-	</PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+  </PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
-		<DebugType>none</DebugType>
-	</PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <DebugType>none</DebugType>
+  </PropertyGroup>
 
-	<ItemGroup Label="PackageAssets">
-		<None Include="..\LICENSE" Pack="true" PackagePath="" />
-		<None Include="..\icon.png" Pack="true" Visible="true" PackagePath="" />
-		<None Include="..\README.md" Pack="true" PackagePath="\" />
-	</ItemGroup>
+  <ItemGroup Label="PackageAssets">
+    <None Include="..\LICENSE" Pack="true" PackagePath="" />
+    <None Include="..\icon.png" Pack="true" Visible="true" PackagePath="" />
+    <None Include="..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
-	<ItemGroup Label="InternalsVisibleTo">
-		<InternalsVisibleTo Include="$(AssemblyName).UnitTests" />
-		<InternalsVisibleTo Include="$(AssemblyName).IntegrationTests" />
-	</ItemGroup>
+  <ItemGroup Label="InternalsVisibleTo">
+    <InternalsVisibleTo Include="$(AssemblyName).UnitTests" />
+    <InternalsVisibleTo Include="$(AssemblyName).IntegrationTests" />
+  </ItemGroup>
 
-<!--	<ItemGroup Label="ProjectReferences">
-		<ProjectReference Include="..\MagicEnums.SourceGeneration\MagicEnums.SourceGeneration.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-		&lt;!&ndash; Package the generator in the analyzer directory of the nuget package &ndash;&gt;
-		<None Include="..\MagicEnums.SourceGeneration/bin/$(Configuration)\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers\dotnet\cs" Visible="false" />
-	</ItemGroup>-->
-
-	<ItemGroup Label="PackageReferences">
-		<PackageReference Include="CodeChops.DomainModeling" Version="2.18.4" />
-	</ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Architect.DomainModeling" Version="3.0.3" />
+  </ItemGroup>
+  
 </Project>

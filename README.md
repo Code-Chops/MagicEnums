@@ -1,27 +1,34 @@
 # Magic Enums
 
-Customizable, and extendable enums for C# with a clean API. See [advantages](#Advantages).
+Customizable, and extendable enums for C# with a clean API.
 
 > Check out [CodeChops projects](https://www.CodeChops.nl/projects) for more projects.
 
-# Basic examples
+# Examples
 
 ## Simple enum
 ```csharp
-/* This is a simple example of how to create an int enum with explicit and implicit values. */
-
+// Implicit values
 public record Level : MagicEnum<Level>
 {
-    public static readonly Level Low    = CreateMember();  // 0
-    public static readonly Level Medium = CreateMember(1); // 1	
-    public static readonly Level High   = CreateMember();  // 2
+    public static readonly Level Low    = CreateMember(); // 0
+    public static readonly Level Medium = CreateMember(); // 1
+    public static readonly Level High   = CreateMember(); // 2
+}
+
+// Explicit values
+public record StarRating : MagicEnum<StarRating>
+{
+    public static readonly StarRating One   = CreateMember(1);
+    public static readonly StarRating Two   = CreateMember();    
+    public static readonly StarRating Three = CreateMember();
+    public static readonly StarRating Four  = CreateMember();
+    public static readonly StarRating Five  = CreateMember();
 }
 ```
 
-## Extended enum
+## Complex enum
 ```csharp
-/* This is an example of enum mebers with extra properties. */
-
 public record Vehicle(int WheelCount) : MagicEnum<Vehicle>
 {
     public static readonly Type.Bicycle    Bicycle     = CreateMember<Type.Bicycle>();
@@ -38,28 +45,9 @@ public record Vehicle(int WheelCount) : MagicEnum<Vehicle>
 }
 ``` 
 
-> Another usage example in the [Currency.cs file](https://github.com/Code-Chops/FoodChops/blob/main/FoodChops.Domain/Amounts/Currency.cs) of the [FoodChops application](https://foodchops.azurewebsites.net/).
-
-# Functionality
-> **Terminology used in this documentation:**
-> - An `enum` has one or multiple members.
-> - Each `member` has a `name` and a `value`.
-> - A member `name` has to be unique across all members of an enum.
-> - A member `value` does not have to be unique across all members.
-> - The type of the value depends on the chosen `enum type`, see: [enum types](#Enum-types).
-
-Magic enums behave like the default .NET enum implementation:
-- They use `int` as default for the member value.
-- Members can be found by searching for their name or value.
-- More than one member name can be assigned to the same value but only one value can be assigned to a member name.
-- The value of members can be omitted (when using the default numeric enums). If omitted, it automatically increments the value of each member.
-- Members, member names or member values can easily be enumerated.
-- `Flag` enums are supported.
-- Strongly typed enum members, so pattern matching can be used.
-
 ## Advantages
 Besides the default .NET enum behaviour, MagicEnums offer more features than the default .NET enum implementation:
-- Fast and optimized: does **not use reflection**.
+- Fast and optimized: does **not use reflection**!
 - Extendability:
   - **Inheritance** is supported. This way enums can also be extended in other assemblies.
   - **Partial enums** are supported.
@@ -75,13 +63,27 @@ Besides the default .NET enum behaviour, MagicEnums offer more features than the
 - Serialization to/from **JSON** is supported.
 - **Members can be auto-discovered**. This removes the need to keep track of used/unused enum-members. See [auto member discoverability](#Member-discoverability).
 
+# Functionality
+> **Terminology:**
+> - An `enum` has one or multiple members.
+> - Each `member` has a `name` and a `value`.
+> - The type of the value depends on the chosen `enum type`, see: [enum types](#Enum-types).
+
+Magic enums behave like the default .NET enum implementation:
+- They use `int` as default for the member value.
+- Members can be found by searching for their name or value.
+- More than one member can have the same value but not the same name.
+- The value of members can be omitted (when using the default numeric enums). If omitted, it automatically increments the value of each member.
+- Members, member names or member values can easily be enumerated.
+- `Flag` enums are supported.
+- Strongly typed enum members, so pattern matching can be used.
+
 # Usage
-1. Add the package `CodeChops.MagicEnums`. 
+1. Add the package `CodeChops.MagicEnums`.
 2. Add a (global) using to namespace `CodeChops.MagicEnums`.
 3. Create a record which implements one of the [enum types](#Enum-types).
-4. Add members:
-   - By creating `static readonly` members that call `CreateMember()`.
-   - And/or use [member generation](#Member-generation).
+4. Add members by creating `static readonly` members that call `CreateMember()`.
+
 
 ## API
 | Method                | Description                                                                                                                         |
@@ -116,7 +118,7 @@ Number enums (default) have a numeric type as value.
 public record StarRating : MagicEnum<StarRating>
 {
     public static readonly StarRating One   = CreateMember(1);
-    public static readonly StarRating Two   = CreateMember();	
+    public static readonly StarRating Two   = CreateMember();    
     public static readonly StarRating Three = CreateMember();
     public static readonly StarRating Four  = CreateMember();
     public static readonly StarRating Five  = CreateMember();
@@ -179,7 +181,7 @@ using CodeChops.MagicEnums;
 public record ErrorCode : MagicStringEnum<ErrorCode>
 {
     public static readonly ErrorCode EndpointDoesNotExist   = CreateMember();
-    public static readonly ErrorCode InvalidParameters      = CreateMember();	
+    public static readonly ErrorCode InvalidParameters      = CreateMember();    
     public static readonly ErrorCode NotAuthorized          = CreateMember();
 }
 ```
@@ -198,10 +200,10 @@ To achieve pattern matching, you can do the following below.
 ```csharp
 var message = level.Name switch
 {
-    nameof(Level.Low)       => "The level is low.", 
-    nameof(Level.Medium)    => "The level is medium.",
-    nameof(Level.High)      => "The level is high.",
-    _                       => throw new UnreachableException($"This should not occur.")
+    nameof(Level.Low)    => "The level is low.", 
+    nameof(Level.Medium) => "The level is medium.",
+    nameof(Level.High)   => "The level is high.",
+    _                    => throw new UnreachableException($"This should not occur.")
 };
 ```
 > In this example, the enum from the [default usage example](#Simple-enum) is used.
@@ -215,159 +217,7 @@ var speedingFineInEur = vehicle switch
     _                       => 0,
 };
 ```
-> In this example, the enum from the [extended usage example](#Extended-enum) is used.
-
-# Member generation
-Aside from defining members using `CreateMember`, members can be generated automatically using C# source generators. 
-
-## Attributes
-Members can be generated using the `EnumMember` attribute. A `value` and a comment can be provided. This method uses a different syntax than the default `CreateMember` syntax and offers no advantages over it.
-
-### Example
-```csharp
-[EnumMember("Low")]
-[EnumMember("Medium", 1)]
-[EnumMember("High", comment: "Has a value of 2.")]
-public partial record Level : MagicEnum<Level>;
-```
-
-The following code will be generated:
-```csharp
-// <auto-generated />
-#nullable enable
-
-using System;
-using System;
-using CodeChops.MagicEnums;
-
-namespace Test;
-
-/// <summary>
-/// <list type="bullet">
-/// <item><c><![CDATA[ Low    = 0 ]]></c></item>
-/// <item><c><![CDATA[ Medium = 1 ]]></c></item>
-/// <item><c><![CDATA[ High   = 2 ]]></c></item>
-/// </list>
-/// </summary>
-public partial record class Level
-{
-    /// <summary>   
-    /// <c><![CDATA[ (value: 0) ]]></c>
-    /// </summary>
-    public static Level Low { get; }    = CreateMember(0);
-
-    /// <summary>   
-    /// <c><![CDATA[ (value: 1) ]]></c>
-    /// </summary>
-    public static Level Medium { get; } = CreateMember(1);
-
-    /// <summary>
-    /// <para>Has a value of 2.</para>
-    /// <c><![CDATA[ (value: 2) ]]></c> 
-    /// </summary>
-    public static Level High { get; }   = CreateMember(2);
-}
-
-#nullable restore
-```
-
-## Member discoverability
-Enum member discoverability makes it possible to automatically generate an enum member the moment you reference it in your IDE.
-This ensures that enum members that are not used anymore are deleted.
-
-### Explicit discoverability
-- Is enabled by adding the `DiscoverEnumMembers`-attribute on the enum.
-- Use [Enum].[Member].CreateMember() to create a source generated enum-member on the fly.
-- A member value and/or comment can be provided.
-
-#### Example without arguments
-![Explicit discoverability usage example without arguments](https://raw.githubusercontent.com/Code-Chops/MagicEnums/master/MagicEnums-ExplicitDiscoverability.gif)
-
-#### Example with arguments
-![Explicit discoverability usage example with arguments](https://raw.githubusercontent.com/Code-Chops/MagicEnums/master/MagicEnums-ExplicitDiscoverability(arguments).gif)
-
-It generates the following code:
-```csharp
-// <auto-generated />
-#nullable enable
-
-using System;
-using System;
-using CodeChops.MagicEnums;
-
-namespace Test;
-
-/// <summary>
-/// <list type="bullet">
-/// <item><c><![CDATA[ CreditCard = 7 ]]></c></item>
-/// </list>
-/// </summary>
-public sealed partial record class PaymentMethod
-{
-    /// <summary>
-    /// <para>Only works with VISA.</para>
-    /// <c><![CDATA[ (value: 7) ]]></c>
-    /// </summary>
-    public static PaymentMethod CreditCard { get; } = CreateMember(7);
-}
-
-/// <summary>
-/// Call this method in order to create discovered enum members while invoking them (on the fly). So enum members are automatically deleted when not being used.
-/// </summary>
-public static class PaymentMethodExtensions
-{
-    public static PaymentMethod CreateMember(this PaymentMethod member, Int32? value = null, string? comment = null) 
-        => member;
-}
-
-#nullable restore
-```
-
-### Implicit discoverability
-- Is enabled by adding the `DiscoverEnumMembers`-attribute with `implicit` set to `true`.
-- Use [Enum].[Member] to create a source generated enum-member on the fly.
-- No member value or comment can be provided.
-
-#### Example
-![Implicit discoverability usage example](https://raw.githubusercontent.com/Code-Chops/MagicEnums/master/MagicEnums-ImplicitDiscoverability.gif)
-
-It generates the following code:
-```csharp
-// <auto-generated />
-#nullable enable
-
-using System;
-using System;
-using CodeChops.MagicEnums;
-
-namespace Test;
-
-/// <summary>
-/// <para><em>Do not rename!</em></para>
-/// <list type="bullet">
-/// <item><c><![CDATA[ NameIsNullOrWhiteSpace = "NameIsNullOrWhiteSpace" ]]></c></item>
-/// </list>
-/// </summary>
-public sealed partial record class ErrorCode
-{
-    /// <summary>
-    /// <para><em>Do not rename!</em></para>
-    /// <para><c><![CDATA[ (value: "NameIsNullOrWhiteSpace") ]]></c></para>
-    /// </summary>
-    public static ErrorCode NameIsNullOrWhiteSpace { get; } = CreateMember("NameIsNullOrWhiteSpace");
-}
-
-/// <summary>
-/// Call this method in order to create discovered enum members while invoking them (on the fly). So enum members are automatically deleted when not being used.
-/// </summary>
-public static class ErrorCodeExtensions
-{
-    public static ErrorCode CreateMember(this ErrorCode member, String? value = null, string? comment = null) 
-        => member;
-}
-
-#nullable restore
-```
+> In this example, the enum from the [complex usage example](#Complex-enum) is used.
 
 # Optimization
 Generally your enum does not dynamically add members at runtime. If this is the case, the attribute `DisableConcurrency` can be placed on the enum. It disables concurrency and therefore optimises memory usage and speed.

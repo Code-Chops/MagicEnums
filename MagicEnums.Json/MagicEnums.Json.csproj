@@ -1,63 +1,59 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup Label="Main">
-        <AssemblyName>CodeChops.MagicEnums.Json</AssemblyName>
-        <RootNamespace>CodeChops.MagicEnums.Json</RootNamespace>
-        <TargetFramework>net9.0</TargetFramework>
-        <LangVersion>13</LangVersion>
-        <Nullable>enable</Nullable>
-        <ImplicitUsings>enable</ImplicitUsings>
-    </PropertyGroup>
+  <PropertyGroup Label="Main">
+    <AssemblyName>CodeChops.MagicEnums.Json</AssemblyName>
+    <RootNamespace>CodeChops.MagicEnums.Json</RootNamespace>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>13</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
 
-    <PropertyGroup Label="Package">
-        <Version>3.9.1</Version>
-        <PackageReleaseNotes>Updated Geometry-package.</PackageReleaseNotes>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Title>CodeChops.MagicEnums.Json</Title>
-        <Description>Json (de)serialization for MagicEnums.</Description>
-        <PackageId>CodeChops.MagicEnums.Json</PackageId>
-        <PackageProjectUrl>https://github.com/code-chops/MagicEnums</PackageProjectUrl>
-        <PackageTags>CodeChops;CodeChops.MagicEnums.Json;MagicEnums;Json;Serialization;Deserialization</PackageTags>
-        <RepositoryUrl>https://github.com/code-chops/MagicEnums</RepositoryUrl>
-        <RepositoryType>Git</RepositoryType>
-        <PublishRepositoryUrl>true</PublishRepositoryUrl>
-        <Authors>CodeChops (@Code-Chops), Max Bergman</Authors>
-        <Company>CodeChops</Company>
-        <PackageIcon>icon.png</PackageIcon>
-        <PackageLicenseFile>LICENSE</PackageLicenseFile>
-        <Copyright>Copyright (c) CodeChops $([System.DateTime]::Now.ToString(yyyy))</Copyright>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-        <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-        <DebugType>none</DebugType>
-    </PropertyGroup>
-
-    <ItemGroup>
-        <Folder Include="Properties" />
-    </ItemGroup>
-
-    <ItemGroup Label="PackageAssets">
-        <None Include="Properties\LICENSE" Pack="true" PackagePath="" />
-        <None Include="Properties\icon.png" Pack="true" Visible="true" PackagePath="" />
-    </ItemGroup>
-
-    <ItemGroup Label="InternalsVisibleTo">
-        <InternalsVisibleTo Include="$(AssemblyName).UnitTests" />
-        <InternalsVisibleTo Include="$(AssemblyName).IntegrationTests" />
-    </ItemGroup>
-
-    <ItemGroup Label="ProjectReferences">
-        <ProjectReference Include="..\MagicEnums.SourceGeneration\MagicEnums.SourceGeneration.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-    </ItemGroup>
-
-    <ItemGroup Label="PackageReferences">
-      <PackageReference Include="CodeChops.DomainModeling" Version="2.18.4" />
-      <PackageReference Include="CodeChops.MagicEnums" Version="3.9.2" />
-      <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.0" />
-    </ItemGroup>
+  <PropertyGroup Label="Package">
+    <Version>3.9.1</Version>
+    <PackageReleaseNotes>Updated Geometry-package.</PackageReleaseNotes>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Title>CodeChops.MagicEnums.Json</Title>
+    <Description>Json (de)serialization for MagicEnums.</Description>
+    <PackageId>CodeChops.MagicEnums.Json</PackageId>
+    <PackageProjectUrl>https://github.com/code-chops/MagicEnums</PackageProjectUrl>
+    <PackageTags>CodeChops;CodeChops.MagicEnums.Json;MagicEnums;Json;Serialization;Deserialization</PackageTags>
+    <RepositoryUrl>https://github.com/code-chops/MagicEnums</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <Authors>CodeChops (@Code-Chops), Max Bergman</Authors>
+    <Company>CodeChops</Company>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <Copyright>Copyright (c) CodeChops $([System.DateTime]::Now.ToString(yyyy))</Copyright>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <Folder Include="Properties" />
+  </ItemGroup>
+  
+  <ItemGroup Label="PackageAssets">
+    <None Include="Properties\LICENSE" Pack="true" PackagePath="" />
+    <None Include="Properties\icon.png" Pack="true" Visible="true" PackagePath="" />
+  </ItemGroup>
+  
+  <ItemGroup Label="InternalsVisibleTo">
+    <InternalsVisibleTo Include="$(AssemblyName).UnitTests" />
+    <InternalsVisibleTo Include="$(AssemblyName).IntegrationTests" />
+  </ItemGroup>
+  
+  <ItemGroup Label="PackageReferences">
+    <PackageReference Include="CodeChops.DomainModeling" Version="2.18.4" />
+    <PackageReference Include="CodeChops.MagicEnums" Version="3.9.2" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.2" />
+  </ItemGroup>
 
 </Project>

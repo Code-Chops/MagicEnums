@@ -2,79 +2,79 @@
 
 internal static class EnumSourceBuilder
 {
-	/// <summary>
-	/// Creates a partial record of the enum definition which includes the discovered enum members. It also generates an extension class for the explicit enum definitions.
-	/// </summary>
-	public static void CreateSource(SourceProductionContext context, ImmutableArray<DiscoveredEnumMember> allDiscoveredMembers, 
-		Dictionary<string, EnumDefinition> enumDefinitionsByName, AnalyzerConfigOptionsProvider configOptionsProvider)
-	{
-		if (enumDefinitionsByName.Count == 0) 
-			return;
+    /// <summary>
+    /// Creates a partial record of the enum definition which includes the discovered enum members. It also generates an extension class for the explicit enum definitions.
+    /// </summary>
+    public static void CreateSource(SourceProductionContext context, ImmutableArray<DiscoveredEnumMember> allDiscoveredMembers, 
+        Dictionary<string, EnumDefinition> enumDefinitionsByName, AnalyzerConfigOptionsProvider configOptionsProvider)
+    {
+        if (enumDefinitionsByName.Count == 0) 
+            return;
 
-		// Get the discovered members and their definition.
-		// Exclude the members that have no definition, or the members that are discovered while their definition doesn't allow it.
-		var relevantDiscoveredMembersByDefinition = allDiscoveredMembers
-			.GroupBy(member => enumDefinitionsByName.TryGetValue(member.EnumName, out var definition) ? definition : null)
-			.Where(grouping => grouping.Key is not null)
-			.ToDictionary(grouping => grouping.Key, grouping => grouping.Where(member => grouping.Key!.DiscoverabilityMode == member.DiscoverabilityMode));
+        // Get the discovered members and their definition.
+        // Exclude the members that have no definition, or the members that are discovered while their definition doesn't allow it.
+        var relevantDiscoveredMembersByDefinition = allDiscoveredMembers
+            .GroupBy(member => enumDefinitionsByName.TryGetValue(member.EnumName, out var definition) ? definition : null)
+            .Where(grouping => grouping.Key is not null)
+            .ToDictionary(grouping => grouping.Key, grouping => grouping.Where(member => grouping.Key!.DiscoverabilityMode == member.DiscoverabilityMode));
 
-		foreach (var definition in enumDefinitionsByName.Values)
-		{
-			var relevantDiscoveredMembers = relevantDiscoveredMembersByDefinition.TryGetValue(definition, out var members)
-				? members.ToList()
-				: new List<DiscoveredEnumMember>();
+        foreach (var definition in enumDefinitionsByName.Values)
+        {
+            var relevantDiscoveredMembers = relevantDiscoveredMembersByDefinition.TryGetValue(definition, out var members)
+                ? members.ToList()
+                : new List<DiscoveredEnumMember>();
 
-			var enumCode = CreateEnumSource(definition!, relevantDiscoveredMembers);
+            var enumCode = CreateEnumSource(definition!, relevantDiscoveredMembers);
 
-			var fileName = $"{definition.Namespace}.{definition.Name}";
-			
-			context.AddSource(FileNameHelpers.GetFileName(fileName, configOptionsProvider), SourceText.From(enumCode, Encoding.UTF8));
-		}
-	}
+            var fileName = $"{definition.Namespace}.{definition.Name}";
+            
+            context.AddSource(FileNameHelpers.GetFileName(fileName, configOptionsProvider), SourceText.From(enumCode, Encoding.UTF8));
+        }
+    }
 
-	private static string CreateEnumSource(EnumDefinition definition, List<DiscoveredEnumMember> discoveredMembers)
-	{
-		var code = new StringBuilder();
+    private static string CreateEnumSource(EnumDefinition definition, List<DiscoveredEnumMember> discoveredMembers)
+    {
+        var code = new StringBuilder();
 
-		// Place the members that are discovered in the enum definition file itself first. The order can be relevant because the value of enum members can be implicitly incremental.
-		// Do a distinct on the file path and line position so the members will be deduplicated while typing their invocation.
-		// Also do a distinct on the member name.		
-		discoveredMembers = discoveredMembers
-			.OrderByDescending(member => member.FilePath == definition.FilePath)
-			.GroupBy(member => (member.FilePath, member.LinePosition))
-			.Select(group => group.First())
-			.GroupBy(member => member.Name)
-			.Select(membersByName => membersByName.First())
-			.ToList();
+        // Place the members that are discovered in the enum definition file itself first. The order can be relevant because the value of enum members can be implicitly incremental.
+        // Do a distinct on the file path and line position so the members will be deduplicated while typing their invocation.
+        // Also do a distinct on the member name.        
+        discoveredMembers = discoveredMembers
+            .OrderByDescending(member => member.FilePath == definition.FilePath)
+            .GroupBy(member => (member.FilePath, member.LinePosition))
+            .Select(group => group.First())
+            .GroupBy(member => member.Name)
+            .Select(membersByName => membersByName.First())
+            .ToList();
 
-		var members = definition.AttributeMembers
-			.Concat(discoveredMembers)
-			.ToList();
+        var members = definition.AttributeMembers
+            .Concat(discoveredMembers)
+            .ToList();
 
-		if (definition.IsNumberEnum)
-		{
-			decimal previousValue = -1;
-			foreach (var member in members)
-			{
-				if (member.Value is null)
-					member.Value = ++previousValue;
+        if (definition.IsNumberEnum)
+        {
+            decimal previousValue = -1;
+            foreach (var member in members)
+            {
+                if (member.Value is null)
+                    member.Value = ++previousValue;
 
-				Decimal.TryParse(member.Value?.ToString(), out previousValue);
-			}
-		}
-		
-		// Is used for correct enum member outlining.
-		var longestMemberNameLength = members
-			.Select(member => member.Name)
-			.OrderByDescending(name => name.Length)
-			.FirstOrDefault()?.Length ?? 0;
+                Decimal.TryParse(member.Value?.ToString(), out previousValue);
+            }
+        }
+        
+        // Is used for correct enum member outlining.
+        var longestMemberNameLength = members
+            .Select(member => member.Name)
+            .OrderByDescending(name => name.Length)
+            .FirstOrDefault()?.Length ?? 0;
 
-		// Create the whole source.
-		code.AppendLine($@"// <auto-generated />
+        // Create the whole source.
+        code.AppendLine($@"// <auto-generated />
 #nullable enable
 ");
 
-		code.AppendLine(GetUsings);
+    	code.AppendLine(GetUsings);
 		code.AppendLine(GetNamespaceDeclaration);
 		code.AppendLine(GetEnum, trimEnd: true);
 		

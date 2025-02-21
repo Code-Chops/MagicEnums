@@ -2,7 +2,7 @@
 
 internal enum DiscoverabilityMode
 {
-	None,
-	Explicit,
-	Implicit,
+    None,
+    Explicit,
+    Implicit,
 }

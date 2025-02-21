@@ -1,0 +1,9 @@
+global using Architect.DomainModeling;
+global using CodeChops.MagicEnums.Core;
+global using System.Diagnostics.CodeAnalysis;
+global using System.Numerics;
+global using System.Runtime.CompilerServices;
+global using System.Runtime.Serialization;
+global using CodeChops.MagicEnums.Attributes;
+global using System.Collections;
+global using System.Collections.Concurrent;
