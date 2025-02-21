@@ -10,8 +10,8 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Package">
-    <Version>4.0.0</Version>
-    <PackageReleaseNotes>Removed source generation and now using Architect.DomainModeling. Updated packages.</PackageReleaseNotes>
+    <Version>4.0.1</Version>
+    <PackageReleaseNotes>Changed IComparable interface usage.</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Title>CodeChops.MagicEnums</Title>
     <Description>Fast, customizable, and extendable enums for C# with a clean API.</Description>
@@ -57,5 +57,5 @@
   <ItemGroup>
     <PackageReference Include="Architect.DomainModeling" Version="3.0.3" />
   </ItemGroup>
-  
+
 </Project>

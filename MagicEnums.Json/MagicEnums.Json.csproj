@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Package">
-    <Version>3.9.1</Version>
+    <Version>4.0.1</Version>
     <PackageReleaseNotes>Updated Geometry-package.</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Title>CodeChops.MagicEnums.Json</Title>
@@ -27,32 +27,28 @@
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <Copyright>Copyright (c) CodeChops $([System.DateTime]::Now.ToString(yyyy))</Copyright>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <DebugType>none</DebugType>
   </PropertyGroup>
-  
-  <ItemGroup>
-    <Folder Include="Properties" />
-  </ItemGroup>
-  
+
   <ItemGroup Label="PackageAssets">
     <None Include="Properties\LICENSE" Pack="true" PackagePath="" />
     <None Include="Properties\icon.png" Pack="true" Visible="true" PackagePath="" />
   </ItemGroup>
-  
+
   <ItemGroup Label="InternalsVisibleTo">
     <InternalsVisibleTo Include="$(AssemblyName).UnitTests" />
     <InternalsVisibleTo Include="$(AssemblyName).IntegrationTests" />
   </ItemGroup>
-  
+
   <ItemGroup Label="PackageReferences">
     <PackageReference Include="CodeChops.DomainModeling" Version="2.18.4" />
-    <PackageReference Include="CodeChops.MagicEnums" Version="3.9.2" />
+    <PackageReference Include="CodeChops.MagicEnums" Version="4.0.1" />
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.2" />
   </ItemGroup>
 

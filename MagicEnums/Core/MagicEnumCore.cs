@@ -8,7 +8,7 @@
 /// <typeparam name="TValue">The type of the enum member value.</typeparam>
 public abstract record MagicEnumCore<TSelf, TValue> : IMagicEnumCore<TSelf, TValue>, IComparable<TSelf>, IComparable
     where TSelf : MagicEnumCore<TSelf, TValue>
-    where TValue : IEquatable<TValue?>, IComparable<TValue?>
+    where TValue : IEquatable<TValue?>, IComparable<TValue>
 {
     public sealed override string ToString() => this.Name;
 
